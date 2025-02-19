@@ -28,9 +28,9 @@ export default function RootLayout() {
 	}
 	return (
 		<GestureHandlerRootView>
-			<StatusBar style="dark" translucent />
+			<StatusBar style="light" translucent />
 			<SafeAreaProvider>
-				<SafeAreaView className="flex-1" edges={["right", "left", "top"]}>
+				<SafeAreaView className="flex-1 bg-primaryLight" edges={["right", "left", "top"]}>
 					<Stack
 						screenOptions={{
 							headerShown: false,

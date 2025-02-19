@@ -13,7 +13,10 @@ const config = {
 				// italic: ["AtkinsonItalic"],
 			},
 			colors: {
-				// primary: "#35a099",
+				primary: "#0b45c2",
+				primaryLight: "#0345c3",
+				primaryDark: "#02287a",
+				background: "#F3F2F9",
 			},
 		},
 	},
