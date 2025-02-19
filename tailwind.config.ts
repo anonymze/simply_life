@@ -12,9 +12,9 @@ const config = {
 				// bold: ["AtkinsonBold"],
 				// italic: ["AtkinsonItalic"],
 			},
-		},
-		colors: {
-			// primary: "#35a099",
+			colors: {
+				// primary: "#35a099",
+			},
 		},
 	},
 } satisfies Config;
