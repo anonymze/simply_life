@@ -1,6 +1,6 @@
+import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import BackgroundLayout from "@/layouts/background-layout";
 import { LinearGradient } from "expo-linear-gradient";
 import { Pressable, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -11,18 +11,6 @@ import { Image } from "expo-image";
 
 
 cssInterop(LinearGradient, {
-	className: {
-		target: "style",
-	},
-});
-
-cssInterop(Pressable, {
-	className: {
-		target: "style",
-	},
-});
-
-cssInterop(Image, {
 	className: {
 		target: "style",
 	},
@@ -43,7 +31,7 @@ export default function Page() {
 				</Link>
 				<View className="absolute h-full w-full items-center justify-center">
 					<View className="h-32 w-32 rounded-xl bg-white px-4">
-						<Image source={require("@/assets/images/logo-full.png")} contentFit="contain" className="h-full w-full" />
+						<Image source={require("@/assets/images/logo-full.png")} contentFit="contain" style={stylesLayout.full} />
 					</View>
 				</View>
 			</LinearGradient>
