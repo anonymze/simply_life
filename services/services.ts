@@ -16,7 +16,7 @@ const services: Service[] = [
 		name: "Planning pro",
 		description: "Gérez votre planning professionnel",
 		icon: "sports",
-		link: null,
+		link: "/test",
 		theme: "text-purple-600",
 	},
 	{
@@ -101,6 +101,22 @@ const services: Service[] = [
 	},
 	{
 		id: 12,
+		name: "Coffre fort numérique",
+		description: "Accédez à vos documents sécurisés",
+		icon: "lock",
+		link: null,
+		theme: "text-blue-600",
+	},
+	{
+		id: 13,
+		name: "Coffre fort numérique",
+		description: "Accédez à vos documents sécurisés",
+		icon: "lock",
+		link: null,
+		theme: "text-blue-600",
+	},
+	{
+		id: 14,
 		name: "Coffre fort numérique",
 		description: "Accédez à vos documents sécurisés",
 		icon: "lock",
