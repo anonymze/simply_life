@@ -1,7 +1,6 @@
 import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Platform, View } from "react-native";
-import { useState, useEffect } from "react";
 
 
 export default function Page() {

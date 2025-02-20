@@ -38,20 +38,16 @@ export default function RootLayout() {
 	});
 
 	React.useEffect(() => {
-		if (loaded) {
-			SplashScreen.hideAsync();
-		}
+		if (loaded) SplashScreen.hideAsync();
 	}, [loaded]);
-
-	if (!loaded) {
-		return null;
-	}
 
 	// refetch on app focus
 	React.useEffect(() => {
 		const subscription = AppState.addEventListener("change", onAppStateChange);
 		return () => subscription.remove();
 	}, []);
+
+	if (!loaded) return null;
 
 	return (
 		<GestureHandlerRootView>
