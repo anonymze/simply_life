@@ -20,6 +20,7 @@ const config = {
 				secondary: "#F68324",
 				secondaryLight: "#FA8A26",
 				secondaryDark: "#ED6617",
+				dark: "#303030"
 			},
 		},
 	},

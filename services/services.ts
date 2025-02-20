@@ -24,7 +24,7 @@ const services: Service[] = [
 		name: "Rendez-vous médicaux",
 		description: "Prenez vos rendez-vous médicaux",
 		icon: "medical-services",
-		link: null,
+		link: "/sponsors",
 		theme: "text-blue-500",
 	},
 	{

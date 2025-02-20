@@ -48,15 +48,20 @@ export default function Page() {
 				</View>
 			</LinearGradient>
 			<View className="gap-6 p-6">
-				<View className="h-18 w-full items-center justify-center rounded-xl bg-primary p-2">
+				<LinearGradient
+					start={{ x: 0, y: 0 }}
+					end={{ x: 1, y: 0 }}
+					className="h-20 w-full items-center justify-center rounded-xl"
+					colors={[config.theme.extend.colors.primaryLight, config.theme.extend.colors.primaryDark]}
+				>
 					<FontAwesome6 name="handshake-simple" size={28} color="#fff" />
 					<Text className="text-lg font-bold text-white">Nos partenaires</Text>
-				</View>
+				</LinearGradient>
 				<LinearGradient
 					start={{ x: 0, y: 0 }}
 					end={{ x: 1, y: 0 }}
 					colors={[config.theme.extend.colors.secondaryLight, config.theme.extend.colors.secondaryDark]}
-					className="h-18 w-full flex-row items-center justify-center gap-4 rounded-xl p-5"
+					className="h-20 w-full flex-row items-center justify-center gap-4 rounded-xl"
 				>
 					<Ionicons name="phone-portrait" size={26} color="#fff" />
 					<Text className="text-lg font-bold text-white">Réduction privées</Text>

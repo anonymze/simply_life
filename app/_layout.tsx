@@ -1,12 +1,14 @@
 import "react-native-reanimated";
 import "@/styles/app.css";
 
+import { GestureHandlerRootView, TextInput } from "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Text, View, Pressable } from "react-native";
+import { SimpleLineIcons } from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
+import { Link, router, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
 import React from "react";
 
 
@@ -34,9 +36,46 @@ export default function RootLayout() {
 					<Stack
 						screenOptions={{
 							headerShown: false,
-							animation: "none",
+							animation: "simple_push",
+							gestureDirection: "horizontal",
+							gestureEnabled: true,
+							fullScreenGestureEnabled: true,
+							gestureResponseDistance: {
+								start: 0,
+								end: 120,
+							},
 						}}
-					/>
+					>
+						<Stack.Screen name="index" options={{ gestureEnabled: false }} />
+						<Stack.Screen
+							name="sponsors"
+							options={{
+								headerShown: true,
+								gestureEnabled: true,
+								header: (_) => {
+									return (
+										<View className="w-full gap-5 rounded-xl bg-white p-4">
+											<View className="items-center justify-center">
+												<Link href="../" asChild>
+													<Pressable className="absolute left-0 p-4 active:opacity-70">
+														<SimpleLineIcons name="arrow-left" size={20} color="black" />
+													</Pressable>
+												</Link>
+
+												<Text className="text-lg font-bold">Sponsors</Text>
+											</View>
+											<View className="flex-row items-center gap-4">
+												<TextInput autoCorrect={false} autoCapitalize="none" className="basis-8/12 rounded-xl bg-gray-100 p-4" placeholder="Rechercher..." />
+												<Pressable className="bg-dark grow rounded-xl p-4">
+													<Text className="font-bold text-white">Catégories</Text>
+												</Pressable>
+											</View>
+										</View>
+									);
+								},
+							}}
+						/>
+					</Stack>
 				</SafeAreaView>
 			</SafeAreaProvider>
 		</GestureHandlerRootView>
