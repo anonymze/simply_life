@@ -3,7 +3,7 @@ import "@/styles/app.css";
 
 import { GestureHandlerRootView, TextInput } from "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Text, View, Pressable } from "react-native";
+import { Text, View, Pressable, Platform } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
 import { Link, router, Stack } from "expo-router";
@@ -36,7 +36,7 @@ export default function RootLayout() {
 					<Stack
 						screenOptions={{
 							headerShown: false,
-							animation: "simple_push",
+							animation: Platform.OS === 'ios' ? 'simple_push' : 'fade_from_bottom',
 							gestureDirection: "horizontal",
 							gestureEnabled: true,
 							fullScreenGestureEnabled: true,
