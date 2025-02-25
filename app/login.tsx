@@ -22,8 +22,8 @@ export default function Login() {
 		onError: (error) => {
 			console.log(error);
 		},
-		onSuccess: (response) => {
-			setStorageUserInfos(response.data);
+		onSuccess: (data) => {
+			setStorageUserInfos(data);
 			router.replace("/");
 		},
 	});

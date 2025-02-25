@@ -17,6 +17,8 @@ export default function Page() {
 		queryFn: getSponsorsQuery,
 	});
 
+	console.log(data.docs[0]);
+
 	if (error) {
 		Alert.alert("Erreur de connexion", "Les sponsors n'ont pas pu être récupérés.");
 	}
