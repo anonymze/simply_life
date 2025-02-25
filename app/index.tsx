@@ -2,6 +2,7 @@ import BackgroundLayout from "@/layouts/background-layout";
 import { ScrollView } from "react-native-gesture-handler";
 import CardLink from "@/components/card-link";
 import services from "@/services/services";
+import { router } from "expo-router";
 import { View } from "react-native";
 
 
