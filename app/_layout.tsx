@@ -2,13 +2,14 @@ import "react-native-reanimated";
 import "@/styles/app.css";
 
 import { Text, View, Pressable, Platform, AppState, AppStateStatus } from "react-native";
-import { GestureHandlerRootView, TextInput } from "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { onlineManager } from "@tanstack/react-query";
+import { onlineManager, QueryClientProvider } from "@tanstack/react-query";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { focusManager } from "@tanstack/react-query";
 import * as SplashScreen from "expo-splash-screen";
 import { Link, router, Stack } from "expo-router";
+import { queryClient } from "@/api/_queries";
 import { StatusBar } from "expo-status-bar";
 import * as Network from "expo-network";
 import { useFonts } from "expo-font";
@@ -50,60 +51,49 @@ export default function RootLayout() {
 	if (!loaded) return null;
 
 	return (
-		<GestureHandlerRootView>
-			<StatusBar style="light" translucent />
-			<SafeAreaProvider>
-				<SafeAreaView className="flex-1 bg-primaryLight" edges={["right", "left", "top"]}>
-					<Stack
-						screenOptions={{
-							headerShown: false,
-							animation: Platform.OS === "ios" ? "simple_push" : "fade_from_bottom",
-							gestureDirection: "horizontal",
-							gestureEnabled: true,
-							fullScreenGestureEnabled: true,
-							gestureResponseDistance: {
-								start: 0,
-								end: 120,
-							},
-						}}
-					>
-						<Stack.Screen name="index" options={{ gestureEnabled: false }} />
-						<Stack.Screen
-							name="sponsors"
-							options={{
-								headerShown: true,
+		<QueryClientProvider client={queryClient}>
+			<GestureHandlerRootView>
+				<StatusBar style="light" translucent />
+				<SafeAreaProvider>
+					<SafeAreaView className="flex-1 bg-primaryLight" edges={["right", "left", "top"]}>
+						<Stack
+							screenOptions={{
+								headerShown: false,
+								animation: Platform.OS === "ios" ? "simple_push" : "fade_from_bottom",
+								gestureDirection: "horizontal",
 								gestureEnabled: true,
-								header: (_) => {
-									return (
-										<View className="w-full gap-5 rounded-xl bg-white p-4">
-											<View className="items-center justify-center">
+								fullScreenGestureEnabled: true,
+								gestureResponseDistance: {
+									start: 0,
+									end: 120,
+								},
+							}}
+						>
+							<Stack.Screen name="index" options={{ gestureEnabled: false }} />
+							<Stack.Screen
+								name="sponsors"
+								options={{
+									headerShown: true,
+									gestureEnabled: true,
+									header: (_) => {
+										return (
+											<View className="w-full items-center justify-center bg-white p-4">
 												<Link href="../" asChild>
-													<Pressable className="absolute left-0 p-4 active:opacity-70">
+													<Pressable className="absolute p-3 left-1 active:opacity-70">
 														<SimpleLineIcons name="arrow-left" size={20} color="black" />
 													</Pressable>
 												</Link>
 
 												<Text className="text-lg font-bold">Sponsors</Text>
 											</View>
-											<View className="flex-row items-center gap-4">
-												<TextInput
-													autoCorrect={false}
-													autoCapitalize="none"
-													className="basis-8/12 rounded-xl bg-gray-100 p-4"
-													placeholder="Rechercher..."
-												/>
-												<Pressable className="grow rounded-xl bg-dark p-4">
-													<Text className="font-bold text-white">Catégories</Text>
-												</Pressable>
-											</View>
-										</View>
-									);
-								},
-							}}
-						/>
-					</Stack>
-				</SafeAreaView>
-			</SafeAreaProvider>
-		</GestureHandlerRootView>
+										);
+									},
+								}}
+							/>
+						</Stack>
+					</SafeAreaView>
+				</SafeAreaProvider>
+			</GestureHandlerRootView>
+		</QueryClientProvider>
 	);
 }

@@ -5,7 +5,7 @@ import services from "@/services/services";
 import { View } from "react-native";
 
 
-export default function Index() {
+export default function Page() {
 	return (
 		<View className="flex-1">
 			<ScrollView className="flex-1" showsVerticalScrollIndicator={false}>

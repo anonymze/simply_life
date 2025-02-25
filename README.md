@@ -1,11 +1,15 @@
 # SIMPLY LIFE
 
-### Development
+## Development 
 
 npx expo prebuild --clean 
 eas build --profile development --platform android
 
-### Production
+## Web
+
+npx expo export --platform web --output-dir ./build
+
+## Production
 
 eas build --profile production
 
