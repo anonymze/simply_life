@@ -16,6 +16,13 @@ import { useFonts } from "expo-font";
 import React from "react";
 
 
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+SplashScreen.setOptions({
+	fade: true,
+	duration: 300,
+});
+
 // refetch on network change
 onlineManager.setEventListener((setOnline) => {
 	const eventSubscription = Network.addNetworkStateListener((state) => {
