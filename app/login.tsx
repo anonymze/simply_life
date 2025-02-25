@@ -21,10 +21,8 @@ export default function Login() {
 		mutationFn: loginQuery,
 		onError: (error) => {
 			console.log(error);
-			// router.replace("/");
 		},
 		onSuccess: (response) => {
-			console.log(response.data);
 			setStorageUserInfos(response.data);
 			router.replace("/");
 		},

@@ -7,7 +7,7 @@ import { Link, Stack, Redirect } from "expo-router";
 export default function AppLayout() {
 	const userInfos = getStorageUserInfos();
 
-	if (!userInfos) {
+	if (!userInfos || !userInfos.token) {
 		return <Redirect href="/login" />;
 	}
 

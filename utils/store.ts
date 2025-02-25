@@ -10,7 +10,7 @@ const setStorageUserInfos = (infos: AppUser) => storage.set(USER_INFOS_KEY, JSON
 const getStorageUserInfos = () => {
 	const data = storage.getString(USER_INFOS_KEY);
 	if (!data) return null;
-	return JSON.parse(data);
+	return JSON.parse(data) as AppUser;
 };
 
 export { storage, setStorageUserInfos, getStorageUserInfos };
