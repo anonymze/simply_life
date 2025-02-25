@@ -18,11 +18,13 @@ export default function Login() {
 		onError: (error) => {
 			console.log(error);
 		},
+		onSuccess: (data) => {
+			console.log(data);
+			router.replace("/");
+		}
 	});
 
 	const handleLogin = async () => {
-		console.log("rjerjhiriopjh");
-		console.log(inputs);
 		if (!inputs.email) {
 			inputEmailRef.current?.focus();
 			return;
