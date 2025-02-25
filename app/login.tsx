@@ -1,4 +1,5 @@
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View } from "react-native";
+import Animated, { FadeIn, FadeInDown, FadeInUp, FadeOut, FadeOutDown, FadeOutUp } from "react-native-reanimated";
 import BackgroundLayout from "@/layouts/background-layout";
 import config from "@/tailwind.config";
 import { Image } from "expo-image";
@@ -9,6 +10,12 @@ export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
+
+	const handleLogin = async () => {
+		setLoading(true);
+		await new Promise((resolve) => setTimeout(resolve, 2000));
+		setLoading(false);
+	};
 
 	return (
 		<KeyboardAvoidingView
@@ -44,13 +51,17 @@ export default function Login() {
 						className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
 					/>
 					<Pressable
-						onPress={() => {
-							setLoading(true);
-						}}
+						onPress={handleLogin}
 						className="mt-5 h-14 w-full items-center justify-center rounded-lg bg-primary"
 					>
 						<Text className="text-center text-white">
-							{loading ? <ActivityIndicator size="small" color="white" /> : "Connexion"}
+							{loading ? (
+								<Animated.View entering={FadeInDown.springify().duration(1200)} exiting={FadeOutUp.duration(200)}>
+									<ActivityIndicator size="small" color="white" />
+								</Animated.View>
+							) : (
+								"Connexion"
+							)}
 						</Text>
 					</Pressable>
 				</View>
