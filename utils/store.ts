@@ -1,14 +1,16 @@
 import { MMKV } from "react-native-mmkv";
+import { AppUser } from "@/types/user";
 
 
 const storage = new MMKV();
 
-export const AUTH_TOKEN_KEY = "auth_token";
+const USER_INFOS_KEY = "user.data";
 
-export const getAuthToken = () => storage.getString(AUTH_TOKEN_KEY);
-export const setAuthToken = (token: string) => storage.set(AUTH_TOKEN_KEY, token);
-export const removeAuthToken = () => storage.delete(AUTH_TOKEN_KEY);
+const setStorageUserInfos = (infos: AppUser) => storage.set(USER_INFOS_KEY, JSON.stringify(infos));
+const getStorageUserInfos = () => {
+	const data = storage.getString(USER_INFOS_KEY);
+	if (!data) return null;
+	return JSON.parse(data);
+};
 
-export default storage;
-
-
+export { storage, setStorageUserInfos, getStorageUserInfos };

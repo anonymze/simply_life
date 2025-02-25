@@ -60,36 +60,11 @@ export default function RootLayout() {
 							screenOptions={{
 								headerShown: false,
 								animation: Platform.OS === "ios" ? "simple_push" : "fade_from_bottom",
-								gestureDirection: "horizontal",
-								gestureEnabled: true,
-								fullScreenGestureEnabled: true,
-								gestureResponseDistance: {
-									start: 0,
-									end: 120,
-								},
+								gestureEnabled: false,
+								fullScreenGestureEnabled: false,
 							}}
 						>
-							<Stack.Screen name="index" options={{ gestureEnabled: false }} />
-							<Stack.Screen
-								name="sponsors"
-								options={{
-									headerShown: true,
-									gestureEnabled: true,
-									header: (_) => {
-										return (
-											<View className="w-full items-center justify-center bg-white p-4">
-												<Link href="../" asChild>
-													<Pressable className="absolute p-3 left-1 active:opacity-70">
-														<SimpleLineIcons name="arrow-left" size={20} color="black" />
-													</Pressable>
-												</Link>
-
-												<Text className="text-lg font-bold">Sponsors</Text>
-											</View>
-										);
-									},
-								}}
-							/>
+							<Stack.Screen name="login" />
 						</Stack>
 					</SafeAreaView>
 				</SafeAreaProvider>

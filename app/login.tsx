@@ -1,8 +1,9 @@
-import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, ToastAndroid, View } from "react-native";
-import Animated, { FadeIn, FadeInDown, FadeInUp, FadeOut, FadeOutDown, FadeOutUp } from "react-native-reanimated";
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View, } from "react-native";
+import Animated, { FadeInDown, FadeOutUp } from "react-native-reanimated";
 import BackgroundLayout from "@/layouts/background-layout";
 import { loginQuery } from "@/api/queries/loginQueries";
 import { useMutation } from "@tanstack/react-query";
+import { setStorageUserInfos } from "@/utils/store";
 import { useRef, useState } from "react";
 import config from "@/tailwind.config";
 import { router } from "expo-router";
@@ -12,16 +13,21 @@ import { Image } from "expo-image";
 export default function Login() {
 	const inputEmailRef = useRef<TextInput>(null);
 	const inputPasswordRef = useRef<TextInput>(null);
-	const [inputs, setInputs] = useState({ email: "", password: "" });
+	const [inputs, setInputs] = useState({
+		email: process.env.EXPO_PUBLIC_DEFAULT_USER_EMAIL || "",
+		password: process.env.EXPO_PUBLIC_DEFAULT_USER_PASSWORD || "",
+	});
 	const mutationLogin = useMutation({
 		mutationFn: loginQuery,
 		onError: (error) => {
 			console.log(error);
+			// router.replace("/");
 		},
-		onSuccess: (data) => {
-			console.log(data);
-			router.replace("/");
-		}
+		onSuccess: (response) => {
+			console.log(response.data);
+			setStorageUserInfos(response.data);
+			// router.replace("/");
+		},
 	});
 
 	const handleLogin = async () => {
@@ -34,10 +40,9 @@ export default function Login() {
 			inputPasswordRef.current?.focus();
 			return;
 		}
-		
+
 		mutationLogin.mutate(inputs);
 	};
-
 
 	return (
 		<KeyboardAvoidingView
@@ -56,7 +61,7 @@ export default function Login() {
 						La gestion de votre quotidien professionnelle n'a jamais été aussi simplifiée.
 					</Text>
 					<Text className="text-md mt-10 self-start text-gray-500">Votre email :</Text>
-					<TextInput	
+					<TextInput
 						ref={inputEmailRef}
 						returnKeyType="done"
 						onBlur={(elem) => setInputs({ ...inputs, email: elem.nativeEvent.text })}
