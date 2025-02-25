@@ -1,5 +1,4 @@
 import { View, Text, Pressable, Platform } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { getStorageUserInfos, storage } from "@/utils/store";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { Link, Stack, Redirect } from "expo-router";

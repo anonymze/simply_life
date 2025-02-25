@@ -1,18 +1,17 @@
 import "react-native-reanimated";
 import "@/styles/app.css";
 
-import { Text, View, Pressable, Platform, AppState, AppStateStatus } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { onlineManager, QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import { Platform, AppState, AppStateStatus } from "react-native";
 import { focusManager } from "@tanstack/react-query";
 import * as SplashScreen from "expo-splash-screen";
-import { Link, router, Stack } from "expo-router";
 import { queryClient } from "@/api/_queries";
 import { StatusBar } from "expo-status-bar";
 import * as Network from "expo-network";
 import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
 import React from "react";
 
 
