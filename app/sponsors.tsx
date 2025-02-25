@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, Platform, Pressable, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Alert, Platform, Pressable, Text, View, TextInput } from "react-native";
 import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
 import { getSponsorsQuery } from "@/api/queries/sponsorsQueries";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
@@ -23,7 +23,7 @@ export default function Page() {
 
 	return (
 		<BackgroundLayout>
-			<View className="flex-row items-center gap-4 p-4 pt-2 bg-white ">
+			<View className="flex-row items-center gap-4 p-4 pt-2 bg-white">
 				<View className="basis-8/12">
 					<TextInput
 						returnKeyType="done"
@@ -39,7 +39,7 @@ export default function Page() {
 						className="absolute right-4 top-1/2 z-10 -translate-y-1/2"
 						name="search"
 						size={18}
-						color={config.theme.extend.colors.gray}
+						color={config.theme.extend.colors.defaultGray}
 					/>
 				</View>
 				<Pressable className="grow rounded-xl bg-dark p-4">
@@ -56,7 +56,7 @@ export default function Page() {
 					loadingBackgroundColor={config.theme.extend.colors.background}
 				/>
 				{isLoading && (
-					<ActivityIndicator className="absolute bottom-0 left-0 right-0 top-0" size="large" color={config.theme.extend.colors.gray} />
+					<ActivityIndicator className="absolute bottom-0 left-0 right-0 top-0" size="large" color={config.theme.extend.colors.defaultGray} />
 				)}
 			</View>
 		</BackgroundLayout>

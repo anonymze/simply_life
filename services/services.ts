@@ -32,7 +32,7 @@ const services: Service[] = [
 		name: "Kiné",
 		description: "Accédez à vos séances de kinésithérapie",
 		icon: "fitness-center",
-		link: null,
+		link: "/login",
 		theme: "text-green-500",
 	},
 	{

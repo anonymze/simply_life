@@ -21,7 +21,7 @@ const config = {
 				secondaryLight: "#FA8A26",
 				secondaryDark: "#ED6617",
 				dark: "#303030",
-				gray: "#666666",
+				defaultGray: "#666666",
 			},
 		},
 	},
