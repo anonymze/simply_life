@@ -2,9 +2,9 @@ import { Media } from "./media";
 
 
 export interface Sponsor {
-  id: number;
+  id: string;
   name: string;
-  logo: number | Media;
+  logo: Media;
   category: 'gold' | 'silver' | 'bronze' | 'diamond';
   website?: string | null;
   latitude?: number | null;
@@ -12,3 +12,4 @@ export interface Sponsor {
   updatedAt: string;
   createdAt: string;
 }
+
