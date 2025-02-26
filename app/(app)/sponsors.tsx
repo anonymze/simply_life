@@ -55,7 +55,7 @@ export default function Page() {
 						color={config.theme.extend.colors.defaultGray}
 					/>
 				</View>
-				<Pressable className="bg-dark grow rounded-xl p-4">
+				<Pressable className="grow rounded-xl p-4 bg-black/85">
 					<Text className="text-center font-bold text-white">Catégories</Text>
 				</Pressable>
 			</View>
@@ -70,7 +70,7 @@ export default function Page() {
 					zoomTapEnabled={true}
 				>
 					{filteredSponsors.map(
-						(doc, index) =>
+						(doc, idx) =>
 							doc.latitude &&
 							doc.longitude && (
 								<AnimatedMapMarker
@@ -79,9 +79,9 @@ export default function Page() {
 									longitude={doc.longitude}
 									title={doc.name}
 									description={doc.website ?? ""}
-									delay={index * 50}
-									customCallout={true}
+									delay={idx * 50}
 									image={doc.logo}
+									customCallout={true}
 								/>
 							),
 					)}
@@ -94,9 +94,9 @@ export default function Page() {
 					/>
 				)}
 				{!isLoading && filteredSponsors.length === 0 && (
-					<View className="absolute bottom-0 left-0 right-0 top-0 items-center justify-center bg-white/70">
-						<Text className="text-lg font-bold text-gray-700">Aucun sponsor trouvé</Text>
-						<Text className="text-gray-500">Essayez une autre recherche</Text>
+					<View className="absolute bottom-0 left-0 right-0 top-0 items-center justify-center bg-white/60">
+						<Text className="text-lg font-bold text-gray-800">Aucun sponsor trouvé</Text>
+						<Text className="text-gray-700">Essayez une autre recherche</Text>
 					</View>
 				)}
 			</View>
