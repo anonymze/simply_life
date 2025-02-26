@@ -1,25 +1,35 @@
 import { ActivityIndicator, Alert, Platform, Pressable, Text, View, TextInput } from "react-native";
 import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
 import { getSponsorsQuery } from "@/api/queries/sponsorsQueries";
+import { useState, useRef, useMemo, useCallback } from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import AnimatedMapMarker from "@/components/animated-marker";
-import Animated, { FadeIn } from "react-native-reanimated";
-import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { FontAwesome } from "@expo/vector-icons";
 import config from "@/tailwind.config";
-import { useState } from "react";
 
 
 export default function Page() {
 	const [input, setInput] = useState<string>("");
-	const { category } = useLocalSearchParams<{ category?: string }>();
+	const mapRef = useRef<MapView>(null);
 	const { error, isLoading, data } = useQuery({
-		queryKey: ["sponsors", { category, name: input }],
+		queryKey: ["sponsors"],
 		queryFn: getSponsorsQuery,
 	});
 
-	// console.log(data?.docs);
+	// filter sponsors based on search input
+	const filteredSponsors = useMemo(() => {
+		if (!data?.docs || !input.trim() || input.length < 2) {
+			return data?.docs || [];
+		}
+
+		const searchTerm = input.toLowerCase().trim();
+		return data.docs.filter(
+			(sponsor) =>
+				sponsor.name.toLowerCase().includes(searchTerm) ||
+				(sponsor.category && sponsor.category.toLowerCase().includes(searchTerm)),
+		);
+	}, [data?.docs, input]);
 
 	if (error) {
 		Alert.alert("Erreur de connexion", "Les sponsors n'ont pas pu être récupérés.");
@@ -30,12 +40,12 @@ export default function Page() {
 			<View className="flex-row items-center gap-4 bg-white p-4 pt-2">
 				<View className="basis-8/12">
 					<TextInput
-						returnKeyType="done"
+						returnKeyType="search"
 						autoCorrect={false}
 						autoCapitalize="none"
 						className="w-full rounded-xl bg-gray-100 p-4"
 						placeholder="Rechercher..."
-						onBlur={(elem) => {
+						onSubmitEditing={(elem) => {
 							setInput(elem.nativeEvent.text);
 						}}
 					/>
@@ -52,6 +62,7 @@ export default function Page() {
 			</View>
 			<View className="flex-1">
 				<MapView
+					ref={mapRef}
 					provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
 					style={stylesLayout.full}
 					loadingEnabled={false}
@@ -59,7 +70,7 @@ export default function Page() {
 					loadingIndicatorColor="transparent"
 					zoomTapEnabled={true}
 				>
-					{data?.docs.map(
+					{filteredSponsors.map(
 						(doc, index) =>
 							doc.latitude &&
 							doc.longitude && (
@@ -70,7 +81,7 @@ export default function Page() {
 									title={doc.name}
 									description={doc.website ?? ""}
 									delay={index * 50}
-									customCallout={true}	
+									customCallout={true}
 									image={doc.logo}
 								/>
 							),
@@ -82,6 +93,12 @@ export default function Page() {
 						size="large"
 						color={config.theme.extend.colors.defaultGray}
 					/>
+				)}
+				{!isLoading && filteredSponsors.length === 0 && (
+					<View className="absolute bottom-0 left-0 right-0 top-0 items-center justify-center bg-white/70">
+						<Text className="text-lg font-bold text-gray-700">Aucun sponsor trouvé</Text>
+						<Text className="text-gray-500">Essayez une autre recherche</Text>
+					</View>
 				)}
 			</View>
 		</BackgroundLayout>
