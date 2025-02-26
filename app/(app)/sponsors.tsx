@@ -19,9 +19,8 @@ export default function Page() {
 
 	// filter sponsors based on search input
 	const filteredSponsors = useMemo(() => {
-		if (!data?.docs || !input.trim() || input.length < 2) {
-			return data?.docs || [];
-		}
+		if (!data?.docs) return [];
+		if (!input || input.length < 2) return data.docs;
 
 		const searchTerm = input.toLowerCase().trim();
 		return data.docs.filter(
@@ -46,7 +45,7 @@ export default function Page() {
 						className="w-full rounded-xl bg-gray-100 p-4"
 						placeholder="Rechercher..."
 						onSubmitEditing={(elem) => {
-							setInput(elem.nativeEvent.text);
+							setInput(elem.nativeEvent.text.trim());
 						}}
 					/>
 					<FontAwesome
