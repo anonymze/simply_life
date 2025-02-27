@@ -14,5 +14,5 @@ npx expo export --platform web --output-dir ./build
 eas build --profile production
 
 ## Android emulator
-
+														
 adb shell input keyevent 82

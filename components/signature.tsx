@@ -31,23 +31,23 @@ const Sign = ({ text, onOK }: { text: string; onOK: (signature: string) => void 
 			<View className="mb-2 w-full flex-row items-center justify-around">
 				<Pressable
 					onPress={handleClear}
-					style={(state) => {
-						return {
-							opacity: state.pressed ? 0.5 : 1,
-						};
-					}}
+					className="items-center justify-center px-4 py-2"
 				>
-					<Text className="text-primary">Effacer</Text>
+					{({ pressed }) => (
+						<Text className={`text-primary ${pressed ? 'opacity-50' : 'opacity-100'}`}>
+							Effacer
+						</Text>
+					)}
 				</Pressable>
 				<Pressable
 					onPress={handleOK}
-					style={(state) => {
-						return {
-							opacity: state.pressed ? 0.5 : 1,
-						};
-					}}
+
 				>
-					<Text className="text-primary">Confirmer</Text>
+					{({ pressed }) => (
+						<Text className={`text-primary ${pressed ? 'opacity-50' : 'opacity-100'}`}>
+							Confirmer
+						</Text>
+					)}
 				</Pressable>
 			</View>
 		</View>
