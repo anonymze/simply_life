@@ -40,7 +40,7 @@ const services: Service[] = [
 		name: "Nutrition",
 		description: "Suivez votre plan nutritionnel",
 		icon: "restaurant",
-		link: null,
+		link: "/picker",
 		theme: "text-green-600",
 	},
 	{

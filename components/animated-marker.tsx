@@ -15,7 +15,6 @@ interface AnimatedMarkerProps {
 	delay?: number;
 	image?: any;
 	customCallout?: boolean;
-	identifier?: string;
 }
 
 export default function AnimatedMapMarker({
@@ -26,7 +25,6 @@ export default function AnimatedMapMarker({
 	description = "",
 	delay = 0,
 	customCallout = false,
-	identifier,
 }: AnimatedMarkerProps) {
 	const scale = useSharedValue(0.01);
 
@@ -52,7 +50,6 @@ export default function AnimatedMapMarker({
 				latitude,
 				longitude,
 			}}
-			identifier={identifier}
 			title={customCallout ? undefined : title}
 			description={customCallout ? undefined : description}
 			tracksViewChanges={false} // improve performance by disabling view tracking

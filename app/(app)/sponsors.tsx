@@ -1,34 +1,62 @@
 import { ActivityIndicator, Alert, Platform, Pressable, Text, View, TextInput } from "react-native";
+import BottomSheetModal from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModal";
 import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
+import { BottomSheetSelect } from "@/components/bottom-sheet-select";
 import { getSponsorsQuery } from "@/api/queries/sponsorsQueries";
-import { useState, useRef, useMemo, useCallback } from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import AnimatedMapMarker from "@/components/animated-marker";
 import { useQuery } from "@tanstack/react-query";
 import { FontAwesome } from "@expo/vector-icons";
+import BottomSheet from "@gorhom/bottom-sheet";
 import config from "@/tailwind.config";
+import React from "react";
 
+
+const categories = [
+	{ id: 1, label: "Gold", value: "gold" },
+	{ id: 2, label: "Silver", value: "silver" },
+	{ id: 3, label: "Bronze", value: "bronze" },
+	{ id: 4, label: "Diamond", value: "diamond" },
+];
 
 export default function Page() {
-	const [input, setInput] = useState<string>("");
-	const mapRef = useRef<MapView>(null);
+	const bottomSheetRef = React.useRef<BottomSheet>(null);
+	const [selectedCategories, setSelectedCategories] = React.useState<typeof categories>([]);
+	const [input, setInput] = React.useState<string>("");
+	const mapRef = React.useRef<MapView>(null);
 	const { error, isLoading, data } = useQuery({
 		queryKey: ["sponsors"],
 		queryFn: getSponsorsQuery,
 	});
 
-	// filter sponsors based on search input
-	const filteredSponsors = useMemo(() => {
+	console.log(selectedCategories);
+
+	// filter sponsors based on search input and selected categories
+	const filteredSponsors = React.useMemo(() => {
 		if (!data?.docs) return [];
-		if (!input || input.length < 2) return data.docs;
+
+		// return all sponsors if no filters are applied
+		if (input.length < 2 && selectedCategories.length === 0) return data.docs;
 
 		const searchTerm = input.toLowerCase().trim();
-		return data.docs.filter(
-			(sponsor) =>
+		const hasSearchTerm = searchTerm.length >= 2;
+		const hasCategories = selectedCategories.length > 0;
+
+		return data.docs.filter((sponsor) => {
+			// text search condition
+			const matchesSearch =
+				!hasSearchTerm ||
 				sponsor.name.toLowerCase().includes(searchTerm) ||
-				(sponsor.category && sponsor.category.toLowerCase().includes(searchTerm)),
-		);
-	}, [data?.docs, input]);
+				(sponsor.category && sponsor.category.toLowerCase().includes(searchTerm));
+
+			// category filter condition
+			const matchesCategory =
+				!hasCategories || selectedCategories.some((category) => category.value === sponsor.category);
+
+			// Both conditions must be true
+			return matchesSearch && matchesCategory;
+		});
+	}, [data?.docs, input, selectedCategories]);
 
 	if (error) {
 		Alert.alert("Erreur de connexion", "Les sponsors n'ont pas pu être récupérés.");
@@ -39,6 +67,7 @@ export default function Page() {
 			<View className="flex-row items-center gap-4 bg-white p-4 pt-2">
 				<View className="basis-8/12">
 					<TextInput
+						editable={!isLoading}
 						returnKeyType="search"
 						autoCorrect={false}
 						autoCapitalize="none"
@@ -55,7 +84,11 @@ export default function Page() {
 						color={config.theme.extend.colors.defaultGray}
 					/>
 				</View>
-				<Pressable className="grow rounded-xl p-4 bg-black/85">
+				<Pressable
+					disabled={isLoading}
+					className="grow rounded-xl bg-black/85 p-4 disabled:opacity-80"
+					onPress={() => bottomSheetRef.current?.expand()}
+				>
 					<Text className="text-center font-bold text-white">Catégories</Text>
 				</Pressable>
 			</View>
@@ -65,18 +98,35 @@ export default function Page() {
 					provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
 					style={stylesLayout.full}
 					loadingEnabled={false}
-					loadingBackgroundColor={config.theme.extend.colors.background}
-					loadingIndicatorColor="transparent"
 					zoomTapEnabled={true}
+					// onMapReady={() => {
+					// 	// fit to markers when map is ready
+					// 	if (filteredSponsors.length > 0) {
+					// 		const coordinates = filteredSponsors
+					// 			.filter(sponsor => sponsor.latitude && sponsor.longitude)
+					// 			.map(sponsor => ({
+					// 				latitude: Number(sponsor.latitude),
+					// 				longitude: Number(sponsor.longitude),
+					// 			}));
+
+					// 		if (coordinates.length > 0) {
+					// 			mapRef.current?.fitToCoordinates(coordinates, {
+					// 				edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+					// 				animated: true,
+					// 			});
+					// 		}
+					// 	}
+					// }}
+					
 				>
 					{filteredSponsors.map(
 						(doc, idx) =>
 							doc.latitude &&
 							doc.longitude && (
 								<AnimatedMapMarker
-									key={doc.id}
-									latitude={doc.latitude}
-									longitude={doc.longitude}
+									key={`${doc.id}-${idx}`}
+									latitude={Number(doc.latitude)}
+									longitude={Number(doc.longitude)}
 									title={doc.name}
 									description={doc.website ?? ""}
 									delay={idx * 50}
@@ -96,10 +146,16 @@ export default function Page() {
 				{!isLoading && filteredSponsors.length === 0 && (
 					<View className="absolute bottom-0 left-0 right-0 top-0 items-center justify-center bg-white/60">
 						<Text className="text-lg font-bold text-gray-800">Aucun sponsor trouvé</Text>
-						<Text className="text-gray-700">Essayez une autre recherche</Text>
 					</View>
 				)}
 			</View>
+			<BottomSheetSelect
+				ref={bottomSheetRef}
+				data={categories}
+				onSelect={(item) => {
+					setSelectedCategories(item);
+				}}
+			/>
 		</BackgroundLayout>
 	);
 }

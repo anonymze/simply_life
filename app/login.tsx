@@ -62,7 +62,7 @@ export default function Login() {
 					<TextInput
 						ref={inputEmailRef}
 						returnKeyType="done"
-						onBlur={(elem) => setInputs({ ...inputs, email: elem.nativeEvent.text })}
+						onSubmitEditing={(elem) => setInputs({ ...inputs, email: elem.nativeEvent.text })}
 						autoCapitalize="none"
 						placeholder="nom@email.fr"
 						className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
@@ -71,7 +71,7 @@ export default function Login() {
 					<TextInput
 						ref={inputPasswordRef}
 						returnKeyType="done"
-						onBlur={(elem) => setInputs({ ...inputs, password: elem.nativeEvent.text })}
+						onSubmitEditing={(elem) => setInputs({ ...inputs, password: elem.nativeEvent.text })}
 						secureTextEntry
 						autoCapitalize="none"
 						placeholder="mot de passe"
