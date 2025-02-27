@@ -16,7 +16,7 @@ const services: Service[] = [
 		name: "Planning pro",
 		description: "Gérez votre planning professionnel",
 		icon: "sports",
-		link: "/test",
+		link: "/presentation",
 		theme: "text-purple-600",
 	},
 	{
@@ -32,7 +32,7 @@ const services: Service[] = [
 		name: "Kiné",
 		description: "Accédez à vos séances de kinésithérapie",
 		icon: "fitness-center",
-		link: "/login",
+		link: "/signature",
 		theme: "text-green-500",
 	},
 	{
@@ -40,7 +40,7 @@ const services: Service[] = [
 		name: "Nutrition",
 		description: "Suivez votre plan nutritionnel",
 		icon: "restaurant",
-		link: "/picker",
+		link: "/chat",
 		theme: "text-green-600",
 	},
 	{

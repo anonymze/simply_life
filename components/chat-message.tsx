@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text } from 'react-native';
+import config from '@/tailwind.config';
 import { Image } from 'expo-image';
 import React from 'react';
 
@@ -54,10 +55,11 @@ export function ChatMessage({ message }: ChatMessageProps) {
         <View
           className={cn(
             'rounded-2xl px-4 py-2',
-            message.isMe
-              ? 'rounded-tr-none bg-blue-500'
-              : 'rounded-tl-none bg-gray-200'
+           
           )}
+          style={{
+            backgroundColor: message.isMe ? config.theme.extend.colors.primary : config.theme.extend.colors.secondary,
+          }}
         >
           <Text
             className={cn(
@@ -86,7 +88,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
               contentFit="cover"
             />
           ) : (
-            <Ionicons name="person" size={16} color="#3b82f6" />
+            <Ionicons name="person" size={16} color={config.theme.extend.colors.primary} />
           )}
         </View>
       )}

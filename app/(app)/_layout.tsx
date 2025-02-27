@@ -44,6 +44,23 @@ export default function AppLayout() {
 					),
 				}}
 			/>
+			<Stack.Screen
+				name="signature"
+				options={{
+					headerShown: true,
+					gestureEnabled: false,
+					header: () => (
+						<View className="w-full items-center justify-center bg-white p-4">
+							<Link href="../" asChild>
+								<Pressable className="absolute left-1 p-3 active:opacity-70">
+									<SimpleLineIcons name="arrow-left" size={20} color="black" />
+								</Pressable>
+							</Link>
+							<Text className="text-lg font-bold">Signature</Text>
+						</View>
+					),
+				}}
+			/>
 		</Stack>
 	);
 }
