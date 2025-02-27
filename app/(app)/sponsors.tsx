@@ -29,8 +29,6 @@ export default function Page() {
 		queryFn: getSponsorsQuery,
 	});
 
-	console.log(selectedCategories);
-
 	// filter sponsors based on search input and selected categories
 	const filteredSponsors = React.useMemo(() => {
 		if (!data?.docs) return [];
@@ -87,7 +85,10 @@ export default function Page() {
 				<Pressable
 					disabled={isLoading}
 					className="grow rounded-xl bg-black/85 p-4 disabled:opacity-80"
-					onPress={() => bottomSheetRef.current?.expand()}
+					onPress={() => {
+						console.log(bottomSheetRef.current);
+						bottomSheetRef.current?.expand();
+					}}
 				>
 					<Text className="text-center font-bold text-white">Catégories</Text>
 				</Pressable>

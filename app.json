@@ -22,7 +22,8 @@
         "googleMaps": {
           "apiKey": "AIzaSyDS8h4LEfphnaXei8dCRdFfoYQDNPDZ1wo"
         }
-      }
+      },
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "bundler": "metro",
