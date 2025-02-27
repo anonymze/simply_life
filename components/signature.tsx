@@ -1,57 +1,86 @@
-import SignatureScreen, { SignatureViewRef } from "react-native-signature-canvas";
-import { Pressable, View } from "react-native";
-import { Text } from "react-native";
-import { useRef } from "react";
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import SignatureScreen from 'react-native-signature-canvas';
+import * as MediaLibrary from 'expo-media-library';
+import React, { useRef, useState } from 'react';
+import * as FileSystem from 'expo-file-system';
 
 
-const Sign = ({ text, onOK }: { text: string; onOK: (signature: string) => void }) => {
-	const ref = useRef<SignatureViewRef>(null);
+// Define the web styles at the top of the component
+const SIGNATURE_CANVAS_STYLE = `
+  .m-signature-pad--footer { 
+    display: none; 
+  }
+  .m-signature-pad { 
+    width: 100%; 
+    height: 100%; 
+    border: none !important; 
+    box-shadow: none !important; 
+  }
+  .m-signature-pad--body { 
+    width: 100%; 
+    height: 100%; 
+    border: none !important; 
+  }
+  canvas { 
+    width: 100%; 
+    height: 100%; 
+  }
+  body { 
+    width: 100%;
+    height: 100%;
+    margin: 0; 
+    padding: 0; 
+  }
+`;
 
-	const handleOK = () => {
-		onOK(ref.current?.readSignature() ?? "");
-	};
+export default function SignatureComponent() {
+  const [signature, setSignature] = useState(null);
+  const signatureRef = useRef();
 
-	const handleClear = () => {
-		ref.current?.clearSignature();
-	};
+  // Function to handle signature completion
+  const handleSignature = (signature) => {
+    setSignature(signature);
+  };
 
-	return (
-		<View className="h-full w-full flex-1">
-			<SignatureScreen
-				ref={ref}
-				webStyle={`
-						.m-signature-pad--footer { display: none; }
-						.m-signature-pad { border: none; box-shadow: none; width: 100%; height: 100%; }
-						.m-signature-pad--body { flex:1, width: 100%; height: 100%; border: none; background-color: transparent; }
-						canvas { width: 100%; height: 100%; }
-					`}
-				style={{ flex: 1, width: "100%", height: "100%" }}
-			/>
+  // Function to save the signature as PNG
+  const saveSignature = async () => {
+    // ... existing save function code
+  };
 
-			<View className="mb-2 w-full flex-row items-center justify-around">
-				<Pressable
-					onPress={handleClear}
-					className="items-center justify-center px-4 py-2"
-				>
-					{({ pressed }) => (
-						<Text className={`text-primary ${pressed ? 'opacity-50' : 'opacity-100'}`}>
-							Effacer
-						</Text>
-					)}
-				</Pressable>
-				<Pressable
-					onPress={handleOK}
+  // Function to clear the signature
+  const handleClear = () => {
+    signatureRef.current?.clearSignature();
+    setSignature(null);
+  };
 
-				>
-					{({ pressed }) => (
-						<Text className={`text-primary ${pressed ? 'opacity-50' : 'opacity-100'}`}>
-							Confirmer
-						</Text>
-					)}
-				</Pressable>
-			</View>
-		</View>
-	);
-};
+  return (
+    <View style={styles.container}>
+      <SignatureScreen
+        ref={signatureRef}
+        onOK={handleSignature}
+        webStyle={SIGNATURE_CANVAS_STYLE}
+        style={styles.signatureCanvas}
+        autoClear={false}
+      />
+      
+      {/* Your buttons and other UI elements */}
+    </View>
+  );
+}
 
-export default Sign;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, 
+    width: '100%', 
+    height: '100%',
+    borderWidth: 0,
+    backgroundColor: 'white'
+  },
+  signatureCanvas: {
+    flex: 1, 
+    width: '100%', 
+    height: '100%', 
+    borderWidth: 0,
+    backgroundColor: 'transparent'
+  }
+}); 
