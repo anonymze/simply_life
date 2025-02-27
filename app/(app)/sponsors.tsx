@@ -1,22 +1,27 @@
 import { ActivityIndicator, Alert, Platform, Pressable, Text, View, TextInput } from "react-native";
 import BottomSheetModal from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModal";
 import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomSheetSelect } from "@/components/bottom-sheet-select";
 import { getSponsorsQuery } from "@/api/queries/sponsorsQueries";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import AnimatedMapMarker from "@/components/animated-marker";
 import { useQuery } from "@tanstack/react-query";
-import { FontAwesome } from "@expo/vector-icons";
 import BottomSheet from "@gorhom/bottom-sheet";
 import config from "@/tailwind.config";
 import React from "react";
 
 
-const categories = [
-	{ id: 1, label: "Gold", value: "gold" },
-	{ id: 2, label: "Silver", value: "silver" },
-	{ id: 3, label: "Bronze", value: "bronze" },
-	{ id: 4, label: "Diamond", value: "diamond" },
+const categories: {
+	id: number;
+	label: string;
+	value: string;
+	icon?: React.ReactNode;
+}[] = [
+	{ id: 1, label: "Gold", value: "gold", icon: <MaterialCommunityIcons name="gold" size={24} color="black" /> },
+	{ id: 2, label: "Silver", value: "silver", icon: <MaterialCommunityIcons name="silverware-spoon" size={24} color="black" /> },
+	{ id: 3, label: "Bronze", value: "bronze", icon: <MaterialCommunityIcons name="podium-bronze" size={24} color="black" /> },
+	{ id: 4, label: "Diamond", value: "diamond", icon: <MaterialCommunityIcons name="diamond" size={24} color="black" /> },
 ];
 
 export default function Page() {
@@ -86,7 +91,6 @@ export default function Page() {
 					disabled={isLoading}
 					className="grow rounded-xl bg-black/85 p-4 disabled:opacity-80"
 					onPress={() => {
-						console.log(bottomSheetRef.current);
 						bottomSheetRef.current?.expand();
 					}}
 				>

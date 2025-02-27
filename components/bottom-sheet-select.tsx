@@ -1,14 +1,15 @@
-import BottomSheet, { BottomSheetFooter, BottomSheetFooterProps, BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView, BottomSheetView, } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetFooter, BottomSheetFooterProps, BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import React, { useCallback, useRef } from "react";
 import config from "@/tailwind.config";
+import React from "react";
 
 
 interface Item {
 	id: number;
 	label: string;
 	value: string;
+	icon?: React.ReactNode;
 }
 
 interface Props {
@@ -99,6 +100,9 @@ export const BottomSheetSelect = React.forwardRef<BottomSheet, Props>(({ onSelec
 									}
 								}}
 							>
+								{React.cloneElement(item.icon as React.ReactElement, {
+									color: selectedItems.find((id) => id.id === item.id) ? "#fff" : "black"
+								})}
 								<Text
 									style={StyleSheet.flatten([
 										styles.itemText,
@@ -120,7 +124,6 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 	},
 	containerTextBottom: {
-		backgroundColor: "transparent",
 		padding: 10,
 		margin: 0,
 		borderWidth: 0,
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
 	},
 	itemContainer: {
 		flexDirection: "row",
-		gap: 12,
+		gap: 15,
 		alignItems: "center",
 		padding: 8,
 		marginVertical: 2,
