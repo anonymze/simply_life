@@ -78,7 +78,7 @@ export default function Page() {
 						}}
 					/>
 					<FontAwesome
-						className="absolute right-4 top-1/2 z-10 -translate-y-1/2"
+						className="absolute right-4 top-4"
 						name="search"
 						size={18}
 						color={config.theme.extend.colors.defaultGray}
