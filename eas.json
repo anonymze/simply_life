@@ -10,7 +10,8 @@
 		},
 		"preview": {
 			"distribution": "store",
-			"channel": "preview"
+			"channel": "preview",
+			"autoIncrement": true
 		},
 		"production": {
 			"autoIncrement": true,
@@ -20,9 +21,6 @@
 	"submit": {
 		"production": {},
 		"preview": {
-			"ios": {
-
-			}
 		}
 	}
 }
