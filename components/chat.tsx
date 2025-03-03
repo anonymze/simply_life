@@ -147,7 +147,7 @@ export function Chat({ className, onError }: ChatProps) {
 		setRefreshing(true);
 		try {
 			// Simulate refreshing the chat
-			await new Promise((resolve) => setTimeout(resolve, 1500));
+			await new Promise((resolve) => setTimeout(resolve, 1000));
 
 			// Reset to initial messages
 			setMessages(chatService.getInitialMessages());
@@ -226,7 +226,7 @@ export function Chat({ className, onError }: ChatProps) {
 					{isLoading && (
 						<View className="absolute bottom-20 left-4 flex-row items-center gap-2 rounded-full bg-gray-100 px-3 py-2">
 							<ActivityIndicator size="small" color={config.theme.extend.colors.primary} />
-							<Text className="text-sm text-gray-600">ChatBot is typing...</Text>
+							<Text className="text-sm text-gray-600">ChatBot écrit...</Text>
 						</View>
 					)}
 

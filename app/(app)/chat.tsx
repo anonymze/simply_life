@@ -42,7 +42,7 @@ export default function Page() {
 			<View className="flex-1 items-center justify-center">
 				<Stack.Screen options={{ title: "SimplyChat" }} />
 				<ActivityIndicator size="large" color="#0000ff" />
-				<Text className="mt-4 text-gray-600">Loading chat...</Text>
+				<Text className="mt-4 text-gray-600">Chargement du chat...</Text>
 			</View>
 		);
 	}

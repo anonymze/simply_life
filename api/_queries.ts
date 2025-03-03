@@ -1,47 +1,30 @@
 import "@tanstack/react-query";
 
-import { MutationCache, QueryClient } from "@tanstack/react-query";
+import { MutationCache, QueryClient, QueryCache } from "@tanstack/react-query";
 import { isAxiosError, type AxiosError } from "axios";
+import { Alert } from "react-native";
 
 
-// declare module "@tanstack/react-query" {
-// 	interface Register {
-// 		// we use axios so we declare the type error returned
-// 		defaultError: AxiosError;
+// const errorHandler = (error: unknown) => {
+// 	if (!isAxiosError(error)) return;
+
+// 	const requestUrl = error.config?.url;
+
+// 	if (requestUrl?.includes('/login')) {
+// 		return;
 // 	}
 
-// 	interface MutationMeta {
-// 		action?: "create" | "update" | "delete";
-// 		message: string;
+// 	if (error.response?.status === 401) {
+// 		Alert.alert("Session Expired", "Please login again");
 // 	}
-
-// 	interface QueryFunctionContext {
-// 		queryKey: [string, { page?: string; slug?: string, lang?: I18n }];
-// 	}
-// }
+// };
 
 export const queryClient = new QueryClient({
+	// queryCache: new QueryCache({
+	// 	onError: errorHandler,
+	// }),
 	// mutationCache: new MutationCache({
-	// 	onError: (err) => {
-	// 		if (isAxiosError(err)) {
-	// 			toast.error(err.response?.status, {
-	// 				description: (err.response?.data as any)?.message || err.message,
-	// 			});
-	// 			return;
-	// 		}
-
-	// 		console.log({ err });
-	// 		toast.error(i18n.en("SOMETHING_UNEXPECTED_HAPPENED"));
-	// 	},
-	// 	onSuccess: (_data, _variables, _context, mutation) => {
-	// 		if (mutation.options.mutationKey) {
-	// 			queryClient.invalidateQueries({ queryKey: mutation.options.mutationKey });
-	// 		}
-
-	// 		if (mutation.meta) {
-	// 			toast.success(mutation.meta.message);
-	// 		}
-	// 	},
+	// 	onError: errorHandler,
 	// }),
 	defaultOptions: {
 		queries: {

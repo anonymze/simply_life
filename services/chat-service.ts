@@ -96,11 +96,11 @@ export const chatService = {
   sendMessage: (message: string): Promise<ChatServiceResponse> => {
     return new Promise((resolve) => {
       // Simulate network delay (between 1-3 seconds)
-      const responseDelay = Math.floor(Math.random() * 2000) + 1000;
+      const responseDelay = Math.floor(Math.random() * 1000);
       
       // Simulate typing delay based on response length (100ms per character, capped at 3 seconds)
       const botResponse = getRandomResponse(message);
-      const typingDelay = Math.min(botResponse.length * 100, 3000);
+      const typingDelay = Math.min(botResponse.length * 100, 800);
       
       setTimeout(() => {
         const responseMessage: MessageType = {

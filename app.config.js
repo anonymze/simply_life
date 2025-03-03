@@ -53,6 +53,7 @@ export default {
 				},
 			],
 			"expo-font",
+			"expo-localization"
 		],
 		experiments: {
 			typedRoutes: true,

@@ -1,4 +1,4 @@
-import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View } from "react-native";
 import Animated, { FadeInDown, FadeOutUp } from "react-native-reanimated";
 import BackgroundLayout from "@/layouts/background-layout";
 import { loginQuery } from "@/api/queries/loginQueries";
@@ -19,8 +19,8 @@ export default function Login() {
 	});
 	const mutationLogin = useMutation({
 		mutationFn: loginQuery,
-		onError: (error) => {
-			console.log(error);
+		onError: (_) => {
+			Alert.alert("Erreur de connexion", "Veuillez vérifier vos identifiants.");
 		},
 		onSuccess: (data) => {
 			setStorageUserInfos(data);
@@ -46,7 +46,7 @@ export default function Login() {
 		<KeyboardAvoidingView
 			behavior={Platform.OS === "ios" ? "padding" : "height"}
 			style={{ flex: 1, backgroundColor: config.theme.extend.colors.background }}
-			keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
+			keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}			
 		>
 			<BackgroundLayout>
 				<View className="flex-1 items-center justify-center gap-3 p-6">
