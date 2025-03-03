@@ -13,7 +13,7 @@ export interface Service {
 const services: Service[] = [
 	{
 		id: 1,
-		name: "Planning pro",
+		name: "Présentation",
 		description: "Gérez votre planning professionnel",
 		icon: "sports",
 		link: "/presentation",
@@ -21,7 +21,7 @@ const services: Service[] = [
 	},
 	{
 		id: 2,
-		name: "Rendez-vous médicaux",
+		name: "Sponsors",
 		description: "Prenez vos rendez-vous médicaux",
 		icon: "medical-services",
 		link: "/sponsors",
@@ -29,7 +29,7 @@ const services: Service[] = [
 	},
 	{
 		id: 3,
-		name: "Kiné",
+		name: "Signature",
 		description: "Accédez à vos séances de kinésithérapie",
 		icon: "fitness-center",
 		link: "/signature",
@@ -37,7 +37,7 @@ const services: Service[] = [
 	},
 	{
 		id: 4,
-		name: "Nutrition",
+		name: "Chat",
 		description: "Suivez votre plan nutritionnel",
 		icon: "restaurant",
 		link: "/chat",
@@ -45,7 +45,7 @@ const services: Service[] = [
 	},
 	{
 		id: 5,
-		name: "Performance",
+		name: "...",
 		description: "Suivez vos performances",
 		icon: "emoji-events",
 		link: null,
@@ -53,7 +53,7 @@ const services: Service[] = [
 	},
 	{
 		id: 6,
-		name: "Preparation mentale",
+		name: "...",
 		description: "Accédez à votre préparation mentale",
 		icon: "self-improvement",
 		link: null,
@@ -61,7 +61,7 @@ const services: Service[] = [
 	},
 	{
 		id: 7,
-		name: "Home tickets",
+		name: "...",
 		description: "Gérez vos billets à domicile",
 		icon: "local-activity",
 		link: null,
@@ -69,7 +69,7 @@ const services: Service[] = [
 	},
 	{
 		id: 8,
-		name: "Away tickets",
+		name: "...",
 		description: "Gérez vos billets à l'extérieur",
 		icon: "confirmation-number",
 		link: null,
@@ -77,7 +77,7 @@ const services: Service[] = [
 	},
 	{
 		id: 9,
-		name: "Chat",
+		name: "...",
 		description: "Communiquez avec votre équipe",
 		icon: "chat",
 		link: null,
@@ -85,7 +85,7 @@ const services: Service[] = [
 	},
 	{
 		id: 10,
-		name: "Informations pratiques",
+		name: "...",
 		description: "Accédez aux informations importantes",
 		icon: "info",
 		link: null,
@@ -93,7 +93,7 @@ const services: Service[] = [
 	},
 	{
 		id: 11,
-		name: "Signature electronique",
+		name: "...",
 		description: "Signez vos documents électroniquement",
 		icon: "draw",
 		link: null,
@@ -101,7 +101,7 @@ const services: Service[] = [
 	},
 	{
 		id: 12,
-		name: "Coffre fort numérique",
+		name: "...",
 		description: "Accédez à vos documents sécurisés",
 		icon: "lock",
 		link: null,
@@ -109,7 +109,7 @@ const services: Service[] = [
 	},
 	{
 		id: 13,
-		name: "Coffre fort numérique",
+		name: "...",
 		description: "Accédez à vos documents sécurisés",
 		icon: "lock",
 		link: null,
@@ -117,7 +117,7 @@ const services: Service[] = [
 	},
 	{
 		id: 14,
-		name: "Coffre fort numérique",
+		name: "...",
 		description: "Accédez à vos documents sécurisés",
 		icon: "lock",
 		link: null,

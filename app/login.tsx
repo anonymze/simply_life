@@ -1,4 +1,4 @@
-import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View, } from "react-native";
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View } from "react-native";
 import Animated, { FadeInDown, FadeOutUp } from "react-native-reanimated";
 import BackgroundLayout from "@/layouts/background-layout";
 import { loginQuery } from "@/api/queries/loginQueries";
@@ -64,6 +64,8 @@ export default function Login() {
 						returnKeyType="done"
 						onSubmitEditing={(elem) => setInputs({ ...inputs, email: elem.nativeEvent.text })}
 						autoCapitalize="none"
+						keyboardType="email-address"
+						textContentType="emailAddress"
 						placeholder="nom@email.fr"
 						className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
 					/>
@@ -74,6 +76,7 @@ export default function Login() {
 						onSubmitEditing={(elem) => setInputs({ ...inputs, password: elem.nativeEvent.text })}
 						secureTextEntry
 						autoCapitalize="none"
+						textContentType="password"
 						placeholder="mot de passe"
 						className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
 					/>
