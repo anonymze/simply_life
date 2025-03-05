@@ -8,6 +8,8 @@ interface User {
 	id: string;
 	lastname: string;
 	firstname: string;
-	role: "coach" | "staff" | "player" | "visitor";
+	role: UserRole;
 	email: string;
 }
+
+export type UserRole = "coach" | "staff" | "player" | "visitor";
