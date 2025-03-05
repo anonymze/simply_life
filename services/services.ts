@@ -48,7 +48,7 @@ const services: Service[] = [
 		name: "...",
 		description: "Suivez vos performances",
 		icon: require("@/assets/images/logo.png"),
-		link: null,
+		link: "/test",
 		theme: "text-red-500",
 	},
 	{

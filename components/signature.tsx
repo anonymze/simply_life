@@ -1,6 +1,5 @@
+import SignatureScreen, { SignatureViewRef } from 'react-native-signature-canvas';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import SignatureScreen from 'react-native-signature-canvas';
-import * as MediaLibrary from 'expo-media-library';
 import React, { useRef, useState } from 'react';
 import * as FileSystem from 'expo-file-system';
 
@@ -34,11 +33,11 @@ const SIGNATURE_CANVAS_STYLE = `
 `;
 
 export default function SignatureComponent() {
-  const [signature, setSignature] = useState(null);
-  const signatureRef = useRef();
+  const [signature, setSignature] = useState<string | null>(null);
+  const signatureRef = useRef<SignatureViewRef>(null);
 
   // Function to handle signature completion
-  const handleSignature = (signature) => {
+  const handleSignature = (signature: string) => {
     setSignature(signature);
   };
 

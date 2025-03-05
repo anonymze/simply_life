@@ -1,5 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import SignPdfJs from "@/components/sign-pdfjs";
+import Sign from "@/components/signature-canvas";
+import SignPdf from "@/components/sign-pdf";
 
 
 export default function Page() {
@@ -11,7 +12,7 @@ export default function Page() {
 	return (
 		<SafeAreaView className="flex-1 bg-white" edges={["bottom"]}>
 			{/* <Sign text="Signer au dessus" onOK={getSignature} /> */}
-			<SignPdfJs dom={{}} />
+			<SignPdf dom={{}} />
 		</SafeAreaView>
 	);
 }
