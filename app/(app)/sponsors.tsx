@@ -1,9 +1,9 @@
 import { ActivityIndicator, Alert, Platform, Pressable, Text, View, TextInput } from "react-native";
-import BottomSheetModal from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModal";
+import { getSponsorCategoriesQuery } from "@/api/queries/sponsor-categories-query";
 import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomSheetSelect } from "@/components/bottom-sheet-select";
-import { getSponsorsQuery } from "@/api/queries/sponsorsQueries";
+import { getSponsorsQuery } from "@/api/queries/sponsors-queries";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import AnimatedMapMarker from "@/components/animated-marker";
 import { useQuery } from "@tanstack/react-query";
@@ -29,23 +29,29 @@ export default function Page() {
 	const [selectedCategories, setSelectedCategories] = React.useState<typeof categories>([]);
 	const [input, setInput] = React.useState<string>("");
 	const mapRef = React.useRef<MapView>(null);
-	const { error, isLoading, data } = useQuery({
+	const { error: errorSponsors, isLoading: isLoadingSponsors, data: dataSponsors } = useQuery({
 		queryKey: ["sponsors"],
 		queryFn: getSponsorsQuery,
 	});
+	const { error: errorCategorySponsors, isLoading: isLoadingCategorySponsors, data: dataCategorySponsors } = useQuery({
+		queryKey: ["sponsor-categories"],
+		queryFn: getSponsorCategoriesQuery,
+	});
+
+	console.log(dataSponsors);
 
 	// filter sponsors based on search input and selected categories
 	const filteredSponsors = React.useMemo(() => {
-		if (!data?.docs) return [];
+		if (!dataSponsors?.docs) return [];
 
 		// return all sponsors if no filters are applied
-		if (input.length < 2 && selectedCategories.length === 0) return data.docs;
+		if (input.length < 2 && selectedCategories.length === 0) return dataSponsors.docs;
 
 		const searchTerm = input.toLowerCase().trim();
 		const hasSearchTerm = searchTerm.length >= 2;
 		const hasCategories = selectedCategories.length > 0;
 
-		return data.docs.filter((sponsor) => {
+		return dataSponsors.docs.filter((sponsor) => {
 			// text search condition
 			const matchesSearch =
 				!hasSearchTerm ||
@@ -59,9 +65,9 @@ export default function Page() {
 			// Both conditions must be true
 			return matchesSearch && matchesCategory;
 		});
-	}, [data?.docs, input, selectedCategories]);
+	}, [dataSponsors?.docs, input, selectedCategories]);
 
-	if (error) {
+	if (errorSponsors) {
 		Alert.alert("Erreur de connexion", "Les sponsors n'ont pas pu être récupérés.");
 	}
 
@@ -70,7 +76,7 @@ export default function Page() {
 			<View className="flex-row items-center gap-4 bg-white p-4 pt-2">
 				<View className="basis-8/12">
 					<TextInput
-						editable={!isLoading}
+						editable={!isLoadingSponsors}
 						returnKeyType="search"
 						autoCorrect={false}
 						autoCapitalize="none"
@@ -88,7 +94,7 @@ export default function Page() {
 					/>
 				</View>
 				<Pressable
-					disabled={isLoading}
+					disabled={isLoadingSponsors}
 					className="grow rounded-xl bg-black/85 p-4 disabled:opacity-80"
 					onPress={() => {
 						bottomSheetRef.current?.expand();
@@ -141,14 +147,14 @@ export default function Page() {
 							),
 					)}
 				</MapView>
-				{isLoading && (
+				{isLoadingSponsors && (
 					<ActivityIndicator
 						className="absolute bottom-0 left-0 right-0 top-0"
 						size="large"
 						color={config.theme.extend.colors.defaultGray}
 					/>
 				)}
-				{!isLoading && filteredSponsors.length === 0 && (
+				{!isLoadingSponsors && filteredSponsors.length === 0 && (
 					<View className="absolute bottom-0 left-0 right-0 top-0 items-center justify-center bg-white/60">
 						<Text className="text-lg font-bold text-gray-800">Aucun sponsor trouvé</Text>
 					</View>

@@ -120,7 +120,7 @@ const services: Service[] = [
 		name: "...",
 		description: "Accédez à vos documents sécurisés",
 		icon: require("@/assets/images/logo.png"),
-		link: null,
+		link: "/login",
 		theme: "text-blue-600",
 	},
 ];

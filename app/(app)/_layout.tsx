@@ -61,6 +61,23 @@ export default function AppLayout() {
 					),
 				}}
 			/>
+			<Stack.Screen
+				name="chat"
+				options={{
+					headerShown: false,
+					gestureEnabled: true,
+					header: () => (
+						<View className="w-full items-center justify-center bg-white p-4">
+							<Link href="../" asChild>
+								<Pressable className="absolute left-1 p-3 active:opacity-70">
+									<SimpleLineIcons name="arrow-left" size={20} color="black" />
+								</Pressable>
+							</Link>
+							<Text className="text-lg font-bold">Chat</Text>
+						</View>
+					),
+				}}
+			/>
 		</Stack>
 	);
 }

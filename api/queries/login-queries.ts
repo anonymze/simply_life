@@ -4,6 +4,6 @@ import { api } from "../_config";
 
 
 export async function loginQuery({ email, password }: { email: string, password: string }) {
-	const response = await api.post<AppUser>("/api/app_users/login", { email, password });
+	const response = await api.post<AppUser>("/api/app-users/login", { email, password });
 	return response.data;
 }

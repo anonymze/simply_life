@@ -5,7 +5,7 @@ export interface Sponsor {
   id: string;
   name: string;
   logo: Media;
-  category: 'gold' | 'silver' | 'bronze' | 'diamond';
+  categories: SponsorCategory[];
   website?: string | null;
   latitude?: number | null;
   longitude?: number | null;
@@ -13,3 +13,7 @@ export interface Sponsor {
   createdAt: string;
 }
 
+export interface SponsorCategory {
+  id: string;
+  name: string;
+}

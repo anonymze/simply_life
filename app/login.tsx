@@ -1,52 +1,60 @@
-import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, Text, View, TextInput, } from "react-native";
 import Animated, { FadeInDown, FadeOutUp } from "react-native-reanimated";
 import BackgroundLayout from "@/layouts/background-layout";
-import { loginQuery } from "@/api/queries/loginQueries";
+import { loginQuery } from "@/api/queries/login-queries";
 import { useMutation } from "@tanstack/react-query";
 import { setStorageUserInfos } from "@/utils/store";
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
+import { useForm } from "@tanstack/react-form";
 import config from "@/tailwind.config";
 import { router } from "expo-router";
 import { Image } from "expo-image";
+import { z } from "zod";
 
+
+const formSchema = z.object({
+	email: z.string().email({
+		message: "L'email est invalide",
+	}),
+	password: z.string().min(8, {
+		message: "Le mot de passe doit contenir au moins 8 caractères",
+	}),
+});
 
 export default function Login() {
-	const inputEmailRef = useRef<TextInput>(null);
-	const inputPasswordRef = useRef<TextInput>(null);
-	const [inputs, setInputs] = useState({
-		email: process.env.EXPO_PUBLIC_DEFAULT_USER_EMAIL || "",
-		password: process.env.EXPO_PUBLIC_DEFAULT_USER_PASSWORD || "",
+	const form = useForm({
+		defaultValues: {
+			email: "test@test.fr",
+			password: "12341234",
+		},
+		validators: {
+			onSubmit: formSchema,
+		},
+		onSubmit: ({ value }) => {
+			console.log(value);
+			mutationLogin.mutate({
+				email: value.email,
+				password: value.password,
+			});
+		},
 	});
+
 	const mutationLogin = useMutation({
 		mutationFn: loginQuery,
 		onError: (_) => {
-			Alert.alert("Erreur de connexion", "Veuillez vérifier vos identifiants.");
+			Alert.alert("Erreur de connexion", "Vérifiez vos identifiants.");
 		},
-		onSuccess: (data) => {
+		onSuccess: async (data) => {
 			setStorageUserInfos(data);
-			router.replace("/");
+			router.replace("/(app)");
 		},
 	});
-
-	const handleLogin = async () => {
-		if (!inputs.email) {
-			inputEmailRef.current?.focus();
-			return;
-		}
-
-		if (!inputs.password) {
-			inputPasswordRef.current?.focus();
-			return;
-		}
-
-		mutationLogin.mutate(inputs);
-	};
 
 	return (
 		<KeyboardAvoidingView
 			behavior={Platform.OS === "ios" ? "padding" : "height"}
 			style={{ flex: 1, backgroundColor: config.theme.extend.colors.background }}
-			keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}			
+			keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
 		>
 			<BackgroundLayout>
 				<View className="flex-1 items-center justify-center gap-3 p-6">
@@ -58,44 +66,60 @@ export default function Login() {
 					<Text className="text-center text-lg font-semibold">
 						La gestion de votre quotidien professionnelle n'a jamais été aussi simplifiée.
 					</Text>
-					<Text className="text-md mt-10 self-start text-gray-500">Votre email :</Text>
-					<TextInput
-						ref={inputEmailRef}
-						returnKeyType="done"
-						onSubmitEditing={(elem) => setInputs({ ...inputs, email: elem.nativeEvent.text })}
-						autoCapitalize="none"
-						keyboardType="email-address"
-						textContentType="emailAddress"
-						placeholder="nom@email.fr"
-						className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
-					/>
-					<Text className="text-md mt-2 self-start text-gray-500">Votre mot de passe :</Text>
-					<TextInput
-						ref={inputPasswordRef}
-						returnKeyType="done"
-						onSubmitEditing={(elem) => setInputs({ ...inputs, password: elem.nativeEvent.text })}
-						secureTextEntry
-						autoCapitalize="none"
-						textContentType="password"
-						placeholder="mot de passe"
-						className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
-					/>
+
+					<form.Field name="email">
+						{(field) => (
+							<View className="mt-8 w-full gap-3">
+								<Text className="text-md self-start text-gray-500">Votre email de connexion :</Text>
+								<TextInput
+									returnKeyType="done"
+									autoCapitalize="none"
+									keyboardType="default"
+									textContentType="oneTimeCode"
+									placeholder="nom@email.fr"
+									className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
+									value={field.state.value}
+									onChangeText={field.handleChange}
+								/>
+								{field.state.meta.errors.length > 0 && (
+									<Text className="text-red-500">{field.state.meta.errors[0]?.message}</Text>
+								)}
+							</View>
+						)}
+					</form.Field>
+					<form.Field name="password">
+						{(field) => (
+							<View className="mt-3 w-full gap-3">
+								<Text className="text-md self-start text-gray-500">Votre mot de passe :</Text>
+								<TextInput
+									secureTextEntry
+									returnKeyType="done"
+									autoCapitalize="none"
+									keyboardType="default"
+									textContentType="oneTimeCode"
+									placeholder="********"
+									className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
+									value={field.state.value}
+									onChangeText={field.handleChange}
+								/>
+								{field.state.meta.errors.length > 0 && (
+									<Text className="text-red-500">{field.state.meta.errors[0]?.message}</Text>
+								)}
+							</View>
+						)}
+					</form.Field>
 					<Pressable
-						onPress={() => {
-							if (mutationLogin.isPending) return;
-							handleLogin();
-						}}
-						className="mt-5 h-14 w-full items-center justify-center rounded-lg bg-primary"
+						onPress={form.handleSubmit}
+						disabled={mutationLogin.isPending}
+						className="mt-4 h-14 w-full items-center justify-center rounded-lg bg-primary disabled:opacity-70"
 					>
-						<Text className="text-center text-white">
-							{mutationLogin.isPending ? (
-								<Animated.View entering={FadeInDown.springify().duration(1200)} exiting={FadeOutUp.duration(300)}>
-									<ActivityIndicator size="small" color="white" />
-								</Animated.View>
-							) : (
-								"Connexion"
-							)}
-						</Text>
+						{mutationLogin.isPending ? (
+							<Animated.View entering={FadeInDown.springify().duration(1200)} exiting={FadeOutUp.duration(300)}>
+								<ActivityIndicator size="small" color="white" />
+							</Animated.View>
+						) : (
+							<Text className="text-center text-white">Connexion</Text>
+						)}
 					</Pressable>
 				</View>
 			</BackgroundLayout>

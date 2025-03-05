@@ -19,7 +19,7 @@ import React from "react";
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
 	fade: true,
-	duration: 300,
+	duration: 400,
 });
 
 // refetch on network change
