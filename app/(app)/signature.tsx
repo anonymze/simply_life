@@ -1,17 +1,27 @@
-import { SafeAreaView } from "react-native-safe-area-context";
-import SignPdfJs from "@/components/sign-pdfjs";
+import Animated, { FadeOut } from "react-native-reanimated";
+import BackgroundLayout from "@/layouts/background-layout";
+import { Text, ActivityIndicator } from "react-native";
+import DOMLoading from "@/components/dom-loading";
+import SignPdf from "@/components/sign-pdfjs";
+import config from "@/tailwind.config";
+import React from "react";
 
 
 export default function Page() {
-
-	const getSignature = (signature: string) => {
-		console.log(signature);
-	};
-
 	return (
-		<SafeAreaView className="flex-1 bg-white" edges={["bottom"]}>
-			{/* <Sign text="Signer au dessus" onOK={getSignature} /> */}
-			<SignPdfJs dom={{}} />
-		</SafeAreaView>
+		<BackgroundLayout>
+			<DOMLoading
+				loaderComponent={
+					<Animated.View
+						exiting={FadeOut}
+						className="absolute inset-0 z-10 flex items-center justify-center bg-background"
+					>
+						<ActivityIndicator size="large" color={config.theme.extend.colors.primary} />
+						<Text className="mt-4 font-medium text-black">Chargement du PDF...</Text>
+					</Animated.View>
+				}
+				domComponent={SignPdf}
+			/>
+		</BackgroundLayout>
 	);
 }

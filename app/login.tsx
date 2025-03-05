@@ -1,27 +1,31 @@
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, Text, View, TextInput, } from "react-native";
 import Animated, { FadeInDown, FadeOutUp } from "react-native-reanimated";
+import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
+import { getLocales, getCalendars } from 'expo-localization';
 import BackgroundLayout from "@/layouts/background-layout";
 import { loginQuery } from "@/api/queries/login-queries";
 import { useMutation } from "@tanstack/react-query";
 import { setStorageUserInfos } from "@/utils/store";
-import { Fragment, useRef, useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import config from "@/tailwind.config";
 import { router } from "expo-router";
 import { Image } from "expo-image";
+import React from "react";
 import { z } from "zod";
 
 
-const formSchema = z.object({
-	email: z.string().email({
-		message: "L'email est invalide",
-	}),
-	password: z.string().min(8, {
-		message: "Le mot de passe doit contenir au moins 8 caractères",
-	}),
-});
-
 export default function Login() {
+	const languageCode = getLanguageCodeLocale();
+	
+	const formSchema = React.useMemo(() => z.object({
+		email: z.string().email({
+			message: i18n[languageCode]("ERROR_EMAIL_INVALID"),
+		}),
+		password: z.string().min(8, {
+			message: i18n[languageCode]("ERROR_PASSWORD_MIN_LENGTH"),
+		}),
+	}), []);
+	
 	const form = useForm({
 		defaultValues: {
 			email: "test@test.fr",
@@ -31,7 +35,6 @@ export default function Login() {
 			onSubmit: formSchema,
 		},
 		onSubmit: ({ value }) => {
-			console.log(value);
 			mutationLogin.mutate({
 				email: value.email,
 				password: value.password,
@@ -39,10 +42,12 @@ export default function Login() {
 		},
 	});
 
+	
+
 	const mutationLogin = useMutation({
 		mutationFn: loginQuery,
 		onError: (_) => {
-			Alert.alert("Erreur de connexion", "Vérifiez vos identifiants.");
+			Alert.alert(i18n[languageCode]("ERROR_LOGIN"), i18n[languageCode]("ERROR_LOGIN_MESSAGE"));
 		},
 		onSuccess: async (data) => {
 			setStorageUserInfos(data);
@@ -64,19 +69,19 @@ export default function Login() {
 						contentFit="contain"
 					/>
 					<Text className="text-center text-lg font-semibold">
-						La gestion de votre quotidien professionnelle n'a jamais été aussi simplifiée.
+						{i18n[languageCode]("SUBTITLE_LOGIN")}
 					</Text>
 
 					<form.Field name="email">
 						{(field) => (
 							<View className="mt-8 w-full gap-3">
-								<Text className="text-md self-start text-gray-500">Votre email de connexion :</Text>
+								<Text className="text-md self-start text-gray-500">{i18n[languageCode]("INPUT_EMAIL_LOGIN")}</Text>
 								<TextInput
 									returnKeyType="done"
 									autoCapitalize="none"
 									keyboardType="default"
 									textContentType="oneTimeCode"
-									placeholder="nom@email.fr"
+									placeholder="test@email.com"
 									className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
 									value={field.state.value}
 									onChangeText={field.handleChange}
@@ -90,7 +95,7 @@ export default function Login() {
 					<form.Field name="password">
 						{(field) => (
 							<View className="mt-3 w-full gap-3">
-								<Text className="text-md self-start text-gray-500">Votre mot de passe :</Text>
+								<Text className="text-md self-start text-gray-500">{i18n[languageCode]("INPUT_PASSWORD_LOGIN")}</Text>
 								<TextInput
 									secureTextEntry
 									returnKeyType="done"
@@ -118,7 +123,7 @@ export default function Login() {
 								<ActivityIndicator size="small" color="white" />
 							</Animated.View>
 						) : (
-							<Text className="text-center text-white">Connexion</Text>
+							<Text className="text-center text-white">{i18n[languageCode]("BUTTON_LOGIN")}</Text>
 						)}
 					</Pressable>
 				</View>
