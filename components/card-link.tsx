@@ -1,6 +1,6 @@
 // import { MaterialIcons } from "@expo/vector-icons";
 import { Pressable, Text } from "react-native";
-import { Service } from "@/services/services";
+import { Service } from "@/data/services";
 import { Link } from "expo-router";
 import { Image } from "expo-image";
 

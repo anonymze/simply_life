@@ -48,5 +48,8 @@ npx expo serve
 // export web
 npx expo export --platform web
 
+// realease build and choose device
+npx expo run:ios --configuration Release --device
+
 changement icone + push notifs + depp link + traduction + pdf signature
 find referer of app with fetch

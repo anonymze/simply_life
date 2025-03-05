@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import config from "@/tailwind.config";
 
 import { ChatMessage, MessageType } from "./chat-message";
-import { chatService } from "../services/chat-service";
+import { chatService } from "../data/chat-service";
 import { cn } from "../utils/cn";
 
 
