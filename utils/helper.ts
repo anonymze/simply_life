@@ -9,3 +9,12 @@ export const getKeysTypedObject = Object.keys as <T extends object>(obj: T) => A
 export const sprintf = (str: string, ...args: string[]) => {
 	return args.reduce((acc, curr) => acc.replace(/%s/, curr), str);
 };
+
+/**
+ * @description pause the thread for a given time
+ */
+export const sleep = (time: number) => {
+	return new Promise((resolve) => {
+		setTimeout(resolve, time);
+	});
+};

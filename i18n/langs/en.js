@@ -5,6 +5,6 @@ export default {
 	BUTTON_LOGIN: "Login",
 	ERROR_LOGIN: "Login error",
 	ERROR_LOGIN_MESSAGE: "Check your credentials.",
-	EMAIL_INVALID: "Invalid email",
-	PASSWORD_MIN_LENGTH: "Password must be at least 8 characters long",
+	ERROR_EMAIL_INVALID: "Invalid email",
+	ERROR_PASSWORD_MIN_LENGTH: "Password must be at least 8 characters long",
 };

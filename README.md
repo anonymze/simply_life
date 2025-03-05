@@ -17,6 +17,15 @@ eas build --profile production
 														
 adb shell input keyevent 82
 
+// register project on eas expo
+eas init
+
+// create configure eas.json
+eas build:configure
+
+// link project to the account developer with an identifier
+eas credentials
+
 // native build on eas host (preview for internal testing with testFlight for exemple)
 eas build  --profile preview
 
@@ -37,3 +46,6 @@ npx expo serve
 
 // export web
 npx expo export --platform web
+
+changement icone + push notifs + depp link + traduction + pdf signature
+find referer of app with fetch

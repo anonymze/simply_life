@@ -1,3 +1,4 @@
+import { sleep } from "@/utils/helper";
 import { View } from "react-native";
 import React from "react";
 
@@ -8,7 +9,7 @@ interface Props {
 	minimumDurationLoader?: number;
 }
 
-export default function DOMLoading({ loaderComponent, domComponent, minimumDurationLoader = 1000 }: Props) {
+export default function DOMLoading({ loaderComponent, domComponent, minimumDurationLoader = 800 }: Props) {
 	const [loading, setLoading] = React.useState(false);
 	const durationRef = React.useRef(0);
 	const DomComponent = domComponent;
@@ -20,16 +21,10 @@ export default function DOMLoading({ loaderComponent, domComponent, minimumDurat
 				dom={{
 					onLayout: () => {
 						durationRef.current = Date.now();
-						console.log("onLayout");
 						setLoading(true);
 					},
 					onLoadEnd: async () => {
-						console.log("onLoadEnd", Date.now() - durationRef.current);
-						if (Date.now() - durationRef.current > minimumDurationLoader) {
-							console.log("onLoadEnd", Date.now() - durationRef.current);
-							await new Promise((resolve) => setTimeout(resolve, 2000));
-						}
-
+						if (Date.now() - durationRef.current < minimumDurationLoader) await sleep(minimumDurationLoader);
 						setLoading(false);
 					},
 				}}
