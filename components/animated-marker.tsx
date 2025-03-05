@@ -54,9 +54,19 @@ export default function AnimatedMapMarker({
 			description={customCallout ? undefined : description}
 			tracksViewChanges={false} // improve performance by disabling view tracking
 		>
-			<Animated.View entering={FadeIn.delay(delay)} style={animatedStyle}>
+			<Animated.View
+				entering={FadeIn.delay(delay)}
+				style={animatedStyle}
+				className="h-10 w-10 rounded-full border-2 border-white"
+			>
 				{image ? (
-					<Image source={process.env.EXPO_PUBLIC_API_URL + image.url} style={styles.marker} contentFit="cover" />
+					<Image
+						placeholder={require("@/assets/images/icon.png")}
+						placeholderContentFit="contain"
+						source={process.env.EXPO_PUBLIC_API_URL + image.url}
+						style={styles.marker}
+						contentFit="cover"
+					/>
 				) : (
 					<View className="h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-primary">
 						<View className="h-4 w-4 rounded-full bg-white" />
@@ -65,16 +75,14 @@ export default function AnimatedMapMarker({
 			</Animated.View>
 
 			{customCallout && (
-				<Callout>
+				<Callout
+					onPress={() => {
+						Linking.openURL(description);
+					}}
+				>
 					<View style={styles.calloutContainer}>
 						<Text style={styles.calloutTitle}>{title}</Text>
-						{description ? (
-							<Pressable onPress={() => {
-                Linking.openURL(description);		
-              }}>
-								<Text style={styles.calloutLink}>Visiter le site internet</Text>
-							</Pressable>
-						) : null}
+						{description ? <Text style={styles.calloutLink}>Visiter le site internet</Text> : null}
 					</View>
 				</Callout>
 			)}
@@ -84,11 +92,9 @@ export default function AnimatedMapMarker({
 
 const styles = StyleSheet.create({
 	marker: {
-		width: 34,
-		height: 34,
+		width: "100%",
+		height: "100%",
 		borderRadius: 99,
-		borderWidth: 3,
-		borderColor: "#fff",
 	},
 	calloutContainer: {
 		width: 180,

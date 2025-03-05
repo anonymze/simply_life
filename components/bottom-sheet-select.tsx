@@ -6,10 +6,8 @@ import React from "react";
 
 
 interface Item {
-	id: number;
-	label: string;
-	value: string;
-	icon?: React.ReactNode;
+	id: string;
+	name: string;
 }
 
 interface Props {
@@ -100,16 +98,13 @@ export const BottomSheetSelect = React.forwardRef<BottomSheet, Props>(({ onSelec
 									}
 								}}
 							>
-								{React.cloneElement(item.icon as React.ReactElement, {
-									color: selectedItems.find((id) => id.id === item.id) ? "#fff" : "black"
-								})}
 								<Text
 									style={StyleSheet.flatten([
 										styles.itemText,
 										selectedItems.find((id) => id.id === item.id) && { color: "#fff" },
 									])}
 								>
-									{item.label}
+									{item.name}
 								</Text>
 							</Pressable>
 						))}

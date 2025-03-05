@@ -5,12 +5,12 @@ export interface Sponsor {
   id: string;
   name: string;
   logo: Media;
-  categories: SponsorCategory[];
+  category: SponsorCategory;
   website?: string | null;
   latitude?: number | null;
   longitude?: number | null;
-  updatedAt: string;
-  createdAt: string;
+  address?: string | null;
+  phone?: string | null;
 }
 
 export interface SponsorCategory {

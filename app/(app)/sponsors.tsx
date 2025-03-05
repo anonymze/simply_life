@@ -6,27 +6,16 @@ import { BottomSheetSelect } from "@/components/bottom-sheet-select";
 import { getSponsorsQuery } from "@/api/queries/sponsors-queries";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import AnimatedMapMarker from "@/components/animated-marker";
+import { SponsorCategory } from "@/types/sponsor";
 import { useQuery } from "@tanstack/react-query";
 import BottomSheet from "@gorhom/bottom-sheet";
 import config from "@/tailwind.config";
 import React from "react";
 
 
-const categories: {
-	id: number;
-	label: string;
-	value: string;
-	icon?: React.ReactNode;
-}[] = [
-	{ id: 1, label: "Gold", value: "gold", icon: <MaterialCommunityIcons name="gold" size={24} color="black" /> },
-	{ id: 2, label: "Silver", value: "silver", icon: <MaterialCommunityIcons name="silverware-spoon" size={24} color="black" /> },
-	{ id: 3, label: "Bronze", value: "bronze", icon: <MaterialCommunityIcons name="podium-bronze" size={24} color="black" /> },
-	{ id: 4, label: "Diamond", value: "diamond", icon: <MaterialCommunityIcons name="diamond" size={24} color="black" /> },
-];
-
 export default function Page() {
 	const bottomSheetRef = React.useRef<BottomSheet>(null);
-	const [selectedCategories, setSelectedCategories] = React.useState<typeof categories>([]);
+	const [selectedCategories, setSelectedCategories] = React.useState<SponsorCategory[]>([]);
 	const [input, setInput] = React.useState<string>("");
 	const mapRef = React.useRef<MapView>(null);
 	const { error: errorSponsors, isLoading: isLoadingSponsors, data: dataSponsors } = useQuery({
@@ -38,7 +27,7 @@ export default function Page() {
 		queryFn: getSponsorCategoriesQuery,
 	});
 
-	console.log(dataSponsors);
+	console.log(dataCategorySponsors);
 
 	// filter sponsors based on search input and selected categories
 	const filteredSponsors = React.useMemo(() => {
@@ -55,12 +44,11 @@ export default function Page() {
 			// text search condition
 			const matchesSearch =
 				!hasSearchTerm ||
-				sponsor.name.toLowerCase().includes(searchTerm) ||
-				(sponsor.category && sponsor.category.toLowerCase().includes(searchTerm));
+				sponsor.name.toLowerCase().includes(searchTerm)
 
 			// category filter condition
 			const matchesCategory =
-				!hasCategories || selectedCategories.some((category) => category.value === sponsor.category);
+				!hasCategories || selectedCategories.some((category) => category.name === sponsor.category.name);
 
 			// Both conditions must be true
 			return matchesSearch && matchesCategory;
@@ -76,7 +64,7 @@ export default function Page() {
 			<View className="flex-row items-center gap-4 bg-white p-4 pt-2">
 				<View className="basis-8/12">
 					<TextInput
-						editable={!isLoadingSponsors}
+						editable={!isLoadingSponsors && !isLoadingCategorySponsors}
 						returnKeyType="search"
 						autoCorrect={false}
 						autoCapitalize="none"
@@ -94,7 +82,7 @@ export default function Page() {
 					/>
 				</View>
 				<Pressable
-					disabled={isLoadingSponsors}
+					disabled={isLoadingSponsors || isLoadingCategorySponsors}
 					className="grow rounded-xl bg-black/85 p-4 disabled:opacity-80"
 					onPress={() => {
 						bottomSheetRef.current?.expand();
@@ -162,7 +150,7 @@ export default function Page() {
 			</View>
 			<BottomSheetSelect
 				ref={bottomSheetRef}
-				data={categories}
+				data={dataCategorySponsors?.docs ?? []}
 				onSelect={(item) => {
 					setSelectedCategories(item);
 				}}

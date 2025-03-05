@@ -5,7 +5,7 @@ export interface AppUser {
 }
 
 interface User {
-	id: number;
+	id: string;
 	lastname: string;
 	firstname: string;
 	role: "coach" | "staff" | "player" | "visitor";
