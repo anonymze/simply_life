@@ -11,6 +11,7 @@ export default {
 		ios: {
 			supportsTablet: true,
 			bundleIdentifier: "com.anonymze.simplylife",
+			associatedDomains: ["applinks:simply-life.expo.app"],
 		},
 		android: {
 			adaptiveIcon: {
@@ -24,6 +25,28 @@ export default {
 				},
 			},
 			softwareKeyboardLayoutMode: "pan",
+			intentFilters: [
+				{
+					action: "VIEW",
+					autoVerify: true,
+					data: {
+						host: "simply-life.expo.app",
+						scheme: "https",
+						pathPrefix: "/login",
+					},
+					category: ["DEFAULT", "BROWSABLE"],
+				},
+				{
+					action: "VIEW",
+					autoVerify: true,
+					data: {
+						host: "simply-life.expo.app",
+						scheme: "https",
+						pathPrefix: "/sponsors",
+					},
+					category: ["DEFAULT", "BROWSABLE"],
+				},
+			],
 		},
 		web: {
 			bundler: "metro",

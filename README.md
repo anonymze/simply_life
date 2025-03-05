@@ -40,6 +40,7 @@ eas submit --platform ios --latest
 
 // create consistent alias url hosted
 eas deploy --alias dev
+eas deploy --prod
 
 // test server,locally (api routes)
 npx expo serve 
