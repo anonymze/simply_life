@@ -74,21 +74,7 @@ export default {
 					cameraPermission: "Autoriser l'accès à votre caméra",
 					microphonePermission: false,
 				},
-			],
-			[
-				"expo-dynamic-app-icon",
-				{
-					default: {
-						// icon name
-						image: "./assets/images/logo.png", // icon path
-						prerendered: true, // for ios UIPrerenderedIcon option
-					},
-					secondary: {
-						image: "./assets/images/logo2.png",
-						prerendered: true,
-					},
-				},
-			],
+			],			
 			"expo-font",
 			"expo-localization",
 		],
