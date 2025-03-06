@@ -86,17 +86,27 @@ find referer of app with fetch
     </activity-alias>
 
     <!-- ios switch icon -->
-	<dict>
-      <key>CFBundleAlternateIcons</key>   
+<key>CFBundleIcons</key>
+  <dict>
+    <key>CFBundlePrimaryIcon</key>
+    <dict>
+      <key>CFBundleIconFiles</key>
+      <array>
+        <string>AppIcon</string>
+      </array>
+			<key>UIPrerenderedIcon</key>
+			<false/>
+    </dict>
+    <key>CFBundleAlternateIcons</key>
+    <dict>
+      <key>Secondary</key>
       <dict>
-        <key>Secondary</key>
-        <dict>
-          <key>CFBundleIconFiles</key>
-          <array>
-            <string>Secondary</string>
-          </array>
-          <key>UIPrerenderedIcon</key>
-          <true/>
-        </dict>
+        <key>CFBundleIconFiles</key>
+        <array>
+          <string>Secondary</string>
+        </array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
       </dict>
     </dict>
+  </dict>
