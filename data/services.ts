@@ -56,7 +56,7 @@ const services: Service[] = [
 		name: "...",
 		description: "Accédez à votre préparation mentale",
 		icon: require("@/assets/images/logo.png"),
-		link: null,
+		link: "/performance",
 		theme: "text-lime-600",
 	},
 	{

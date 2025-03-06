@@ -51,9 +51,6 @@ npx expo export --platform web
 // realease build and choose device
 npx expo run:ios --configuration Release --device
 
-changement icone + push notifs + depp link + traduction + pdf signature
-find referer of app with fetch
-
 <!-- android switch icon -->
 <!-- Default Icon -->
 
@@ -134,3 +131,7 @@ find referer of app with fetch
       </dict>
     </dict>
   </dict>
+
+
+changement icone + push notifs + depp link + traduction + pdf signature, text to speech
+find referer of app with fetch

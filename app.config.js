@@ -74,7 +74,21 @@ export default {
 					cameraPermission: "Autoriser l'accès à votre caméra",
 					microphonePermission: false,
 				},
-			],			
+			],
+			[
+        "expo-speech-recognition",
+				{
+					"microphonePermission": {
+						"en": "Allow $(PRODUCT_NAME) to use the microphone.",
+						"fr": "Autoriser $(PRODUCT_NAME) à utiliser le microphone."
+					},
+					"speechRecognitionPermission": {
+						"en": "Allow $(PRODUCT_NAME) to use speech recognition.",
+						"fr": "Autoriser $(PRODUCT_NAME) à utiliser la reconnaissance vocale."
+					},
+					"androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
+				}
+      ],
 			"expo-font",
 			"expo-localization",
 		],
