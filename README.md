@@ -53,3 +53,32 @@ npx expo run:ios --configuration Release --device
 
 changement icone + push notifs + depp link + traduction + pdf signature
 find referer of app with fetch
+
+<!-- android switch icon -->
+<!-- Default Icon -->
+	<activity-alias 
+		android:name=".MainActivityDefault" 
+		android:enabled="true"
+		android:exported="true" 
+		android:icon="@mipmap/ic_launcher"
+		android:targetActivity=".MainActivity"
+	>
+		<intent-filter>
+			<action android:name="android.intent.action.MAIN"/>
+			<category android:name="android.intent.category.LAUNCHER"/>
+		</intent-filter>
+	</activity-alias>
+
+<!-- Secondary Icon -->
+	<activity-alias 
+		android:name=".MainActivitySecondary" 
+		android:enabled="false"
+		android:exported="true" 
+		android:icon="@mipmap/ic_launcher_secondary"
+		android:targetActivity=".MainActivity"
+	>
+		<intent-filter>
+			<action android:name="android.intent.action.MAIN"/>
+			<category android:name="android.intent.category.LAUNCHER"/>
+		</intent-filter>
+	</activity-alias>

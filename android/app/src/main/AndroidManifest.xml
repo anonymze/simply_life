@@ -32,6 +32,36 @@
         <data android:scheme="com.anonymze.simplylife"/>
       </intent-filter>
     </activity>
+
+
+    <!-- Default Icon -->
+      <activity-alias 
+        android:name=".MainActivityDefault" 
+        android:enabled="true"
+        android:exported="true" 
+        android:icon="@mipmap/ic_launcher"
+        android:targetActivity=".MainActivity"
+      >
+        <intent-filter>
+          <action android:name="android.intent.action.MAIN"/>
+          <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+      </activity-alias>
+
+        <!-- Secondary Icon -->
+      <activity-alias 
+        android:name=".MainActivitySecondary" 
+        android:enabled="false"
+        android:exported="true" 
+        android:icon="@mipmap/ic_launcher_secondary"
+        android:targetActivity=".MainActivity"
+      >
+        <intent-filter>
+          <action android:name="android.intent.action.MAIN"/>
+          <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+      </activity-alias>
+
     <uses-library android:name="org.apache.http.legacy" android:required="false"/>
   </application>
 </manifest>
