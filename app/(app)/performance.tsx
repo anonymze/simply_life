@@ -1,4 +1,4 @@
-import { ExpoSpeechRecognitionModule, useSpeechRecognitionEvent, } from "expo-speech-recognition";
+import { ExpoSpeechRecognitionModule, useSpeechRecognitionEvent } from "expo-speech-recognition";
 import { ScrollView, Text, View } from "react-native";
 import { Button } from "react-native";
 import React from "react";
@@ -16,6 +16,23 @@ export default function Page() {
   useSpeechRecognitionEvent("error", (event) => {
     console.log("error code:", event.error, "error message:", event.message);
   });
+
+  ExpoSpeechRecognitionModule.getPermissionsAsync().then((result) => {
+    console.log("Status:", result.status);
+    console.log("Granted:", result.granted);
+    console.log("Can ask again:", result.canAskAgain);
+    console.log("Expires:", result.expires);
+  });
+
+  // ExpoSpeechRecognitionModule.requestPermissionsAsync().then((result) => {
+  //   if (!result.granted) {
+  //     console.warn("Permissions not granted", result);
+  //     return;
+  //   }
+  //   // Permissions granted! Start speech recognition, or at some other time...
+  //   ExpoSpeechRecognitionModule.start({ lang: "en-US" });
+  // });
+  
 
   const handleStart = async () => {
     const result = await ExpoSpeechRecognitionModule.requestPermissionsAsync();
