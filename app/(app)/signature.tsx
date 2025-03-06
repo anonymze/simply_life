@@ -13,7 +13,7 @@ export default function Page() {
 			<DOMLoading
 				loaderComponent={
 					<Animated.View
-						exiting={FadeOut}
+						exiting={FadeOut.duration(500)}
 						className="absolute inset-0 z-10 flex items-center justify-center bg-background"
 					>
 						<ActivityIndicator size="large" color={config.theme.extend.colors.primary} />

@@ -24,7 +24,7 @@ export default function DOMLoading({ loaderComponent, domComponent, minimumDurat
 						setLoading(true);
 					},
 					onLoadEnd: async () => {
-						if (Date.now() - durationRef.current < minimumDurationLoader) await sleep(minimumDurationLoader);
+						if (Date.now() - durationRef.current < minimumDurationLoader) await sleep(minimumDurationLoader - (Date.now() - durationRef.current));
 						setLoading(false);
 					},
 				}}
