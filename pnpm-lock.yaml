@@ -110,9 +110,6 @@ importers:
       react-native-app-icon-changer:
         specifier: ^1.1.0
         version: 1.1.0(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
-      react-native-change-icon:
-        specifier: ^5.0.0
-        version: 5.0.0(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))
       react-native-gesture-handler:
         specifier: ~2.20.2
         version: 2.20.2(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
@@ -4197,11 +4194,6 @@ packages:
     resolution: {integrity: sha512-bgMSl4R6vOYGxuHCu7rvhl7oKYh4djMUru9pj6WFNQHLjJVwtpVO/ow4SdFIqZfeNm4Th1njxH1suJ6Trh3HzA==}
     peerDependencies:
       react: '*'
-      react-native: '*'
-
-  react-native-change-icon@5.0.0:
-    resolution: {integrity: sha512-pq2SlMeaRlgEDDlJQL2dAa2P6YpgXpKMmZ4CsXHRnmXBVjpG7SBSI9tbP85grxqZSj6b6EBuP9u1oyfZm2b+JA==}
-    peerDependencies:
       react-native: '*'
 
   react-native-css-interop@0.1.22:
@@ -10280,10 +10272,6 @@ snapshots:
   react-native-app-icon-changer@1.1.0(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
-      react-native: 0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1)
-
-  react-native-change-icon@5.0.0(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1)):
-    dependencies:
       react-native: 0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1)
 
   react-native-css-interop@0.1.22(react-native-reanimated@3.16.2(@babel/core@7.26.9)(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native-safe-area-context@4.12.0(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.17):

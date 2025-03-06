@@ -1,6 +1,6 @@
-import { getActiveIcon, setIcon, getAllAlternativeIcons, resetIcon, } from 'react-native-app-icon-changer';
+// @ts-expect-error
+import { setIcon, getActiveIcon, resetIcon } from "react-native-app-icon-changer";
 import ParallaxScrollView from "@/components/parallax-scroll-view";
-import { changeIcon, getIcon } from "react-native-change-icon";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -10,7 +10,9 @@ import { useEffect } from "react";
 
 export default function Page() {
 	useEffect(() => {
-		setIcon('Secondary');
+		setIcon("Secondary");
+
+		// resetIcon();
 	}, []);
 
 	return (
