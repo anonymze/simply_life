@@ -1,8 +1,8 @@
 # SIMPLY LIFE
 
-## Development 
+## Development
 
-npx expo prebuild --clean 
+npx expo prebuild --clean
 eas build --profile development --platform android
 
 ## Web
@@ -14,7 +14,7 @@ npx expo export --platform web --output-dir ./build
 eas build --profile production
 
 ## Android emulator
-														
+
 adb shell input keyevent 82
 
 // register project on eas expo
@@ -27,7 +27,7 @@ eas build:configure
 eas credentials
 
 // native build on eas host (preview for internal testing with testFlight for exemple)
-eas build  --profile preview
+eas build --profile preview
 
 // build and submit (default to production i guess)
 eas build -s
@@ -36,14 +36,14 @@ eas build -s
 eas submit --platform ios --latest
 
 // register devices to test internally (use .ipa (Ad Hoc) for exemple on the device registered)
- eas device:create
+eas device:create
 
 // create consistent alias url hosted
 eas deploy --alias dev
 eas deploy --prod
 
 // test server,locally (api routes)
-npx expo serve 
+npx expo serve
 
 // export web
 npx expo export --platform web
@@ -56,29 +56,47 @@ find referer of app with fetch
 
 <!-- android switch icon -->
 <!-- Default Icon -->
-	<activity-alias 
-		android:name=".MainActivityDefault" 
-		android:enabled="true"
-		android:exported="true" 
-		android:icon="@mipmap/ic_launcher"
-		android:targetActivity=".MainActivity"
-	>
-		<intent-filter>
-			<action android:name="android.intent.action.MAIN"/>
-			<category android:name="android.intent.category.LAUNCHER"/>
-		</intent-filter>
-	</activity-alias>
+
+    <activity-alias
+    	android:name=".MainActivityDefault"
+    	android:enabled="true"
+    	android:exported="true"
+    	android:icon="@mipmap/ic_launcher"
+    	android:targetActivity=".MainActivity"
+    >
+    	<intent-filter>
+    		<action android:name="android.intent.action.MAIN"/>
+    		<category android:name="android.intent.category.LAUNCHER"/>
+    	</intent-filter>
+    </activity-alias>
 
 <!-- Secondary Icon -->
-	<activity-alias 
-		android:name=".MainActivitySecondary" 
-		android:enabled="false"
-		android:exported="true" 
-		android:icon="@mipmap/ic_launcher_secondary"
-		android:targetActivity=".MainActivity"
-	>
-		<intent-filter>
-			<action android:name="android.intent.action.MAIN"/>
-			<category android:name="android.intent.category.LAUNCHER"/>
-		</intent-filter>
-	</activity-alias>
+
+    <activity-alias
+    	android:name=".MainActivitySecondary"
+    	android:enabled="false"
+    	android:exported="true"
+    	android:icon="@mipmap/ic_launcher_secondary"
+    	android:targetActivity=".MainActivity"
+    >
+    	<intent-filter>
+    		<action android:name="android.intent.action.MAIN"/>
+    		<category android:name="android.intent.category.LAUNCHER"/>
+    	</intent-filter>
+    </activity-alias>
+
+    <!-- ios switch icon -->
+	<dict>
+      <key>CFBundleAlternateIcons</key>   
+      <dict>
+        <key>Secondary</key>
+        <dict>
+          <key>CFBundleIconFiles</key>
+          <array>
+            <string>Secondary</string>
+          </array>
+          <key>UIPrerenderedIcon</key>
+          <true/>
+        </dict>
+      </dict>
+    </dict>

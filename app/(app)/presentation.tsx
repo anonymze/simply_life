@@ -1,11 +1,17 @@
-import { StyleSheet, Image, Platform, Text, View } from "react-native";
-import { AntDesign, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import ParallaxScrollView from "@/components/parallax-scroll-view";
+import { FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { changeIcon } from 'react-native-change-icon';
 import config from "@/tailwind.config";
+import { useEffect } from "react";
 
 
 export default function Page() {
+	useEffect(() => {
+		changeIcon('Secondary')
+	}, []);
+
 	return (
 		<ParallaxScrollView
 			headerBackgroundColor={{
