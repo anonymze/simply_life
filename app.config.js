@@ -26,6 +26,7 @@ export default {
 				foregroundImage: "./assets/images/adaptive-icon.png",
 				backgroundColor: "#ffffff",
 			},
+			googleServicesFile: "./resources/google-services.json",
 			package: "com.anonymze.simplylife",
 			config: {
 				googleMaps: {

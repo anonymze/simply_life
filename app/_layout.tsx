@@ -6,6 +6,7 @@ import { onlineManager, QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Platform, AppState, AppStateStatus } from "react-native";
 import { focusManager } from "@tanstack/react-query";
+import * as Notifications from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
 import { queryClient } from "@/api/_queries";
 import { StatusBar } from "expo-status-bar";
@@ -15,11 +16,20 @@ import { Stack } from "expo-router";
 import React from "react";
 
 
-// Keep the splash screen visible while we fetch resources
+// here we set if we should show the alert of push notifications even if the app is running
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: false,
+		shouldSetBadge: false,
+	}),
+});
+
+// keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
 	fade: true,
-	duration: 400,
+	duration: 500,
 });
 
 // refetch on network change

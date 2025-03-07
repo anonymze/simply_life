@@ -42,6 +42,8 @@ eas device:create
 eas deploy --alias dev
 eas deploy --prod
 
+eas whoami
+
 // test server,locally (api routes)
 npx expo serve
 
