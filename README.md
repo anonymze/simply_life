@@ -50,6 +50,9 @@ npx expo serve
 // export web
 npx expo export --platform web
 
+// send env var to expo host
+eas secret:create --scope project --name EXPO_PUBLIC_API_URL --value "https://api.example.com"
+
 // realease build and choose device
 npx expo run:ios --configuration Release --device
 
@@ -138,7 +141,5 @@ npx expo run:ios --configuration Release --device
 changement icone + push notifs + depp link + traduction + pdf signature, text to speech
 
 
-find referer of app with fetch (on server)
 check expiration token
 see some logs why not working on production (fetch connexion)
-allow requests only from referer mobile
