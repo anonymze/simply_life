@@ -12,6 +12,14 @@ export default {
 			supportsTablet: true,
 			bundleIdentifier: "com.anonymze.simplylife",
 			associatedDomains: ["applinks:simply-life.expo.app"],
+			infoPlist: {
+				CFBundleAllowMixedLocalizations: true,
+			},
+			locales: {
+				en: "./i18n/metadata/ios/en.json",
+				fr: "./i18n/metadata/ios/fr.json",
+				es: "./i18n/metadata/ios/es.json",
+			},
 		},
 		android: {
 			adaptiveIcon: {
@@ -71,34 +79,34 @@ export default {
 				"expo-image-picker",
 				{
 					photosPermission: {
-						"en": "Allow $(PRODUCT_NAME) to access your photos",
-						"fr": "Autoriser $(PRODUCT_NAME) à accéder à vos photos",
-						"es": "Permitir que $(PRODUCT_NAME) acceda a sus fotos"
+						en: "Allow $(PRODUCT_NAME) to access your photos",
+						fr: "Autoriser $(PRODUCT_NAME) à accéder à vos photos",
+						es: "Permitir que $(PRODUCT_NAME) acceda a sus fotos",
 					},
 					cameraPermission: {
-						"en": "Allow $(PRODUCT_NAME) to access your camera",
-						"fr": "Autoriser $(PRODUCT_NAME) à accéder à votre caméra",
-						"es": "Permitir que $(PRODUCT_NAME) acceda a su cámara"
+						en: "Allow $(PRODUCT_NAME) to access your camera",
+						fr: "Autoriser $(PRODUCT_NAME) à accéder à votre caméra",
+						es: "Permitir que $(PRODUCT_NAME) acceda a su cámara",
 					},
 					microphonePermission: false,
 				},
 			],
 			[
-        "expo-speech-recognition",
+				"expo-speech-recognition",
 				{
-					"microphonePermission": {
-						"en": "Allow $(PRODUCT_NAME) to use the microphone.",
-						"fr": "Autoriser $(PRODUCT_NAME) à utiliser le microphone.",
-						"es": "Permitir que $(PRODUCT_NAME) utilice el micrófono."
+					microphonePermission: {
+						en: "Allow $(PRODUCT_NAME) to use the microphone.",
+						fr: "Autoriser $(PRODUCT_NAME) à utiliser le microphone.",
+						es: "Permitir que $(PRODUCT_NAME) utilice el micrófono.",
 					},
-					"speechRecognitionPermission": {
-						"en": "Allow $(PRODUCT_NAME) to use speech recognition.",
-						"fr": "Autoriser $(PRODUCT_NAME) à utiliser la reconnaissance vocale.",
-						"es": "Permitir que $(PRODUCT_NAME) utilice el reconocimiento de voz."
+					speechRecognitionPermission: {
+						en: "Allow $(PRODUCT_NAME) to use speech recognition.",
+						fr: "Autoriser $(PRODUCT_NAME) à utiliser la reconnaissance vocale.",
+						es: "Permitir que $(PRODUCT_NAME) utilice el reconocimiento de voz.",
 					},
-					"androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
-				}
-      ],
+					androidSpeechServicePackages: ["com.google.android.googlequicksearchbox"],
+				},
+			],
 			"expo-font",
 			"expo-localization",
 		],
