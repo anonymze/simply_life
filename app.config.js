@@ -78,32 +78,16 @@ export default {
 			[
 				"expo-image-picker",
 				{
-					photosPermission: {
-						en: "Allow $(PRODUCT_NAME) to access your photos",
-						fr: "Autoriser $(PRODUCT_NAME) à accéder à vos photos",
-						es: "Permitir que $(PRODUCT_NAME) acceda a sus fotos",
-					},
-					cameraPermission: {
-						en: "Allow $(PRODUCT_NAME) to access your camera",
-						fr: "Autoriser $(PRODUCT_NAME) à accéder à votre caméra",
-						es: "Permitir que $(PRODUCT_NAME) acceda a su cámara",
-					},
-					microphonePermission: false,
+					photosPermission: "Allow $(PRODUCT_NAME) to access your photos",
+					cameraPermission: "Allow $(PRODUCT_NAME) to access your camera",
+					microphonePermission: "Allow $(PRODUCT_NAME) to use the microphone.",
 				},
 			],
 			[
 				"expo-speech-recognition",
 				{
-					microphonePermission: {
-						en: "Allow $(PRODUCT_NAME) to use the microphone.",
-						fr: "Autoriser $(PRODUCT_NAME) à utiliser le microphone.",
-						es: "Permitir que $(PRODUCT_NAME) utilice el micrófono.",
-					},
-					speechRecognitionPermission: {
-						en: "Allow $(PRODUCT_NAME) to use speech recognition.",
-						fr: "Autoriser $(PRODUCT_NAME) à utiliser la reconnaissance vocale.",
-						es: "Permitir que $(PRODUCT_NAME) utilice el reconocimiento de voz.",
-					},
+					microphonePermission: "Allow $(PRODUCT_NAME) to use the microphone.",
+					speechRecognitionPermission: "Allow $(PRODUCT_NAME) to use speech recognition.",
 					androidSpeechServicePackages: ["com.google.android.googlequicksearchbox"],
 				},
 			],
