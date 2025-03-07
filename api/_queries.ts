@@ -24,8 +24,9 @@ export const queryClient = new QueryClient({
 	// mutationCache: new MutationCache({
 	// 	onError: errorHandler,
 	// }),
+	
 	defaultOptions: {
-		queries: {
+		queries: {			
 			retry: 1,
 			staleTime: 60 * 60 * 1000, // 1 hour
 		},

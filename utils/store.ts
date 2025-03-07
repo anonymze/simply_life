@@ -13,4 +13,6 @@ const getStorageUserInfos = () => {
 	return JSON.parse(data) as AppUser;
 };
 
+export const removeStorageUserInfos = () => storage.delete(USER_INFOS_KEY);
+
 export { storage, setStorageUserInfos, getStorageUserInfos };

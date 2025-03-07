@@ -6,11 +6,11 @@ import { getStorageUserInfos } from "@/utils/store";
 
 
 export default function AppLayout() {
-	const userInfos = getStorageUserInfos();
+	// const userInfos = getStorageUserInfos();
 
-	if (!userInfos || !userInfos.token) {
-		return <Redirect href="/login" />;
-	}
+	// if (!userInfos || !userInfos.token) {
+	// 	return <Redirect href="/login" />;
+	// }
 
 	return (
 		<NotificationProvider>
