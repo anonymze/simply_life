@@ -4,6 +4,7 @@ import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomSheetSelect } from "@/components/bottom-sheet-select";
 import { getSponsorsQuery } from "@/api/queries/sponsors-queries";
+import { useNotification } from "@/context/push-notifications";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import AnimatedMapMarker from "@/components/animated-marker";
 import { SponsorCategory } from "@/types/sponsor";
@@ -22,12 +23,10 @@ export default function Page() {
 		queryKey: ["sponsors"],
 		queryFn: getSponsorsQuery,
 	});
-	const { error: errorCategorySponsors, isLoading: isLoadingCategorySponsors, data: dataCategorySponsors } = useQuery({
+	const { isLoading: isLoadingCategorySponsors, data: dataCategorySponsors } = useQuery({
 		queryKey: ["sponsor-categories"],
 		queryFn: getSponsorCategoriesQuery,
 	});
-
-	console.log(dataCategorySponsors);
 
 	// filter sponsors based on search input and selected categories
 	const filteredSponsors = React.useMemo(() => {

@@ -1,8 +1,6 @@
 import "@tanstack/react-query";
 
-import { MutationCache, QueryClient, QueryCache } from "@tanstack/react-query";
-import { isAxiosError, type AxiosError } from "axios";
-import { Alert } from "react-native";
+import { QueryClient } from "@tanstack/react-query";
 
 
 // const errorHandler = (error: unknown) => {
@@ -29,7 +27,7 @@ export const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			retry: 1,
-			staleTime: 30 * 60 * 1000, // 30 minutes
+			staleTime: 60 * 60 * 1000, // 1 hour
 		},
 	},
 });

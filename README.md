@@ -136,4 +136,9 @@ npx expo run:ios --configuration Release --device
 
 
 changement icone + push notifs + depp link + traduction + pdf signature, text to speech
-find referer of app with fetch
+
+
+find referer of app with fetch (on server)
+check expiration token
+see some logs why not working on production (fetch connexion)
+allow requests only from referer mobile

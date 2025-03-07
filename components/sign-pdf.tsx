@@ -35,7 +35,6 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.j
 
         // Get form fields
         const annotations = await page.getAnnotations()
-				console.log(annotations)
         const formFields = annotations.filter(
           annotation => annotation.subtype === 'Widget'
         )

@@ -8,8 +8,6 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
 export default function SignPdf({ dom , hello}: { dom: import("expo/dom").DOMProps, hello: string }) {
-	console.log(dom);
-	console.log(hello);
 	return (
 		<div>
 			<h1>gzergregerg</h1>

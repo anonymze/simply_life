@@ -1,6 +1,7 @@
-import { getStorageUserInfos } from "@/utils/store";
 import axios from "axios";
 
+
+const ORIGIN_MOBILE = "https://simplylife.app/mobile";
 
 export const api = axios.create({
 	baseURL: process.env.EXPO_PUBLIC_API_URL || "",
@@ -9,6 +10,7 @@ export const api = axios.create({
 	headers: {
 		Accept: "application/json",
 		"Content-Type": "application/json",
+		Origin: ORIGIN_MOBILE,
 		// Authorization: `JWT ${getStorageUserInfos()?.token}`,
 	},
 });

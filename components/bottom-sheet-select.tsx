@@ -25,7 +25,6 @@ export const BottomSheetSelect = React.forwardRef<BottomSheet, Props>(({ onSelec
 			<BottomSheetFooter {...props} style={styles.footerContainer}>
 				<Pressable
 					style={(status) => {
-						console.log(status);
 						return StyleSheet.flatten([
 							{
 								opacity: status.pressed ? 0.5 : 1,
@@ -45,7 +44,6 @@ export const BottomSheetSelect = React.forwardRef<BottomSheet, Props>(({ onSelec
 				</Pressable>
 				<Pressable
 					style={(status) => {
-						console.log(status);
 						return StyleSheet.flatten([
 							{
 								opacity: status.pressed ? 0.5 : 1,
