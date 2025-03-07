@@ -51,7 +51,7 @@ npx expo serve
 npx expo export --platform web
 
 // send env var to expo host
-eas secret:create --scope project --name EXPO_PUBLIC_API_URL --value "https://api.example.com"
+eas env:create --scope project --name EXPO_PUBLIC_API_URL --value "https://api.example.com"
 
 // realease build and choose device
 npx expo run:ios --configuration Release --device
