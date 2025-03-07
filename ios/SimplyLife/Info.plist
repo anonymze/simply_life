@@ -94,32 +94,13 @@
       <true/>
     </dict>
     <key>NSCameraUsageDescription</key>
-    <dict>
-      <key>en</key>
-      <string>Allow $(PRODUCT_NAME) to access your camera</string>
-      <key>fr</key>
-      <string>Autoriser $(PRODUCT_NAME) à accéder à votre caméra</string>
-      <key>es</key>
-      <string>Permitir que $(PRODUCT_NAME) acceda a su cámara</string>
-    </dict>
+    <string>Allow $(PRODUCT_NAME) to access your camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to use the microphone.</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <dict>
-      <key>en</key>
-      <string>Allow $(PRODUCT_NAME) to access your photos</string>
-      <key>fr</key>
-      <string>Autoriser $(PRODUCT_NAME) à accéder à vos photos</string>
-      <key>es</key>
-      <string>Permitir que $(PRODUCT_NAME) acceda a sus fotos</string>
-    </dict>
+    <string>Allow $(PRODUCT_NAME) to access your photos</string>
     <key>NSSpeechRecognitionUsageDescription</key>
-    <dict>
-      <key>en</key>
-      <string>Allow $(PRODUCT_NAME) to use speech recognition.</string>
-      <key>fr</key>
-      <string>Autoriser $(PRODUCT_NAME) à utiliser la reconnaissance vocale.</string>
-      <key>es</key>
-      <string>Permitir que $(PRODUCT_NAME) utilice el reconocimiento de voz.</string>
-    </dict>
+    <string>Allow $(PRODUCT_NAME) to use speech recognition.</string>    
     <key>NSUserActivityTypes</key>
     <array>
       <string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
