@@ -8,17 +8,17 @@ export default {
 		scheme: "myapp",
 		userInterfaceStyle: "automatic",
 		newArchEnabled: true,
+		locales: {
+			en: "./i18n/metadata/ios/en.json",
+			fr: "./i18n/metadata/ios/fr.json",
+			es: "./i18n/metadata/ios/es.json",
+		},
 		ios: {
 			supportsTablet: true,
 			bundleIdentifier: "com.anonymze.simplylife",
 			associatedDomains: ["applinks:simply-life.expo.app"],
 			infoPlist: {
 				CFBundleAllowMixedLocalizations: true,
-			},
-			locales: {
-				en: "./i18n/metadata/ios/en.json",
-				fr: "./i18n/metadata/ios/fr.json",
-				es: "./i18n/metadata/ios/es.json",
 			},
 		},
 		android: {
