@@ -4,11 +4,11 @@ import { View } from "react-native";
 import { Link } from "expo-router";
 
 
-export default function Header({ title }: { title: string }) {
+export default function HeaderLayout({ title }: { title: string }) {
 	return (
-		<View className="w-full items-center justify-center bg-white p-4">
-			<Link href="../" asChild>
-				<Pressable className="absolute left-1 p-3 active:opacity-70">
+		<View className="flex-row items-center justify-center bg-white p-4">
+			<Link href="../" asChild className="absolute left-4 active:opacity-70">
+				<Pressable>
 					<SimpleLineIcons name="arrow-left" size={20} color="black" />
 				</Pressable>
 			</Link>

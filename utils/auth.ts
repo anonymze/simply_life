@@ -1,9 +1,9 @@
 import { getLanguageCodeLocale } from "@/i18n/translations";
 import { i18n } from "@/i18n/translations";
-import { Href, router } from "expo-router";
+import { router } from "expo-router";
 import { Alert } from "react-native";
 
-import { getStorageUserInfos, removeStorageUserInfos } from "./store";
+import { removeStorageUserInfos } from "./store";
 
 
 /**

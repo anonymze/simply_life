@@ -139,6 +139,6 @@ npx expo run:ios --configuration Release --device
 
 
 changement icone + push notifs + depp link + traduction + pdf signature, text to speech
-test
+Unit tests
 reset expiration token on success
 
