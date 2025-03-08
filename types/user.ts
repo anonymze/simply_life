@@ -12,4 +12,4 @@ interface User {
 	email: string;
 }
 
-export type UserRole = "coach" | "staff" | "player" | "visitor";
+type UserRole = "coach" | "staff" | "player" | "visitor";

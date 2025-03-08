@@ -86,7 +86,7 @@ const getRandomResponse = (userMessage: string): string => {
   return botResponses[randomIndex];
 };
 
-export interface ChatServiceResponse {
+interface ChatServiceResponse {
   message: MessageType;
   typingDelay: number;
 }

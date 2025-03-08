@@ -15,4 +15,4 @@ const getStorageUserInfos = () => {
 
 export const removeStorageUserInfos = () => storage.delete(USER_INFOS_KEY);
 
-export { storage, setStorageUserInfos, getStorageUserInfos };
+export { setStorageUserInfos, getStorageUserInfos };
