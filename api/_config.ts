@@ -1,7 +1,6 @@
-import { getStorageUserInfos, removeStorageUserInfos } from "@/utils/store";
+import { getStorageUserInfos } from "@/utils/store";
 import axios, { isAxiosError } from "axios";
-import { router } from "expo-router";
-import { Alert } from "react-native";
+import { logout } from "@/utils/auth";
 
 
 const ORIGIN_MOBILE = "simply-life-app://mobile";
@@ -27,16 +26,11 @@ api.interceptors.response.use(
 
 		if (error.response?.status === 403) {
 			const userInfos = getStorageUserInfos();
-
-			console.log(userInfos);
-
-			if (userInfos?.exp && userInfos.exp < Date.now() / 1000) {
-				removeStorageUserInfos();
-				router.replace("/login");
-			}
+			if (userInfos?.exp && userInfos.exp < Date.now() / 1000) logout({ alert: true });
 		}
 
 		// always reject the promise to let react query or other handlers process the error
 		return Promise.reject(error);
-	}
+	},
 );
+

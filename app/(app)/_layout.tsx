@@ -1,24 +1,23 @@
 import { NotificationProvider } from "@/context/push-notifications";
-import { View, Text, Pressable, Platform } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { Link, Stack, Redirect } from "expo-router";
 import { getStorageUserInfos } from "@/utils/store";
 
 
 export default function AppLayout() {
-	// const userInfos = getStorageUserInfos();
+	const userInfos = getStorageUserInfos();
 
-	// if (!userInfos || !userInfos.token) {
-	// 	return <Redirect href="/login" />;
-	// }
+	if (!userInfos || !userInfos.token) {
+		return <Redirect href="/login" />;
+	}
 
 	return (
 		<NotificationProvider>
 			<Stack
 				initialRouteName="index"
 				screenOptions={{
-					headerShown: false,
-					animation: Platform.OS === "ios" ? "simple_push" : "fade_from_bottom",
+					headerShown: true,
 					gestureDirection: "horizontal",
 					gestureEnabled: true,
 					fullScreenGestureEnabled: true,
@@ -29,10 +28,21 @@ export default function AppLayout() {
 				}}
 			>
 				<Stack.Screen
+					name="index"
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
+					name="presentation"
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
 					name="sponsors"
 					options={{
-						headerShown: true,
-						gestureEnabled: true,
+						gestureEnabled: false,
 						header: () => (
 							<View className="w-full items-center justify-center bg-white p-4">
 								<Link href="../" asChild>
@@ -48,8 +58,6 @@ export default function AppLayout() {
 				<Stack.Screen
 					name="signature"
 					options={{
-						headerShown: true,
-						gestureEnabled: false,
 						header: () => (
 							<View className="w-full items-center justify-center bg-white p-4">
 								<Link href="../" asChild>
@@ -66,7 +74,6 @@ export default function AppLayout() {
 					name="chat"
 					options={{
 						headerShown: false,
-						gestureEnabled: true,
 						header: () => (
 							<View className="w-full items-center justify-center bg-white p-4">
 								<Link href="../" asChild>
@@ -82,8 +89,6 @@ export default function AppLayout() {
 				<Stack.Screen
 					name="test"
 					options={{
-						headerShown: true,
-						gestureEnabled: true,
 						header: () => (
 							<View className="w-full items-center justify-center bg-white p-4">
 								<Link href="../" asChild>
@@ -91,7 +96,22 @@ export default function AppLayout() {
 										<SimpleLineIcons name="arrow-left" size={20} color="black" />
 									</Pressable>
 								</Link>
-								<Text className="text-lg font-bold">Test</Text>
+								<Text className="text-lg font-bold">Signature</Text>
+							</View>
+						),
+					}}
+				/>
+				<Stack.Screen
+					name="performance"
+					options={{
+						header: () => (
+							<View className="w-full items-center justify-center bg-white p-4">
+								<Link href="../" asChild>
+									<Pressable className="absolute left-1 p-3 active:opacity-70">
+										<SimpleLineIcons name="arrow-left" size={20} color="black" />
+									</Pressable>
+								</Link>
+								<Text className="text-lg font-bold">Performance</Text>
 							</View>
 						),
 					}}

@@ -139,7 +139,6 @@ npx expo run:ios --configuration Release --device
 
 
 changement icone + push notifs + depp link + traduction + pdf signature, text to speech
+test
+reset expiration token on success
 
-
-check expiration token
-see some logs why not working on production (fetch connexion)

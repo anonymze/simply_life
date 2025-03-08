@@ -1,3 +1,11 @@
+import { getLanguageCodeLocale } from "@/i18n/translations";
+import { i18n } from "@/i18n/translations";
+import { router } from "expo-router";
+import { Alert } from "react-native";
+
+import { removeStorageUserInfos } from "./store";
+
+
 /**
  * @description correctly type Object.keys
  */

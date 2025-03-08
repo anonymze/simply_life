@@ -7,4 +7,6 @@ export default {
 	ERROR_LOGIN_MESSAGE: "Verifique sus credenciales.",
 	ERROR_EMAIL_INVALID: "Correo electrónico inválido",
 	ERROR_PASSWORD_MIN_LENGTH: "La contraseña debe tener al menos 8 caracteres.",
+	SESSION_EXPIRED: "Sesión expirada",
+	SESSION_EXPIRED_MESSAGE: "Por favor, inicie sesión de nuevo",
 };

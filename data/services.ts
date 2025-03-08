@@ -45,19 +45,11 @@ const services: Service[] = [
 	},
 	{
 		id: 5,
-		name: "...",
+		name: "Speech",
 		description: "Suivez vos performances",
 		icon: require("@/assets/images/logo.png"),
-		link: "/test",
-		theme: "text-red-500",
-	},
-	{
-		id: 6,
-		name: "...",
-		description: "Accédez à votre préparation mentale",
-		icon: require("@/assets/images/logo.png"),
 		link: "/performance",
-		theme: "text-lime-600",
+		theme: "text-red-500",
 	},
 	{
 		id: 7,
