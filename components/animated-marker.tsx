@@ -1,7 +1,7 @@
 import Animated, { FadeIn, useAnimatedStyle, useSharedValue, withDelay, withSpring } from "react-native-reanimated";
 import { View, StyleSheet, Text, Pressable } from "react-native";
 import { Marker, Callout } from "react-native-maps";
-import * as Linking from "expo-linking";
+import * as WebBrowser from 'expo-web-browser';
 import config from "@/tailwind.config";
 import { Image } from "expo-image";
 import { useEffect } from "react";
@@ -76,8 +76,8 @@ export default function AnimatedMapMarker({
 
 			{customCallout && (
 				<Callout
-					onPress={() => {
-						Linking.openURL(description);
+					onPress={async () => {
+						await WebBrowser.openBrowserAsync(description);
 					}}
 				>
 					<View style={styles.calloutContainer}>

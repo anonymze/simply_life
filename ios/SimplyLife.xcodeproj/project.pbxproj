@@ -7,13 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07A3B30EFD74492D97572A27 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2912FF627DC749868B1B9A5C /* InfoPlist.strings */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		371005229BD24B7993AF72A7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D8EE20570867409B8BB756B9 /* InfoPlist.strings */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		69C1830191C048248B2623E0 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCCD07B70FE46AABF568554 /* noop-file.swift */; };
 		96905EF65AED1B983A6B3ABC /* libPods-SimplyLife.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-SimplyLife.a */; };
 		9BFC46678C8640934960AA79 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 24459FFEBE769089DD403B2D /* PrivacyInfo.xcprivacy */; };
+		9F9400AB4BCE49C7BC911058 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 67E129D9449D4832927CE1BA /* InfoPlist.strings */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 /* End PBXBuildFile section */
@@ -26,13 +29,16 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SimplyLife/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SimplyLife/main.m; sourceTree = "<group>"; };
 		24459FFEBE769089DD403B2D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = SimplyLife/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		2912FF627DC749868B1B9A5C /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-SimplyLife.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SimplyLife.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		67E129D9449D4832927CE1BA /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-SimplyLife.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimplyLife.debug.xcconfig"; path = "Target Support Files/Pods-SimplyLife/Pods-SimplyLife.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-SimplyLife.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimplyLife.release.xcconfig"; path = "Target Support Files/Pods-SimplyLife/Pods-SimplyLife.release.xcconfig"; sourceTree = "<group>"; };
 		8DCCD07B70FE46AABF568554 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "SimplyLife/noop-file.swift"; sourceTree = "<group>"; };
 		A06A0D3D78794107833DD174 /* SimplyLife-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "SimplyLife-Bridging-Header.h"; path = "SimplyLife/SimplyLife-Bridging-Header.h"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = SimplyLife/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		D8EE20570867409B8BB756B9 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-SimplyLife/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,6 +72,15 @@
 			name = SimplyLife;
 			sourceTree = "<group>";
 		};
+		17BA192BC69D433B8F2B15BE /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				67E129D9449D4832927CE1BA /* InfoPlist.strings */,
+			);
+			name = en.lproj;
+			path = "";
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +88,15 @@
 				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-SimplyLife.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6EA130185ACC477FABF8827F /* es.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				D8EE20570867409B8BB756B9 /* InfoPlist.strings */,
+			);
+			name = es.lproj;
+			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -105,6 +129,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8481F04A826248DE8F32B2ED /* fr.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				2912FF627DC749868B1B9A5C /* InfoPlist.strings */,
+			);
+			name = fr.lproj;
+			path = "";
+			sourceTree = "<group>";
+		};
 		92DBD88DE9BF7D494EA9DA96 /* SimplyLife */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +150,9 @@
 			isa = PBXGroup;
 			children = (
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
+				17BA192BC69D433B8F2B15BE /* en.lproj */,
+				8481F04A826248DE8F32B2ED /* fr.lproj */,
+				6EA130185ACC477FABF8827F /* es.lproj */,
 			);
 			name = Supporting;
 			path = SimplyLife/Supporting;
@@ -204,6 +240,9 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				9BFC46678C8640934960AA79 /* PrivacyInfo.xcprivacy in Resources */,
+				9F9400AB4BCE49C7BC911058 /* InfoPlist.strings in Resources */,
+				07A3B30EFD74492D97572A27 /* InfoPlist.strings in Resources */,
+				371005229BD24B7993AF72A7 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,15 +19,11 @@ PODS:
     - ExpoModulesCore
   - ExpoAsset (11.0.4):
     - ExpoModulesCore
-  - ExpoBlur (14.0.3):
-    - ExpoModulesCore
   - ExpoDevice (7.0.2):
     - ExpoModulesCore
   - ExpoFileSystem (18.0.11):
     - ExpoModulesCore
   - ExpoFont (13.0.4):
-    - ExpoModulesCore
-  - ExpoHaptics (14.0.1):
     - ExpoModulesCore
   - ExpoHead (4.0.17):
     - ExpoModulesCore
@@ -75,8 +71,6 @@ PODS:
   - ExpoSpeechRecognition (1.1.1):
     - ExpoModulesCore
   - ExpoSplashScreen (0.29.22):
-    - ExpoModulesCore
-  - ExpoSymbols (0.2.2):
     - ExpoModulesCore
   - ExpoSystemUI (4.0.8):
     - ExpoModulesCore
@@ -1933,11 +1927,9 @@ DEPENDENCIES:
   - EXNotifications (from `../node_modules/expo-notifications/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoAsset (from `../node_modules/expo-asset/ios`)
-  - ExpoBlur (from `../node_modules/expo-blur/ios`)
   - ExpoDevice (from `../node_modules/expo-device/ios`)
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoFont (from `../node_modules/expo-font/ios`)
-  - ExpoHaptics (from `../node_modules/expo-haptics/ios`)
   - ExpoHead (from `../node_modules/expo-router/ios`)
   - ExpoImage (from `../node_modules/expo-image/ios`)
   - ExpoImagePicker (from `../node_modules/expo-image-picker/ios`)
@@ -1949,7 +1941,6 @@ DEPENDENCIES:
   - ExpoNetwork (from `../node_modules/expo-network/ios`)
   - ExpoSpeechRecognition (from `../node_modules/expo-speech-recognition/ios`)
   - ExpoSplashScreen (from `../node_modules/expo-splash-screen/ios`)
-  - ExpoSymbols (from `../node_modules/expo-symbols/ios`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - EXStructuredHeaders (from `../node_modules/expo-structured-headers/ios`)
@@ -2060,16 +2051,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo"
   ExpoAsset:
     :path: "../node_modules/expo-asset/ios"
-  ExpoBlur:
-    :path: "../node_modules/expo-blur/ios"
   ExpoDevice:
     :path: "../node_modules/expo-device/ios"
   ExpoFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   ExpoFont:
     :path: "../node_modules/expo-font/ios"
-  ExpoHaptics:
-    :path: "../node_modules/expo-haptics/ios"
   ExpoHead:
     :path: "../node_modules/expo-router/ios"
   ExpoImage:
@@ -2092,8 +2079,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-speech-recognition/ios"
   ExpoSplashScreen:
     :path: "../node_modules/expo-splash-screen/ios"
-  ExpoSymbols:
-    :path: "../node_modules/expo-symbols/ios"
   ExpoSystemUI:
     :path: "../node_modules/expo-system-ui/ios"
   ExpoWebBrowser:
@@ -2256,11 +2241,9 @@ SPEC CHECKSUMS:
   EXNotifications: a762c9647d87682e9822f5798ca6666b5a81e213
   Expo: 63515728b6f238842dc95702eb0fb385f00d7c5a
   ExpoAsset: 4033893dfb333b444bf45e951351254137b658d5
-  ExpoBlur: 392c1207f71d0ecf22371621c1fbd44ba84d9742
   ExpoDevice: 1662ecdf42a8b5b2cf60ef7cecaf5a297639dd63
   ExpoFileSystem: 2d804c73034c0d65eb2a640e0a77627033b69edc
   ExpoFont: f354e926f8feae5e831ec8087f36652b44a0b188
-  ExpoHaptics: 8d199b2f33245ea85289ff6c954c7ee7c00a5b5d
   ExpoHead: 5d1c5c20e3933db5d9ca349424cb3b9a4a84b706
   ExpoImage: c6d1f54445f38766650052aedf5396a74bb96fff
   ExpoImagePicker: 24e5ba8da111f74519b1e6dc556e0b438b2b8464
@@ -2272,7 +2255,6 @@ SPEC CHECKSUMS:
   ExpoNetwork: 16083eb5ed34ce1c8e916fb6292fdb6e9daac0ca
   ExpoSpeechRecognition: 925a22924a8455f2e4875de6a2ed3d4b1306e683
   ExpoSplashScreen: 0f281e3c2ded4757d2309276c682d023c6299c77
-  ExpoSymbols: f3002db15156cd4e505c77b6ea1df5c984db9965
   ExpoSystemUI: 2e5356d22b077c56c132b4dcbc5d69dd667b1f8c
   ExpoWebBrowser: a212e6b480d8857d3e441fba51e0c968333803b3
   EXStructuredHeaders: 09c70347b282e3d2507e25fb4c747b1b885f87f6

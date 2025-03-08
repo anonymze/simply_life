@@ -18,7 +18,7 @@
       <action android:name="android.speech.RecognitionService"/>
     </intent>
   </queries>
-  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:allowBackup="true" android:theme="@style/AppTheme" android:supportsRtl="true">
+  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:allowBackup="true" android:theme="@style/AppTheme" android:supportsRtl="true" android:roundIcon="@mipmap/ic_launcher_round">
     <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDS8h4LEfphnaXei8dCRdFfoYQDNPDZ1wo"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="true"/>
     <meta-data android:name="expo.modules.updates.EXPO_RUNTIME_VERSION" android:value="@string/expo_runtime_version"/>
@@ -50,36 +50,18 @@
         <category android:name="android.intent.category.BROWSABLE"/>
       </intent-filter>
     </activity>
-
-
-    <!-- Default Icon -->
-      <activity-alias 
-        android:name=".MainActivityDefault" 
-        android:enabled="true"
-        android:exported="true" 
-        android:icon="@mipmap/ic_launcher"
-        android:targetActivity=".MainActivity"
-      >
-        <intent-filter>
-          <action android:name="android.intent.action.MAIN"/>
-          <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
-      </activity-alias>
-
-        <!-- Secondary Icon -->
-      <activity-alias 
-        android:name=".MainActivitySecondary" 
-        android:enabled="false"
-        android:exported="true" 
-        android:icon="@mipmap/ic_launcher_secondary"
-        android:targetActivity=".MainActivity"
-      >
-        <intent-filter>
-          <action android:name="android.intent.action.MAIN"/>
-          <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
-      </activity-alias>
-
+    <activity-alias android:name=".MainActivityDefault" android:enabled="true" android:exported="true" android:icon="@mipmap/ic_launcher" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name=".MainActivitySecondary" android:enabled="false" android:exported="true" android:icon="@mipmap/ic_launcher_secondary" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
     <uses-library android:name="org.apache.http.legacy" android:required="false"/>
   </application>
 </manifest>
