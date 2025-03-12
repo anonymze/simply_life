@@ -1,5 +1,5 @@
 import Animated, { FadeIn, FadeOut, LinearTransition, } from "react-native-reanimated";
-import { StyleSheet, TextProps } from "react-native";
+import { StyleSheet, Text, TextProps } from "react-native";
 import React, { useMemo } from "react";
 
 
@@ -14,17 +14,11 @@ const springConfig = {
   stiffness: 180,
 };
 
-const AnimatedText = (props: TextProps) => {
-  const { children, ...rest } = props;
+const AnimatedText = ({ children, ...rest }: TextProps & { children: string }) => {
 
   const splitText: CharacterObject[] = useMemo(() => {
-    if (typeof children !== "string" && typeof children !== "number") {
-      return [];
-    }
-
     let commaCount = 0;
     return children
-      .toString()
       .split("")
       .map((char, index) => ({
         id: char === "," ? `comma-${++commaCount}` : `${index}`,
@@ -50,9 +44,9 @@ const AnimatedText = (props: TextProps) => {
             .mass(springConfig.mass)
             .stiffness(springConfig.stiffness)}
         >
-          <Animated.Text {...rest} style={rest.style}>
+          <Text {...rest} style={rest.style}>
             {char}
-          </Animated.Text>
+          </Text>
         </Animated.View>
       ))}
     </Animated.View>
