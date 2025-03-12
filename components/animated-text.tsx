@@ -14,6 +14,12 @@ const springConfig = {
   stiffness: 180,
 };
 
+// create a reusable layout transition
+const springyLayout = LinearTransition.springify()
+  .damping(springConfig.damping)
+  .mass(springConfig.mass)
+  .stiffness(springConfig.stiffness);
+
 const AnimatedText = ({ children, ...rest }: TextProps & { children: string }) => {
 
   const splitText: CharacterObject[] = useMemo(() => {
@@ -28,10 +34,7 @@ const AnimatedText = ({ children, ...rest }: TextProps & { children: string }) =
 
   return (
     <Animated.View
-      layout={LinearTransition.springify()
-        .damping(springConfig.damping)
-        .mass(springConfig.mass)
-        .stiffness(springConfig.stiffness)}
+      layout={springyLayout}
       style={styles.container}
     >
       {splitText.map(({ char, id }, index) => (
@@ -39,10 +42,7 @@ const AnimatedText = ({ children, ...rest }: TextProps & { children: string }) =
           entering={FadeIn.duration(100)}
           exiting={FadeOut.duration(100)}
           key={id}
-          layout={LinearTransition.springify()
-            .damping(springConfig.damping)
-            .mass(springConfig.mass)
-            .stiffness(springConfig.stiffness)}
+          layout={springyLayout}
         >
           <Text {...rest} style={rest.style}>
             {char}
