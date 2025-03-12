@@ -52,6 +52,12 @@ export default function AppLayout() {
 					}}
 				/>
 				<Stack.Screen
+					name="slider"
+					options={{
+						header: () => <HeaderLayout title="Signature" />,
+					}}
+				/>
+				<Stack.Screen
 					name="chat"
 					options={{
 						headerShown: false,
