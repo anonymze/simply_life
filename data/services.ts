@@ -61,10 +61,10 @@ const services: Service[] = [
 	},
 	{
 		id: 8,
-		name: "...",
+		name: "numbers",
 		description: "Gérez vos billets à l'extérieur",
 		icon: require("@/assets/images/logo.png"),
-		link: null,
+		link: "/number",
 		theme: "text-gray-700",
 	},
 	{
