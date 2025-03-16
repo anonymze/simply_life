@@ -6,8 +6,8 @@ import React from "react";
 
 interface Props {
 	loaderComponent: React.ReactNode;
-	// TODO
-	DomComponent: React.ComponentType<{ dom: DOMProps }> & any;
+	// TODO: fix type
+	DomComponent: React.ComponentType<any>;
 	minimumDurationLoader?: number;
 }
 
