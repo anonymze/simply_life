@@ -20,7 +20,11 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	
 	// Create the plugin instance
-	const defaultLayoutPluginInstance = defaultLayoutPlugin();
+	const defaultLayoutPluginInstance = defaultLayoutPlugin({
+		renderToolbar: (Toolbar) => {
+			return <Toolbar/>;
+		},
+	});
 	
 	useEffect(() => {
 		// Set up PDF.js worker
