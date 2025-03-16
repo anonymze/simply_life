@@ -4,6 +4,7 @@ import "@/styles/app.css";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { onlineManager, QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Platform, AppState, AppStateStatus } from "react-native";
 import { focusManager } from "@tanstack/react-query";
 import * as Notifications from "expo-notifications";
@@ -69,21 +70,23 @@ export default function RootLayout() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<GestureHandlerRootView>
-				<StatusBar style="light" translucent />
-				<SafeAreaProvider>
-					<SafeAreaView className="flex-1 bg-primaryLight" edges={["right", "left", "top"]}>
-						<Stack
-							screenOptions={{
-								headerShown: false,
-								animation: Platform.OS === "ios" ? "simple_push" : "fade_from_bottom",
-								gestureEnabled: false,
-								fullScreenGestureEnabled: false,
-							}}
-						>
-							<Stack.Screen name="login" />
-						</Stack>
-					</SafeAreaView>
-				</SafeAreaProvider>
+				<KeyboardProvider>
+					<StatusBar style="light" translucent />
+					<SafeAreaProvider>
+						<SafeAreaView className="flex-1 bg-primaryLight" edges={["right", "left", "top"]}>
+							<Stack
+								screenOptions={{
+									headerShown: false,
+									animation: Platform.OS === "ios" ? "simple_push" : "fade_from_bottom",
+									gestureEnabled: false,
+									fullScreenGestureEnabled: false,
+								}}
+							>
+								<Stack.Screen name="login" />
+							</Stack>
+						</SafeAreaView>
+					</SafeAreaProvider>
+				</KeyboardProvider>
 			</GestureHandlerRootView>
 		</QueryClientProvider>
 	);

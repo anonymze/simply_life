@@ -56,6 +56,8 @@ eas env:create --scope project --name EXPO_PUBLIC_API_URL --value "https://api.e
 // realease build and choose device
 npx expo run:ios --configuration Release --device
 
+pnpx expo-doctor
+
 <!-- android switch icon -->
 <!-- Default Icon -->
 

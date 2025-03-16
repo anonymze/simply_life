@@ -1,13 +1,12 @@
-import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, Text, View, TextInput, } from "react-native";
-import Animated, { FadeInDown, FadeOutUp } from "react-native-reanimated";
+import Animated, { FadeInDown, FadeOutUp, useAnimatedStyle } from "react-native-reanimated";
+import { ActivityIndicator, Alert, Pressable, Text, View, TextInput, } from "react-native";
+import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
-import { getLocales, getCalendars } from 'expo-localization';
 import BackgroundLayout from "@/layouts/background-layout";
 import { loginQuery } from "@/api/queries/login-queries";
 import { useMutation } from "@tanstack/react-query";
 import { setStorageUserInfos } from "@/utils/store";
 import { useForm } from "@tanstack/react-form";
-import config from "@/tailwind.config";
 import { router } from "expo-router";
 import { Image } from "expo-image";
 import React from "react";
@@ -15,6 +14,7 @@ import { z } from "zod";
 
 
 export default function Login() {
+	const { height } = useReanimatedKeyboardAnimation();
 	const languageCode = getLanguageCodeLocale();
 	
 	const formSchema = React.useMemo(() => z.object({
@@ -42,7 +42,11 @@ export default function Login() {
 		},
 	});
 
-	
+	const animatedStyle = useAnimatedStyle(() => {
+		return {
+			transform: [{ translateY: height.value / 2 }],
+		};
+	});
 
 	const mutationLogin = useMutation({
 		mutationFn: loginQuery,
@@ -56,13 +60,8 @@ export default function Login() {
 	});
 
 	return (
-		<KeyboardAvoidingView
-			behavior={Platform.OS === "ios" ? "padding" : "height"}
-			style={{ flex: 1, backgroundColor: config.theme.extend.colors.background }}
-			keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
-		>
 			<BackgroundLayout>
-				<View className="flex-1 items-center justify-center gap-3 p-6">
+				<Animated.View className="flex-1 items-center justify-center gap-3 p-6" style={animatedStyle}>
 					<Image
 						source={require("@/assets/images/logo-full.png")}
 						style={{ height: 80, width: 200 }}
@@ -126,8 +125,7 @@ export default function Login() {
 							<Text className="text-center text-white">{i18n[languageCode]("BUTTON_LOGIN")}</Text>
 						)}
 					</Pressable>
-				</View>
+				</Animated.View>
 			</BackgroundLayout>
-		</KeyboardAvoidingView>
 	);
 }

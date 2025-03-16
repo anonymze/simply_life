@@ -33,7 +33,7 @@ export default {
 					apiKey: "AIzaSyDS8h4LEfphnaXei8dCRdFfoYQDNPDZ1wo",
 				},
 			},
-			softwareKeyboardLayoutMode: "pan",
+			// softwareKeyboardLayoutMode: "pan",
 			intentFilters: [
 				{
 					action: "VIEW",

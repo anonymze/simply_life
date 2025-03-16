@@ -54,6 +54,7 @@
     "react-native": "0.76.7",
     "react-native-app-icon-changer": "^1.1.0",
     "react-native-gesture-handler": "~2.20.2",
+    "react-native-keyboard-controller": "^1.16.7",
     "react-native-maps": "1.18.0",
     "react-native-mmkv": "^3.2.0",
     "react-native-reanimated": "~3.16.2",
