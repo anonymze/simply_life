@@ -41,7 +41,7 @@ export function DOMLoaderComponent({ text }: { text: string }) {
 	return (
 		<Animated.View
 			exiting={FadeOut.duration(600)}
-			className="absolute inset-0 z-10 flex items-center justify-center bg-background"
+			className="absolute inset-0 z-50 flex items-center justify-center bg-background"
 		>
 			<ActivityIndicator size="large" color={config.theme.extend.colors.primary} />
 			<Text className="mt-4 font-medium text-black">{text}</Text>
