@@ -1,2 +1,3 @@
-CFBundleDisplayName = "こんにちは";
-NSContactsUsageDescription = "日本語のこれらの言葉";
+CFBundleDisplayName = "Simply Life";
+NSContactsUsageDescription = "Simplifier votre vie professionnelle.";
+NSCameraUsageDescription = "Permet Simply Life d'accéder à votre caméra.";
