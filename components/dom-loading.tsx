@@ -1,3 +1,4 @@
+import type { DOMProps } from "expo/dom";
 import { sleep } from "@/utils/helper";
 import { View } from "react-native";
 import React from "react";
@@ -5,19 +6,19 @@ import React from "react";
 
 interface Props {
 	loaderComponent: React.ReactNode;
-	DomComponent: any;
+	// TODO
+	DomComponent: React.ComponentType<{ dom: DOMProps }> & any;
 	minimumDurationLoader?: number;
 }
 
-export default function DOMLoading({ loaderComponent, domComponent, minimumDurationLoader = 800 }: Props) {
+export default function DOMLoading({ loaderComponent, DomComponent, minimumDurationLoader = 800 }: Props) {
 	const [loading, setLoading] = React.useState(false);
 	const durationRef = React.useRef(0);
-	const DomComponent = domComponent;
 
 	return (
 		<View className="flex-1">
 			{loading && loaderComponent}
-			<DomComponent
+			<DomComponent 
 				dom={{
 					onLayout: () => {
 						durationRef.current = Date.now();

@@ -1,3 +1,6 @@
 CFBundleDisplayName = "Simply Life";
 NSContactsUsageDescription = "Simplifier votre vie professionnelle.";
-NSCameraUsageDescription = "Permet Simply Life d'accéder à votre caméra.";
+NSCameraUsageDescription = "Autoriser Simply Life d'accéder à votre caméra.";
+NSMicrophoneUsageDescription = "Autoriser Simply Life à utiliser votre microphone.";
+NSPhotoLibraryUsageDescription = "Autoriser Simply Life à accéder à votre bibliothèque de photos.";
+NSSpeechRecognitionUsageDescription = "Autoriser Simply Life à utiliser la reconnaissance vocale.";

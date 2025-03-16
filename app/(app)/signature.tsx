@@ -20,7 +20,7 @@ export default function Page() {
 						<Text className="mt-4 font-medium text-black">Chargement du PDF...</Text>
 					</Animated.View>
 				}
-				domComponent={SignPdf}
+				DomComponent={SignPdf}
 			/>
 		</BackgroundLayout>
 	);

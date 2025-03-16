@@ -1,13 +1,14 @@
 "use dom";
 
-import React, { useRef } from "react";
-import { Viewer, Worker, SpecialZoomLevel } from "@react-pdf-viewer/core";
+import React from "react";
+import type { DOMProps } from "expo/dom";
 // import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
-export default function SignPdf({ dom , hello}: { dom: import("expo/dom").DOMProps, hello: string }) {
+// dom props is needed otherwise the component crash
+export default function SignPdf({ hello }: { dom: DOMProps; hello: string }) {
 	return (
 		<div>
 			<h1>gzergregerg</h1>
@@ -20,5 +21,5 @@ export default function SignPdf({ dom , hello}: { dom: import("expo/dom").DOMPro
 			<p>egzergrgez</p>
 			<p>egzergrgez</p>
 		</div>
-	);                     
+	);
 }
