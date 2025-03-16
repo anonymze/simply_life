@@ -37,7 +37,7 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 					} = slots;
 
 					return (
-						<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "90%", width: "90%", backgroundColor: "red" }}>
+						<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%", width: "100%" }}>
 							oki
 						</div>
 					);
