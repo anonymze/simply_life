@@ -148,9 +148,13 @@ const ToolbarComponent = (
 						`}
 						</style>
 						<div className="flex h-full w-full items-center justify-between px-4">
-							<div className="flex items-center">
-								<div className="flex items-center gap-2">
-									<CurrentPageLabel /> <span> / </span> <NumberOfPages />
+							<div className="flex items-center justify-center gap-0.5">
+								<div className="w-[2ch]">
+									<CurrentPageLabel />
+								</div>
+								<div className="w-[1.7ch]">/</div>
+								<div className="w-[2ch]">
+									<NumberOfPages />
 								</div>
 							</div>
 							<div className="flex items-center font-bold">
