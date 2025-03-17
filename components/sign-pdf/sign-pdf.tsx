@@ -152,7 +152,7 @@ const ToolbarComponent = (
 								<div className="w-[2ch]">
 									<CurrentPageLabel />
 								</div>
-								<div className="w-[1.7ch]">/</div>
+								<div className="w-[0.9rem]">/</div>
 								<div className="w-[2ch]">
 									<NumberOfPages />
 								</div>
