@@ -1,13 +1,16 @@
 "use dom";
 
-import React, { useState, useEffect, useRef } from "react";
-import type { DOMProps } from "expo/dom";
-import { Viewer, Worker } from "@react-pdf-viewer/core";
-import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
-import * as pdfjsLib from "pdfjs-dist";
-
+import "@/styles/app.css";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "./sign-pdf-layout.css";
+
+import React, { useState, useEffect, useRef } from "react";
+import type { DOMProps } from "expo/dom";
+import { ScrollMode, Viewer, Worker, SpecialZoomLevel } from "@react-pdf-viewer/core";
+import { defaultLayoutPlugin, ToolbarProps } from "@react-pdf-viewer/default-layout";
+import { scrollModePlugin } from "@react-pdf-viewer/scroll-mode";
+import * as pdfjsLib from "pdfjs-dist";
+import config from "@/tailwind.config";
 
 // dom props is needed otherwise the component crash
 export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
@@ -18,95 +21,16 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 	const [isChecking, setIsChecking] = useState(true);
 	const [signatureImage, setSignatureImage] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const [currentScrollMode, setCurrentScrollMode] = useState<ScrollMode>(ScrollMode.Page);
 
-	// Create the plugin instance
+	// THERE ARE HOOK CALLS DON'T BE FOOLED
+	// add the scroll mode plugin
+	const scrollModePluginInstance = scrollModePlugin();
+
+	// add the layout plugin instance
 	const defaultLayoutPluginInstance = defaultLayoutPlugin({
-		sidebarTabs: (defaultTabs) => [],
-		renderToolbar: (Toolbar) => (
-			<Toolbar>
-				{(slots) => {
-					const {
-						CurrentPageInput,
-						GoToNextPage,
-						GoToPreviousPage,
-						NumberOfPages,
-						ShowSearchPopover,
-						Zoom,
-						ZoomIn,
-						ZoomOut,
-					} = slots;
-
-					return (
-						<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%", width: "100%" }}>
-							oki
-						</div>
-					);
-
-					return (
-						<div style={{ 
-							padding: "8px", 
-							borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-							backgroundColor: "#f8f9fa",  // Light gray background
-							borderRadius: "4px",
-							boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-						}}>
-							{/* Custom header */}
-							<div
-								style={{
-									display: "flex",
-									justifyContent: "space-between",
-									alignItems: "center",
-									marginBottom: "8px",
-									padding: "4px 0",
-									borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-								}}
-							>
-								<h3 style={{ margin: 0, fontSize: "16px", fontWeight: "bold" }}>Document Viewer</h3>
-								{hasSignatureFields && (
-									<div
-										style={{
-											backgroundColor: "#4CAF50",
-											color: "white",
-											padding: "4px 8px",
-											borderRadius: "4px",
-											fontSize: "12px",
-										}}
-									>
-										Signature Required
-									</div>
-								)}
-							</div>
-
-							{/* Toolbar controls */}
-							<div
-								style={{
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "space-between",
-									width: "100%",
-								}}
-							>
-								<div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-									<ShowSearchPopover />
-									<div style={{ width: "1px", height: "24px", backgroundColor: "rgba(0, 0, 0, 0.1)" }} />
-									<ZoomOut />
-									<Zoom />
-									<ZoomIn />
-								</div>
-
-								<div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-									<GoToPreviousPage />
-									<div style={{ display: "flex", alignItems: "center" }}>
-										<CurrentPageInput /> / <NumberOfPages />
-									</div>
-									<GoToNextPage />
-								</div>
-							</div>
-						</div>
-					);
-				}}
-			</Toolbar>
-		),
+		sidebarTabs: (_) => [],
+		renderToolbar: ToolbarComponent,
 	});
 
 	useEffect(() => {
@@ -206,7 +130,7 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 	};
 
 	return (
-		<div style={{ flex: 1 }}>
+		<div style={{ flex: 1, marginTop: "2.5rem" }}>
 			<div style={{ padding: "10px", background: "#f0f0f0" }}>
 				{isChecking ? (
 					<p>Checking for fillable fields...</p>
@@ -262,9 +186,165 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 				)}
 			</div>
 
-			<Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-				<Viewer fileUrl={pdfUrl} plugins={[defaultLayoutPluginInstance]} />
-			</Worker>
+			<div style={{ height: "calc(100vh - 200px)", overflow: "hidden" }}>
+				<Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+					<Viewer 
+						fileUrl={pdfUrl} 
+						plugins={[defaultLayoutPluginInstance, scrollModePluginInstance]} 
+						scrollMode={currentScrollMode}
+						defaultScale={SpecialZoomLevel.PageFit}
+					/>
+				</Worker>
+			</div>
 		</div>
 	);
 }
+
+const ToolbarComponent = (Toolbar: (props: ToolbarProps) => React.ReactElement) => {
+	return (
+		<Toolbar>
+		{(slots) => {
+			const {
+				GoToNextPage,
+				GoToPreviousPage,
+				NumberOfPages,
+				CurrentPageLabel,
+				ZoomIn,
+				ZoomOut,
+			} = slots;
+
+			return (
+				<>
+					<style>
+						{`
+							.rpv-default-layout__toolbar {
+								--rpv-default-layout__toolbar-background-color: ${config.theme.extend.colors.primary};
+								--rpv-default-layout__toolbar-text-color: #fff;
+							}
+						`}
+					</style>
+					<div className="flex h-full w-full items-center justify-between px-4">
+						<div className="flex items-center gap-2">
+							<CurrentPageLabel /> <span> / </span> <NumberOfPages />
+						</div>
+						<div className="flex items-center gap-1">
+							<GoToPreviousPage>
+								{(props) => (
+									<button onClick={props.onClick} className="rounded px-2 py-1 text-white active:bg-black/25">
+										<PreviousPageIcon />
+									</button>
+								)}
+							</GoToPreviousPage>
+
+							<GoToNextPage>
+								{(props) => (
+									<button onClick={props.onClick} className="rounded px-2 py-1 text-white active:bg-black/25">
+										<NextPageIcon />
+									</button>
+								)}
+							</GoToNextPage>
+						</div>
+						<div className="flex items-center gap-2">
+							<ZoomOut>
+								{(props) => (
+									<button onClick={props.onClick} className="rounded px-2 py-1 text-white active:bg-black/25">
+										<ZoomOutIcon />
+									</button>
+								)}
+							</ZoomOut>
+							<ZoomIn>
+								{(props) => (
+									<button onClick={props.onClick} className="rounded px-2 py-1 text-white active:bg-black/25">
+										<ZoomInIcon />
+									</button>
+								)}
+							</ZoomIn>
+						</div>
+					</div>
+				</>
+			);
+		}}
+	</Toolbar>
+	);
+};
+
+const ZoomInIcon = () => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			className="lucide lucide-zoom-in"
+		>
+			<circle cx="11" cy="11" r="8" />
+			<line x1="21" x2="16.65" y1="21" y2="16.65" />
+			<line x1="11" x2="11" y1="8" y2="14" />
+			<line x1="8" x2="14" y1="11" y2="11" />
+		</svg>
+	);
+};
+
+const ZoomOutIcon = () => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			className="lucide lucide-zoom-out"
+		>
+			<circle cx="11" cy="11" r="8" />
+			<line x1="21" x2="16.65" y1="21" y2="16.65" />
+			<line x1="8" x2="14" y1="11" y2="11" />
+		</svg>
+	);
+};
+
+const NextPageIcon = () => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			className="lucide lucide-chevron-down"
+		>
+			<path d="m6 9 6 6 6-6" />
+		</svg>
+	);
+};
+
+const PreviousPageIcon = () => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			className="lucide lucide-chevron-up"
+		>
+			<path d="m18 15-6-6-6 6" />
+		</svg>
+	);
+};

@@ -22,6 +22,7 @@ export function DOMLoading({ loaderComponent, DomComponent, minimumDurationLoade
 			{loading && loaderComponent}
 			<DomComponent
 				dom={{
+					scrollEnabled: true,
 					onLayout: () => {
 						durationRef.current = Date.now();
 						setLoading(true);

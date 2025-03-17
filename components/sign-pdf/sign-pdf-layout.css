@@ -1482,9 +1482,9 @@
 :root {
 	--rpv-default-layout__body-background-color: #fff;
 	--rpv-default-layout__container-border-color: rgba(0, 0, 0, 0.1);
-	--rpv-default-layout__toolbar-background-color: #0b45c2;
+	--rpv-default-layout__toolbar-background-color: #fff;
 	/* HERE */
-	--rpv-default-layout__toolbar-text-color: #fff;
+	--rpv-default-layout__toolbar-text-color: #000;
 	--rpv-default-layout__toolbar-border-bottom-color: rgba(0, 0, 0, 0.1);
 	--rpv-default-layout__sidebar-border-color: rgba(0, 0, 0, 0.2);
 	--rpv-default-layout__sidebar--opened-background-color: #fff;
@@ -1515,17 +1515,16 @@
 }
 
 .rpv-default-layout__toolbar {
+	position: fixed;
+	top: 0;
+	overflow: hidden;
+	display: flex;
 	align-items: center;
+	width: 100%;
+	z-index: 10;
+	height: 2.5rem;
 	background-color: var(--rpv-default-layout__toolbar-background-color);
 	color: var(--rpv-default-layout__toolbar-text-color);
-	/* border-bottom: 1px solid var(--rpv-default-layout__toolbar-border-bottom-color); */
-	display: flex;
-	left: 0;
-	position: absolute;
-	top: 0;
-	height: 2.5rem;
-	width: 100%;
-	z-index: 1
 }
 
 .rpv-default-layout__sidebar {
@@ -1617,4 +1616,87 @@
 
 .rpv-default-layout__sidebar-content--rtl {
 	border-right: 1px solid var(--rpv-default-layout__sidebar-content--opened-border-color)
+}
+
+/* Fix for scrolling issues */
+.pdf-viewer-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+	position: relative;
+}
+
+.pdf-viewer-container .rpv-core__viewer {
+	flex: 1;
+	overflow: hidden;
+	position: relative;
+}
+
+.pdf-viewer-container .rpv-core__viewer-container {
+	height: 100%;
+	position: relative;
+}
+
+.pdf-viewer-container .rpv-core__inner-container {
+	height: 100%;
+	position: relative;
+}
+
+.pdf-viewer-container .rpv-core__inner-page {
+	margin: 0 auto;
+}
+
+/* Ensure the scroll container has proper dimensions */
+.pdf-viewer-container .rpv-core__scroll-container {
+	height: 100%;
+	overflow: auto !important;
+	position: relative;
+	-webkit-overflow-scrolling: touch;
+}
+
+/* Fix for mobile scrolling */
+@media (max-width: 768px) {
+	.pdf-viewer-container .rpv-core__scroll-container {
+		-webkit-overflow-scrolling: touch;
+	}
+}
+
+/* Fix for default layout */
+.rpv-default-layout__container {
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.rpv-default-layout__main {
+	flex: 1;
+	overflow: hidden;
+	position: relative;
+}
+
+/* Fix for page container */
+.rpv-core__page-layer {
+	position: relative;
+}
+
+/* Fix for page navigation */
+.rpv-core__page-navigation {
+	position: absolute;
+	bottom: 16px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1;
+}
+
+/* Fix for toolbar */
+.rpv-default-layout__toolbar {
+	padding: 4px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Fix for page container */
+.rpv-core__page-container {
+	margin: 8px auto;
 }
