@@ -10,4 +10,6 @@ export default {
 	PDF_LOADING: "Chargement du PDF...",
 	SESSION_EXPIRED: "Session expirée",
 	SESSION_EXPIRED_MESSAGE: "Veuillez vous reconnecter",
+	SIGNATURE: "Signature",
+	SIGNATURES: "Signatures",
 };

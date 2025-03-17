@@ -10,13 +10,15 @@ import { Viewer, Worker, SpecialZoomLevel } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin, ToolbarProps } from "@react-pdf-viewer/default-layout";
 import * as pdfjsLib from "pdfjs-dist";
 import config from "@/tailwind.config";
+import { ActivityIndicator } from "react-native";
+import { I18n } from "@/types/i18n";
+import { i18n } from "@/i18n/translations";
 
 // dom props is needed otherwise the component crash
-export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
+export default function SignPdf({ dom, languageCode }: { dom: DOMProps; languageCode: I18n }) {
 	// Sample PDF URL - you can replace with your own
 	const [pdfUrl, setPdfUrl] = useState(require("@/assets/pdfs/adobe.pdf"));
-	const [hasFormFields, setHasFormFields] = useState(false);
-	const [hasSignatureFields, setHasSignatureFields] = useState(false);
+	const [signatureFieldCount, setSignatureFieldCount] = useState(0); // Only track signature field count
 	const [isChecking, setIsChecking] = useState(true);
 	const [signatureImage, setSignatureImage] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -31,18 +33,20 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 	// add the layout plugin instance
 	const defaultLayoutPluginInstance = defaultLayoutPlugin({
 		sidebarTabs: (_) => [],
-		renderToolbar: ToolbarComponent,
+		renderToolbar: (props) => ToolbarComponent(props, isChecking, signatureFieldCount, languageCode),
 	});
+
+	console.log(signatureFieldCount);
 
 	useEffect(() => {
 		// Set up PDF.js worker
-		pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
+		// pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
 
-		// Function to check for form fields
-		const checkForFormFields = async () => {
+		// Function to check for signature fields
+		const checkForSignatureFields = async () => {
 			try {
 				setIsChecking(true);
-				console.log("Loading PDF to check for form fields...");
+				// Loading PDF to check for signature fields
 
 				// For local files, we need to handle them differently
 				let pdfData;
@@ -59,11 +63,8 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 				const loadingTask = pdfjsLib.getDocument(pdfData);
 				const pdfDocument = await loadingTask.promise;
 
-				console.log("PDF loaded, checking for form fields...");
-
-				// Get the form fields using getAnnotations on each page
-				let foundFormFields = false;
-				let foundSignatureFields = false;
+				// PDF loaded, checking for signature fields...
+				let totalSignatureFields = 0;
 
 				// Check each page for annotations (which include form fields)
 				for (let i = 1; i <= pdfDocument.numPages; i++) {
@@ -73,42 +74,26 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 					// Form fields are typically annotations with the 'Widget' subtype
 					const formFieldAnnotations = annotations.filter((annotation) => annotation.subtype === "Widget");
 
-					if (formFieldAnnotations.length > 0) {
-						console.log(`Found ${formFieldAnnotations.length} form fields on page ${i}`);
-						foundFormFields = true;
+					// Check for signature fields
+					const signatureFields = formFieldAnnotations.filter(
+						(annotation) =>
+							annotation.fieldType === "Sig" ||
+							(annotation.fieldName && annotation.fieldName.toLowerCase().includes("signature")),
+					);
 
-						// Check for signature fields
-						const signatureFields = formFieldAnnotations.filter(
-							(annotation) =>
-								annotation.fieldType === "Sig" ||
-								(annotation.fieldName && annotation.fieldName.toLowerCase().includes("signature")),
-						);
-
-						if (signatureFields.length > 0) {
-							console.log(`Found ${signatureFields.length} signature fields on page ${i}`);
-							foundSignatureFields = true;
-						}
-					}
+					if (signatureFields.length > 0) totalSignatureFields += signatureFields.length;
 				}
 
-				setHasFormFields(foundFormFields);
-				setHasSignatureFields(foundSignatureFields);
-
-				if (foundFormFields) {
-					console.log("Form fields found!");
-				} else {
-					console.log("No form fields found in this PDF");
-				}
+				setSignatureFieldCount(totalSignatureFields);
 			} catch (error) {
-				console.error("Error checking for form fields:", error);
-				setHasFormFields(false);
-				setHasSignatureFields(false);
+				console.error("Error checking for signature fields:", error);
+				setSignatureFieldCount(0);
 			} finally {
 				setIsChecking(false);
 			}
 		};
 
-		checkForFormFields();
+		checkForSignatureFields();
 	}, [pdfUrl]);
 
 	const handleSignatureUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,78 +117,21 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 
 	return (
 		<div style={{ height: "100dvh", width: "100%" }}>
-			{/* <div style={{ padding: "10px", background: "#f0f0f0" }}>
-				{isChecking ? (
-					<p>Checking for fillable fields...</p>
-				) : hasFormFields ? (
-					<div>
-						<p style={{ color: "green" }}>This PDF has fillable fields!</p>
-						{hasSignatureFields && (
-							<div>
-								<p style={{ fontWeight: "bold" }}>Signature fields detected!</p>
-								<button
-									onClick={triggerFileInput}
-									style={{
-										padding: "8px 16px",
-										backgroundColor: "#4CAF50",
-										color: "white",
-										border: "none",
-										borderRadius: "4px",
-										cursor: "pointer",
-										marginTop: "8px",
-									}}
-								>
-									Upload Signature Image
-								</button>
-								<input
-									ref={fileInputRef}
-									type="file"
-									accept="image/*"
-									onChange={handleSignatureUpload}
-									style={{ display: "none" }}
-								/>
-								{signatureImage && (
-									<div style={{ marginTop: "10px" }}>
-										<p>Signature Preview:</p>
-										<img
-											src={signatureImage}
-											alt="Signature"
-											style={{
-												maxWidth: "200px",
-												maxHeight: "100px",
-												border: "1px solid #ccc",
-											}}
-										/>
-										<p style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
-											This signature can be placed in the signature fields of this PDF.
-										</p>
-									</div>
-								)}
-							</div>
-						)}
-					</div>
-				) : (
-					<p>No fillable fields detected in this PDF.</p>
-				)}
-			</div> */}
-
 			<div style={{ height: "100%" }}>
 				<Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-					<Viewer
-						fileUrl={pdfUrl}
-						plugins={[defaultLayoutPluginInstance]}
-						onZoom={() => {
-							console.log("zooming");
-						}}
-						defaultScale={SpecialZoomLevel.PageFit}
-					/>
+					<Viewer fileUrl={pdfUrl} plugins={[defaultLayoutPluginInstance]} defaultScale={SpecialZoomLevel.PageFit} />
 				</Worker>
 			</div>
 		</div>
 	);
 }
 
-const ToolbarComponent = (Toolbar: (props: ToolbarProps) => React.ReactElement) => {
+const ToolbarComponent = (
+	Toolbar: (props: ToolbarProps) => React.ReactElement,
+	isChecking: boolean,
+	signatureFieldCount: number,
+	languageCode: I18n,
+) => {
 	return (
 		<Toolbar>
 			{(slots) => {
@@ -220,8 +148,17 @@ const ToolbarComponent = (Toolbar: (props: ToolbarProps) => React.ReactElement) 
 						`}
 						</style>
 						<div className="flex h-full w-full items-center justify-between px-4">
-							<div className="flex items-center gap-2 w-14">
-								<CurrentPageLabel /> <span> / </span> <NumberOfPages />
+							<div className="flex items-center">
+								<div className="flex items-center gap-2">
+									<CurrentPageLabel /> <span> / </span> <NumberOfPages />
+								</div>
+							</div>
+							<div className="flex items-center font-bold">
+								{isChecking ? (
+									<ActivityIndicator />
+								) : (
+									`${signatureFieldCount} ${i18n[languageCode](signatureFieldCount > 1 ? "SIGNATURES" : "SIGNATURE")}`
+								)}
 							</div>
 							<div className="flex items-center gap-1">
 								<GoToPreviousPage>
@@ -229,7 +166,7 @@ const ToolbarComponent = (Toolbar: (props: ToolbarProps) => React.ReactElement) 
 										<button
 											disabled={props.isDisabled}
 											onClick={props.onClick}
-											className="rounded px-2 py-1 text-white active:bg-black/25 disabled:pointer-events-none disabled:opacity-50"
+											className="h-10 rounded px-2 text-white active:bg-black/25 disabled:pointer-events-none disabled:opacity-50"
 										>
 											<PreviousPageIcon />
 										</button>
@@ -241,7 +178,7 @@ const ToolbarComponent = (Toolbar: (props: ToolbarProps) => React.ReactElement) 
 										<button
 											disabled={props.isDisabled}
 											onClick={props.onClick}
-											className="rounded px-2 py-1 text-white active:bg-black/25 disabled:pointer-events-none disabled:opacity-50"
+											className="h-10 rounded px-2 text-white active:bg-black/25 disabled:pointer-events-none disabled:opacity-50"
 										>
 											<NextPageIcon />
 										</button>
@@ -251,14 +188,14 @@ const ToolbarComponent = (Toolbar: (props: ToolbarProps) => React.ReactElement) 
 							<div className="flex items-center gap-2">
 								<ZoomOut>
 									{(props) => (
-										<button onClick={props.onClick} className="rounded px-2 py-1.5 text-white active:bg-black/25">
+										<button onClick={props.onClick} className="h-10 rounded px-2 text-white active:bg-black/25">
 											<ZoomOutIcon />
 										</button>
 									)}
 								</ZoomOut>
 								<ZoomIn>
 									{(props) => (
-										<button onClick={props.onClick} className="rounded px-2 py-1.5 text-white active:bg-black/25">
+										<button onClick={props.onClick} className="h-10 rounded px-2 text-white active:bg-black/25">
 											<ZoomInIcon />
 										</button>
 									)}

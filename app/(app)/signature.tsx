@@ -11,7 +11,7 @@ export default function Page() {
 		<BackgroundLayout>
 			<DOMLoading
 				loaderComponent={<DOMLoaderComponent text={i18n[languageCode]("PDF_LOADING")} />}
-				DomComponent={SignPdf}
+				DomComponent={(props) => <SignPdf {...props} languageCode={languageCode} />}
 			/>
 		</BackgroundLayout>
 	);
