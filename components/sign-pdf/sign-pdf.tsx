@@ -6,9 +6,8 @@ import "./sign-pdf-layout.css";
 
 import React, { useState, useEffect, useRef } from "react";
 import type { DOMProps } from "expo/dom";
-import { ScrollMode, Viewer, Worker, SpecialZoomLevel } from "@react-pdf-viewer/core";
+import { Viewer, Worker, SpecialZoomLevel } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin, ToolbarProps } from "@react-pdf-viewer/default-layout";
-import { scrollModePlugin } from "@react-pdf-viewer/scroll-mode";
 import * as pdfjsLib from "pdfjs-dist";
 import config from "@/tailwind.config";
 
@@ -21,9 +20,11 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 	const [isChecking, setIsChecking] = useState(true);
 	const [signatureImage, setSignatureImage] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
-	const [currentScrollMode, setCurrentScrollMode] = useState<ScrollMode>(ScrollMode.Page);
 
 	// THERE ARE HOOK CALLS DON'T BE FOOLED
+	// Add the zoom plugin instance (need npm package @react-pdf-viewer/zoom)
+	// const zoomPluginInstance = zoomPlugin();
+
 	// create the scroll mode plugin (needed for enabling the scroll)
 	// const scrollModePluginInstance = scrollModePlugin();
 
@@ -191,7 +192,9 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 					<Viewer
 						fileUrl={pdfUrl}
 						plugins={[defaultLayoutPluginInstance]}
-						// scrollMode={currentScrollMode}
+						onZoom={() => {
+							console.log("zooming");
+						}}
 						defaultScale={SpecialZoomLevel.PageFit}
 					/>
 				</Worker>
