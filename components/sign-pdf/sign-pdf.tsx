@@ -24,8 +24,8 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 	const [currentScrollMode, setCurrentScrollMode] = useState<ScrollMode>(ScrollMode.Page);
 
 	// THERE ARE HOOK CALLS DON'T BE FOOLED
-	// add the scroll mode plugin
-	const scrollModePluginInstance = scrollModePlugin();
+	// create the scroll mode plugin (needed for enabling the scroll)
+	// const scrollModePluginInstance = scrollModePlugin();
 
 	// add the layout plugin instance
 	const defaultLayoutPluginInstance = defaultLayoutPlugin({
@@ -130,8 +130,8 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 	};
 
 	return (
-		<div style={{ flex: 1, marginTop: "2.5rem" }}>
-			<div style={{ padding: "10px", background: "#f0f0f0" }}>
+		<div style={{ height: "100dvh", width: "100%" }}>
+			{/* <div style={{ padding: "10px", background: "#f0f0f0" }}>
 				{isChecking ? (
 					<p>Checking for fillable fields...</p>
 				) : hasFormFields ? (
@@ -184,14 +184,14 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 				) : (
 					<p>No fillable fields detected in this PDF.</p>
 				)}
-			</div>
+			</div> */}
 
-			<div style={{ height: "calc(100vh - 200px)", overflow: "hidden" }}>
+			<div style={{ height: "100%" }}>
 				<Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-					<Viewer 
-						fileUrl={pdfUrl} 
-						plugins={[defaultLayoutPluginInstance, scrollModePluginInstance]} 
-						scrollMode={currentScrollMode}
+					<Viewer
+						fileUrl={pdfUrl}
+						plugins={[defaultLayoutPluginInstance]}
+						// scrollMode={currentScrollMode}
 						defaultScale={SpecialZoomLevel.PageFit}
 					/>
 				</Worker>
@@ -203,68 +203,69 @@ export default function SignPdf({ dom }: { dom: DOMProps; hello: string }) {
 const ToolbarComponent = (Toolbar: (props: ToolbarProps) => React.ReactElement) => {
 	return (
 		<Toolbar>
-		{(slots) => {
-			const {
-				GoToNextPage,
-				GoToPreviousPage,
-				NumberOfPages,
-				CurrentPageLabel,
-				ZoomIn,
-				ZoomOut,
-			} = slots;
+			{(slots) => {
+				const { GoToNextPage, GoToPreviousPage, NumberOfPages, CurrentPageLabel, ZoomIn, ZoomOut } = slots;
 
-			return (
-				<>
-					<style>
-						{`
+				return (
+					<>
+						<style>
+							{`
 							.rpv-default-layout__toolbar {
 								--rpv-default-layout__toolbar-background-color: ${config.theme.extend.colors.primary};
 								--rpv-default-layout__toolbar-text-color: #fff;
 							}
 						`}
-					</style>
-					<div className="flex h-full w-full items-center justify-between px-4">
-						<div className="flex items-center gap-2">
-							<CurrentPageLabel /> <span> / </span> <NumberOfPages />
-						</div>
-						<div className="flex items-center gap-1">
-							<GoToPreviousPage>
-								{(props) => (
-									<button onClick={props.onClick} className="rounded px-2 py-1 text-white active:bg-black/25">
-										<PreviousPageIcon />
-									</button>
-								)}
-							</GoToPreviousPage>
+						</style>
+						<div className="flex h-full w-full items-center justify-between px-4">
+							<div className="flex items-center gap-2 w-14">
+								<CurrentPageLabel /> <span> / </span> <NumberOfPages />
+							</div>
+							<div className="flex items-center gap-1">
+								<GoToPreviousPage>
+									{(props) => (
+										<button
+											disabled={props.isDisabled}
+											onClick={props.onClick}
+											className="rounded px-2 py-1 text-white active:bg-black/25 disabled:pointer-events-none disabled:opacity-50"
+										>
+											<PreviousPageIcon />
+										</button>
+									)}
+								</GoToPreviousPage>
 
-							<GoToNextPage>
-								{(props) => (
-									<button onClick={props.onClick} className="rounded px-2 py-1 text-white active:bg-black/25">
-										<NextPageIcon />
-									</button>
-								)}
-							</GoToNextPage>
+								<GoToNextPage>
+									{(props) => (
+										<button
+											disabled={props.isDisabled}
+											onClick={props.onClick}
+											className="rounded px-2 py-1 text-white active:bg-black/25 disabled:pointer-events-none disabled:opacity-50"
+										>
+											<NextPageIcon />
+										</button>
+									)}
+								</GoToNextPage>
+							</div>
+							<div className="flex items-center gap-2">
+								<ZoomOut>
+									{(props) => (
+										<button onClick={props.onClick} className="rounded px-2 py-1.5 text-white active:bg-black/25">
+											<ZoomOutIcon />
+										</button>
+									)}
+								</ZoomOut>
+								<ZoomIn>
+									{(props) => (
+										<button onClick={props.onClick} className="rounded px-2 py-1.5 text-white active:bg-black/25">
+											<ZoomInIcon />
+										</button>
+									)}
+								</ZoomIn>
+							</div>
 						</div>
-						<div className="flex items-center gap-2">
-							<ZoomOut>
-								{(props) => (
-									<button onClick={props.onClick} className="rounded px-2 py-1 text-white active:bg-black/25">
-										<ZoomOutIcon />
-									</button>
-								)}
-							</ZoomOut>
-							<ZoomIn>
-								{(props) => (
-									<button onClick={props.onClick} className="rounded px-2 py-1 text-white active:bg-black/25">
-										<ZoomInIcon />
-									</button>
-								)}
-							</ZoomIn>
-						</div>
-					</div>
-				</>
-			);
-		}}
-	</Toolbar>
+					</>
+				);
+			}}
+		</Toolbar>
 	);
 };
 
@@ -272,8 +273,8 @@ const ZoomInIcon = () => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
+			width="22"
+			height="22"
 			viewBox="0 0 24 24"
 			fill="none"
 			stroke="currentColor"
@@ -294,8 +295,8 @@ const ZoomOutIcon = () => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
+			width="22"
+			height="22"
 			viewBox="0 0 24 24"
 			fill="none"
 			stroke="currentColor"
