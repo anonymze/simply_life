@@ -5,7 +5,7 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import "./sign-pdf-layout.css";
 import "@react-pdf-viewer/zoom/lib/styles/index.css";
 
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import type { DOMProps } from "expo/dom";
 import { Viewer, Worker, SpecialZoomLevel } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin, ToolbarProps } from "@react-pdf-viewer/default-layout";
@@ -21,32 +21,40 @@ const workerUrl = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js"
 // dom props is needed otherwise the component crash
 export default function SignPdf({ dom, languageCode }: { dom: DOMProps; languageCode: I18n }) {
 	// Sample PDF URL - you can replace with your own
-	const [pdfUrl, setPdfUrl] = useState(require("@/assets/pdfs/adobe.pdf"));
-	const [isChecking, setIsChecking] = useState(true);
-	const [signatureImage, setSignatureImage] = useState<string | null>(null);
-	const fileInputRef = useRef<HTMLInputElement>(null);
-	const [signatureFields, setSignatureFields] = useState<SignatureField[]>([]);
-	const [fieldSignatures, setFieldSignatures] = useState<Record<string, string>>({});
-	const [scale, setScale] = useState<number>(1);
+	const [pdfUrl, setPdfUrl] = React.useState(require("@/assets/pdfs/adobe.pdf"));
+	const [checkingSignaturesFieldsPresence, setCheckingSignaturesFieldsPresence] = React.useState(true);
+	const [signatureImage, setSignatureImage] = React.useState<string | null>(null);
+	const fileInputRef = React.useRef<HTMLInputElement>(null);
+	const [signatureFields, setSignatureFields] = React.useState<SignatureField[]>([]);
+	const [fieldSignatures, setFieldSignatures] = React.useState<Record<string, string>>({});
+	const [scale, setScale] = React.useState<number>(1);
 
-	// Create the zoom plugin instance - we don't need this anymore since we'll use it through defaultLayoutPlugin
-	// const zoomPluginInstance = zoomPlugin();
-	// const { CurrentScale } = zoomPluginInstance;
+	const savePdf = React.useCallback(() => {
+		console.log("savePdf");
+	}, []);
 
+	// THESE ARE HOOKS DON'T BE FOOLED
 	// add the scale plugin
 	const pdfViewerStatePluginInstance = pdfViewerStatePlugin();
 
 	// add the layout plugin instance
 	const defaultLayoutPluginInstance = defaultLayoutPlugin({
 		sidebarTabs: (_) => [],
-		renderToolbar: (props) => ToolbarComponent(props, isChecking, signatureFields.length, languageCode),
+		renderToolbar: (props) =>
+			ToolbarComponent({
+				Toolbar: props,
+				isChecking: checkingSignaturesFieldsPresence,
+				signatureFieldCount: signatureFields.length,
+				languageCode,
+				savePdf,
+			}),
 	});
 
-	useEffect(() => {
+	React.useEffect(() => {
 		// Function to check for signature fields
 		const checkForSignatureFields = async () => {
 			try {
-				setIsChecking(true);
+				setCheckingSignaturesFieldsPresence(true);
 				// Loading PDF to check for signature fields
 
 				// For local files, we need to handle them differently
@@ -100,7 +108,7 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 				console.error("Error checking for signature fields:", error);
 				setSignatureFields([]);
 			} finally {
-				setIsChecking(false);
+				setCheckingSignaturesFieldsPresence(false);
 			}
 		};
 
@@ -194,12 +202,19 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 	);
 }
 
-const ToolbarComponent = (
-	Toolbar: (props: ToolbarProps) => React.ReactElement,
-	isChecking: boolean,
-	signatureFieldCount: number,
-	languageCode: I18n,
-) => {
+const ToolbarComponent = ({
+	Toolbar,
+	isChecking,
+	signatureFieldCount,
+	languageCode,
+	savePdf,
+}: {
+	Toolbar: (props: ToolbarProps) => React.ReactElement;
+	savePdf: () => void;
+	isChecking: boolean;
+	signatureFieldCount: number;
+	languageCode: I18n;
+}) => {
 	return (
 		<Toolbar>
 			{(slots) => {
@@ -275,7 +290,10 @@ const ToolbarComponent = (
 							</div>
 							<div className="flex items-center">
 								{/* weird fix with margin top to make it look centered */}
-								<button className="mt-[1px] rounded bg-white px-2 py-1 text-xs text-primary active:opacity-90">
+								<button
+									onClick={savePdf}
+									className="mt-[1px] rounded bg-white px-2 py-1 text-xs text-primary active:opacity-90"
+								>
 									{i18n[languageCode]("SAVE")}
 								</button>
 							</div>
