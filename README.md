@@ -29,6 +29,9 @@ eas credentials
 // native build on eas host (preview for internal testing with testFlight for exemple)
 eas build --profile preview
 
+// better for testflight
+npx testflight
+
 // build and submit (default to production i guess)
 eas build -s
 

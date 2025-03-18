@@ -8,8 +8,10 @@ export default {
 	ERROR_EMAIL_INVALID: "Correo electrónico inválido",
 	ERROR_PASSWORD_MIN_LENGTH: "La contraseña debe tener al menos 8 caracteres.",
 	PDF_LOADING: "Cargando PDF...",
+	SAVE: "Guardar",
 	SESSION_EXPIRED: "Sesión expirada",
 	SESSION_EXPIRED_MESSAGE: "Por favor, inicie sesión de nuevo",
+	SIGNATURE_HERE: "Firma aquí",
 	SIGNATURE: "Firma",
 	SIGNATURES: "Firmas",
 };

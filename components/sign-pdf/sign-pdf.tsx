@@ -3,6 +3,7 @@
 import "@/styles/app.css";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "./sign-pdf-layout.css";
+import "@react-pdf-viewer/zoom/lib/styles/index.css";
 
 import React, { useState, useEffect, useRef } from "react";
 import type { DOMProps } from "expo/dom";
@@ -13,35 +14,35 @@ import config from "@/tailwind.config";
 import { ActivityIndicator } from "react-native";
 import { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
+import { pdfViewerStatePlugin } from "./scale-plugin";
+
+const workerUrl = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
 
 // dom props is needed otherwise the component crash
 export default function SignPdf({ dom, languageCode }: { dom: DOMProps; languageCode: I18n }) {
 	// Sample PDF URL - you can replace with your own
 	const [pdfUrl, setPdfUrl] = useState(require("@/assets/pdfs/adobe.pdf"));
-	const [signatureFieldCount, setSignatureFieldCount] = useState(0); // Only track signature field count
 	const [isChecking, setIsChecking] = useState(true);
 	const [signatureImage, setSignatureImage] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const [signatureFields, setSignatureFields] = useState<SignatureField[]>([]);
+	const [fieldSignatures, setFieldSignatures] = useState<Record<string, string>>({});
+	const [scale, setScale] = useState<number>(1);
 
-	// THERE ARE HOOK CALLS DON'T BE FOOLED
-	// Add the zoom plugin instance (need npm package @react-pdf-viewer/zoom)
+	// Create the zoom plugin instance - we don't need this anymore since we'll use it through defaultLayoutPlugin
 	// const zoomPluginInstance = zoomPlugin();
+	// const { CurrentScale } = zoomPluginInstance;
 
-	// create the scroll mode plugin (needed for enabling the scroll)
-	// const scrollModePluginInstance = scrollModePlugin();
+	// add the scale plugin
+	const pdfViewerStatePluginInstance = pdfViewerStatePlugin();
 
 	// add the layout plugin instance
 	const defaultLayoutPluginInstance = defaultLayoutPlugin({
 		sidebarTabs: (_) => [],
-		renderToolbar: (props) => ToolbarComponent(props, isChecking, signatureFieldCount, languageCode),
+		renderToolbar: (props) => ToolbarComponent(props, isChecking, signatureFields.length, languageCode),
 	});
 
-	console.log(signatureFieldCount);
-
 	useEffect(() => {
-		// Set up PDF.js worker
-		// pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
-
 		// Function to check for signature fields
 		const checkForSignatureFields = async () => {
 			try {
@@ -64,7 +65,7 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 				const pdfDocument = await loadingTask.promise;
 
 				// PDF loaded, checking for signature fields...
-				let totalSignatureFields = 0;
+				let fields: SignatureField[] = [];
 
 				// Check each page for annotations (which include form fields)
 				for (let i = 1; i <= pdfDocument.numPages; i++) {
@@ -81,13 +82,23 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 							(annotation.fieldName && annotation.fieldName.toLowerCase().includes("signature")),
 					);
 
-					if (signatureFields.length > 0) totalSignatureFields += signatureFields.length;
+					fields.push(
+						...signatureFields.map((field) => ({
+							pageIndex: i - 1,
+							rect: {
+								left: field.rect[0],
+								top: field.rect[1],
+								width: field.rect[2] - field.rect[0],
+								height: field.rect[3] - field.rect[1],
+							},
+						})),
+					);
 				}
 
-				setSignatureFieldCount(totalSignatureFields);
+				setSignatureFields(fields);
 			} catch (error) {
 				console.error("Error checking for signature fields:", error);
-				setSignatureFieldCount(0);
+				setSignatureFields([]);
 			} finally {
 				setIsChecking(false);
 			}
@@ -96,32 +107,89 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 		checkForSignatureFields();
 	}, [pdfUrl]);
 
-	const handleSignatureUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleSignatureUpload = async (event: React.ChangeEvent<HTMLInputElement>, fieldId: string) => {
 		const file = event.target.files?.[0];
 		if (file) {
 			const reader = new FileReader();
 			reader.onload = (e) => {
 				const result = e.target?.result as string;
-				setSignatureImage(result);
-				console.log("Signature image uploaded");
+				setFieldSignatures((prev) => ({
+					...prev,
+					[fieldId]: result,
+				}));
 			};
 			reader.readAsDataURL(file);
 		}
 	};
 
-	const triggerFileInput = () => {
-		if (fileInputRef.current) {
-			fileInputRef.current.click();
-		}
-	};
-
 	return (
 		<div style={{ height: "100dvh", width: "100%" }}>
-			<div style={{ height: "100%" }}>
-				<Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-					<Viewer fileUrl={pdfUrl} plugins={[defaultLayoutPluginInstance]} defaultScale={SpecialZoomLevel.PageFit} />
-				</Worker>
-			</div>
+			<Worker workerUrl={workerUrl}>
+				<Viewer
+					fileUrl={pdfUrl}
+					plugins={[defaultLayoutPluginInstance, pdfViewerStatePluginInstance]}
+					defaultScale={SpecialZoomLevel.PageWidth}
+					onZoom={(e) => {
+						console.log("Current scale:", e.scale);
+						setScale(e.scale);
+					}}
+					onDocumentLoad={() => {
+						setScale(pdfViewerStatePluginInstance.getViewerState()?.scale ?? 1);
+					}}
+					renderPage={(props) => (
+						<div>
+							{props.canvasLayer.children}
+							{props.textLayer.children}
+							{signatureFields
+								.filter((field) => field.pageIndex === props.pageIndex)
+								.map((field, index) => {
+									const fieldId = `${field.pageIndex}-${index}`;
+									const signature = fieldSignatures[fieldId];
+
+									return (
+										<div
+											key={index}
+											style={{
+												position: "absolute",
+												left: `${field.rect.left * scale}px`,
+												top: `${field.rect.top * scale}px`,
+												width: `${field.rect.width * scale}px`,
+												height: `${field.rect.height * scale}px`,
+												minWidth: `${80 * scale}px`,
+												zIndex: 20,
+											}}
+										>
+											{signature ? (
+												<img src={signature} alt="Signature" className="h-full w-full object-cover" />
+											) : (
+												<label
+													htmlFor={`file-input-${fieldId}`}
+													className="flex h-full w-full items-center justify-center border-2 border-dashed"
+													style={{
+														borderColor: config.theme.extend.colors.primaryDark,
+														backgroundColor: config.theme.extend.colors.primary,
+													}}
+												>
+													<p style={{ fontSize: `${20 * scale}px` }} className="font-bold text-white">
+														{i18n[languageCode]("SIGNATURE_HERE")}
+													</p>
+												</label>
+											)}
+											<input
+												type="file"
+												accept="image/*"
+												multiple={false}
+												id={`file-input-${fieldId}`}
+												onChange={(e) => handleSignatureUpload(e, fieldId)}
+												className="hidden"
+											/>
+										</div>
+									);
+								})}
+						</div>
+					)}
+				/>
+			</Worker>
 		</div>
 	);
 }
@@ -147,7 +215,7 @@ const ToolbarComponent = (
 							}
 						`}
 						</style>
-						<div className="flex h-full w-full items-center justify-between px-4">
+						<div className="flex h-full w-full items-center justify-between px-3">
 							<div className="flex items-center justify-center gap-0.5">
 								<div className="w-[2ch]">
 									<CurrentPageLabel />
@@ -157,13 +225,13 @@ const ToolbarComponent = (
 									<NumberOfPages />
 								</div>
 							</div>
-							<div className="flex items-center font-bold">
+							{/* <div className="flex items-center text-sm font-bold">
 								{isChecking ? (
 									<ActivityIndicator />
 								) : (
 									`${signatureFieldCount} ${i18n[languageCode](signatureFieldCount > 1 ? "SIGNATURES" : "SIGNATURE")}`
 								)}
-							</div>
+							</div> */}
 							<div className="flex items-center gap-1">
 								<GoToPreviousPage>
 									{(props) => (
@@ -204,6 +272,12 @@ const ToolbarComponent = (
 										</button>
 									)}
 								</ZoomIn>
+							</div>
+							<div className="flex items-center">
+								{/* weird fix with margin top to make it look centered */}
+								<button className="mt-[1px] rounded bg-white px-2 py-1 text-xs text-primary active:opacity-90">
+									{i18n[languageCode]("SAVE")}
+								</button>
 							</div>
 						</div>
 					</>
@@ -292,4 +366,10 @@ const PreviousPageIcon = () => {
 			<path d="m18 15-6-6-6 6" />
 		</svg>
 	);
+};
+
+// Add this new type after the imports
+type SignatureField = {
+	pageIndex: number;
+	rect: { left: number; top: number; width: number; height: number };
 };
