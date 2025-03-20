@@ -1,12 +1,16 @@
+import { BaseButton, BorderlessButton, RectButton } from "react-native-gesture-handler";
 // @ts-expect-error
 import { setIcon, getActiveIcon, resetIcon } from "react-native-app-icon-changer";
+import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import ParallaxScrollView from "@/components/parallax-scroll-view";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import config from "@/tailwind.config";
 import { useEffect } from "react";
 
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export default function Page() {
 	useEffect(() => {
@@ -14,6 +18,10 @@ export default function Page() {
 
 		// resetIcon();
 	}, []);
+
+	const animatedStyle = useAnimatedStyle(() => ({
+		transform: [{ scale: withSpring(1) }]
+	}));
 
 	return (
 		<ParallaxScrollView

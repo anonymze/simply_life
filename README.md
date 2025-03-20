@@ -33,13 +33,14 @@ eas build --profile preview
 npx testflight
 
 // build and submit (default to production i guess)
-eas build -s
+eas build -s // npx testflight does the same as eas build -p ios -s
 
 // submit (latest) builds you have on eas expo
 eas submit --platform ios --latest
 
 // register devices to test internally (use .ipa (Ad Hoc) for exemple on the device registered)
 eas device:create
+eas device:list
 
 // create consistent alias url hosted
 eas deploy --alias dev

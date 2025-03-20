@@ -30,7 +30,7 @@ Notifications.setNotificationHandler({
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
 	fade: true,
-	duration: 500,
+	duration: 600,
 });
 
 // refetch on network change
