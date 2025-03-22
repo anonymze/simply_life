@@ -11,7 +11,6 @@ import { Viewer, Worker, SpecialZoomLevel } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin, ToolbarProps } from "@react-pdf-viewer/default-layout";
 import * as pdfjsLib from "pdfjs-dist";
 import config from "@/tailwind.config";
-import { ActivityIndicator } from "react-native";
 import { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
 import { pdfViewerStatePlugin } from "./scale-plugin";
@@ -23,14 +22,16 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 	// Sample PDF URL - you can replace with your own
 	const [pdfUrl, setPdfUrl] = React.useState(require("@/assets/pdfs/adobe.pdf"));
 	const [checkingSignaturesFieldsPresence, setCheckingSignaturesFieldsPresence] = React.useState(true);
-	const [signatureImage, setSignatureImage] = React.useState<string | null>(null);
-	const fileInputRef = React.useRef<HTMLInputElement>(null);
 	const [signatureFields, setSignatureFields] = React.useState<SignatureField[]>([]);
 	const [fieldSignatures, setFieldSignatures] = React.useState<Record<string, string>>({});
 	const [scale, setScale] = React.useState<number>(1);
 
 	const savePdf = React.useCallback(() => {
 		console.log("savePdf");
+
+
+
+
 	}, []);
 
 	// THESE ARE HOOKS DON'T BE FOOLED
@@ -138,7 +139,6 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 					plugins={[defaultLayoutPluginInstance, pdfViewerStatePluginInstance]}
 					defaultScale={SpecialZoomLevel.PageWidth}
 					onZoom={(e) => {
-						console.log("Current scale:", e.scale);
 						setScale(e.scale);
 					}}
 					onDocumentLoad={() => {
@@ -290,11 +290,13 @@ const ToolbarComponent = ({
 							</div>
 							<div className="flex items-center">
 								{/* weird fix with margin top to make it look centered */}
-								<button
+								<button								
 									onClick={savePdf}
-									className="mt-[1px] rounded bg-white px-2 py-1 text-xs text-primary active:opacity-90"
+									className="mb-0.5 bg-transparent p-1.5 group"
 								>
-									{i18n[languageCode]("SAVE")}
+									<span className="rounded bg-white px-2 py-1 text-xs text-primary group-active:opacity-80">
+										{i18n[languageCode]("SAVE")}
+									</span>
 								</button>
 							</div>
 						</div>
