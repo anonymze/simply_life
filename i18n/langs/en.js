@@ -7,6 +7,8 @@ export default {
 	ERROR_LOGIN_MESSAGE: "Check your credentials.",
 	ERROR_EMAIL_INVALID: "Invalid email",
 	ERROR_PASSWORD_MIN_LENGTH: "Password must be at least 8 characters long",
+	ERROR_PDF: "PDF error",
+	ERROR_PDF_MESSAGE: "Unable to save PDF",
 	PDF_LOADING: "Loading PDF...",
 	SAVE: "Save",
 	SESSION_EXPIRED: "Session expired",

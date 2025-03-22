@@ -14,6 +14,8 @@ import config from "@/tailwind.config";
 import { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
 import { pdfViewerStatePlugin } from "./scale-plugin";
+import { savePDFSignatureQuery } from "@/api/queries/signature-queries";
+import { ActivityIndicator } from "react-native";
 
 const workerUrl = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
 
@@ -24,14 +26,38 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 	const [checkingSignaturesFieldsPresence, setCheckingSignaturesFieldsPresence] = React.useState(true);
 	const [signatureFields, setSignatureFields] = React.useState<SignatureField[]>([]);
 	const [fieldSignatures, setFieldSignatures] = React.useState<Record<string, string>>({});
+	const [saving, setSaving] = React.useState(false);
 	const [scale, setScale] = React.useState<number>(1);
 
-	const savePdf = React.useCallback(() => {
-		console.log("savePdf");
+	const savePdf = React.useCallback(async () => {
+		try {
+			setSaving(true);
+			// Get the current viewer instance
+			const viewer = document.querySelector(".rpv-core__viewer");
+			if (!viewer) return;
 
+			// Get all canvas elements from the viewer
+			const canvases = viewer.querySelectorAll("canvas");
+			const pages = Array.from(canvases);
 
+			// Convert each canvas to base64
+			const base64Pages = await Promise.all(
+				pages.map(
+					(canvas) =>
+						new Promise<string>((resolve) => {
+							const base64 = canvas.toDataURL("image/png");
+							resolve(base64);
+						}),
+				),
+			);
 
-
+			await savePDFSignatureQuery({ file: base64Pages });
+			setSaving(false);
+		} catch (error) {
+			setSaving(false);
+			alert(i18n[languageCode]("ERROR_PDF_MESSAGE"));
+			return null;
+		}
 	}, []);
 
 	// THESE ARE HOOKS DON'T BE FOOLED
@@ -44,8 +70,9 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 		renderToolbar: (props) =>
 			ToolbarComponent({
 				Toolbar: props,
-				isChecking: checkingSignaturesFieldsPresence,
-				signatureFieldCount: signatureFields.length,
+				// isChecking: checkingSignaturesFieldsPresence,
+				// signatureFieldCount: signatureFields.length,
+				saving,
 				languageCode,
 				savePdf,
 			}),
@@ -204,16 +231,14 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 
 const ToolbarComponent = ({
 	Toolbar,
-	isChecking,
-	signatureFieldCount,
 	languageCode,
 	savePdf,
+	saving,
 }: {
 	Toolbar: (props: ToolbarProps) => React.ReactElement;
 	savePdf: () => void;
-	isChecking: boolean;
-	signatureFieldCount: number;
 	languageCode: I18n;
+	saving: boolean;
 }) => {
 	return (
 		<Toolbar>
@@ -289,15 +314,18 @@ const ToolbarComponent = ({
 								</ZoomIn>
 							</div>
 							<div className="flex items-center">
-								{/* weird fix with margin top to make it look centered */}
-								<button								
-									onClick={savePdf}
-									className="mb-0.5 bg-transparent p-1.5 group"
-								>
-									<span className="rounded bg-white px-2 py-1 text-xs text-primary group-active:opacity-80">
+								{saving ? (
+									<div className="w-20 py-1 text-center text-xs mt-1">
+										<span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+									</div>
+								) : (
+									<button
+										onClick={savePdf}
+										className="w-20 rounded bg-white py-1 text-xs text-primary active:opacity-80"
+									>
 										{i18n[languageCode]("SAVE")}
-									</span>
-								</button>
+									</button>
+								)}
 							</div>
 						</div>
 					</>

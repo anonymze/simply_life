@@ -7,6 +7,8 @@ export default {
 	ERROR_LOGIN_MESSAGE: "Verifique sus credenciales.",
 	ERROR_EMAIL_INVALID: "Correo electrónico inválido",
 	ERROR_PASSWORD_MIN_LENGTH: "La contraseña debe tener al menos 8 caracteres.",
+	ERROR_PDF: "Error PDF",
+	ERROR_PDF_MESSAGE: "No se puede guardar el PDF",
 	PDF_LOADING: "Cargando PDF...",
 	SAVE: "Guardar",
 	SESSION_EXPIRED: "Sesión expirada",
