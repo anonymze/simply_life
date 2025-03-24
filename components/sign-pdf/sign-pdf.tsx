@@ -15,7 +15,6 @@ import { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
 import { pdfViewerStatePlugin } from "./scale-plugin";
 import { savePDFSignatureQuery } from "@/api/queries/signature-queries";
-import { ActivityIndicator } from "react-native";
 
 const workerUrl = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
 
@@ -54,6 +53,7 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 			await savePDFSignatureQuery({ file: base64Pages });
 			setSaving(false);
 		} catch (error) {
+			console.log(error);
 			setSaving(false);
 			alert(i18n[languageCode]("ERROR_PDF_MESSAGE"));
 			return null;
@@ -265,13 +265,6 @@ const ToolbarComponent = ({
 									<NumberOfPages />
 								</div>
 							</div>
-							{/* <div className="flex items-center text-sm font-bold">
-								{isChecking ? (
-									<ActivityIndicator />
-								) : (
-									`${signatureFieldCount} ${i18n[languageCode](signatureFieldCount > 1 ? "SIGNATURES" : "SIGNATURE")}`
-								)}
-							</div> */}
 							<div className="flex items-center gap-1">
 								<GoToPreviousPage>
 									{(props) => (
@@ -314,18 +307,16 @@ const ToolbarComponent = ({
 								</ZoomIn>
 							</div>
 							<div className="flex items-center">
-								{saving ? (
-									<div className="w-20 py-1 text-center text-xs mt-1">
-										<span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
-									</div>
-								) : (
-									<button
-										onClick={savePdf}
-										className="w-20 rounded bg-white py-1 text-xs text-primary active:opacity-80"
-									>
-										{i18n[languageCode]("SAVE")}
-									</button>
-								)}
+								<button
+									onClick={savePdf}
+									className="flex w-20 h-6 items-center justify-center rounded bg-white text-xs text-primary active:opacity-80"
+								>
+									{saving ? (
+										<span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-white"></span>
+									) : (
+										<span>{i18n[languageCode]("SAVE")}</span>
+									)}
+								</button>
 							</div>
 						</div>
 					</>

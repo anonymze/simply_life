@@ -27,6 +27,7 @@ export default function Login() {
 	}), []);
 	
 	const form = useForm({
+		// TODO: remove defaults
 		defaultValues: {
 			email: "test@test.fr",
 			password: "12341234",
@@ -82,7 +83,7 @@ export default function Login() {
 									textContentType="oneTimeCode"
 									placeholder="test@email.com"
 									className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
-									value={field.state.value}
+									defaultValue={field.state.value}
 									onChangeText={field.handleChange}
 								/>
 								{field.state.meta.errors.length > 0 && (
@@ -103,7 +104,7 @@ export default function Login() {
 									textContentType="oneTimeCode"
 									placeholder="********"
 									className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
-									value={field.state.value}
+									defaultValue={field.state.value}
 									onChangeText={field.handleChange}
 								/>
 								{field.state.meta.errors.length > 0 && (

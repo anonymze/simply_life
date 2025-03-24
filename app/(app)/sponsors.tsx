@@ -4,7 +4,6 @@ import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomSheetSelect } from "@/components/bottom-sheet-select";
 import { getSponsorsQuery } from "@/api/queries/sponsors-queries";
-import { useNotification } from "@/context/push-notifications";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import AnimatedMapMarker from "@/components/animated-marker";
 import { SponsorCategory } from "@/types/sponsor";
@@ -19,7 +18,11 @@ export default function Page() {
 	const [selectedCategories, setSelectedCategories] = React.useState<SponsorCategory[]>([]);
 	const [input, setInput] = React.useState<string>("");
 	const mapRef = React.useRef<MapView>(null);
-	const { error: errorSponsors, isLoading: isLoadingSponsors, data: dataSponsors } = useQuery({
+	const {
+		error: errorSponsors,
+		isLoading: isLoadingSponsors,
+		data: dataSponsors,
+	} = useQuery({
 		queryKey: ["sponsors"],
 		queryFn: getSponsorsQuery,
 	});
@@ -41,9 +44,7 @@ export default function Page() {
 
 		return dataSponsors.docs.filter((sponsor) => {
 			// text search condition
-			const matchesSearch =
-				!hasSearchTerm ||
-				sponsor.name.toLowerCase().includes(searchTerm)
+			const matchesSearch = !hasSearchTerm || sponsor.name.toLowerCase().includes(searchTerm);
 
 			// category filter condition
 			const matchesCategory =
@@ -115,7 +116,6 @@ export default function Page() {
 					// 		}
 					// 	}
 					// }}
-					
 				>
 					{filteredSponsors.map(
 						(doc, idx) =>
