@@ -14,7 +14,6 @@ import config from "@/tailwind.config";
 import { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
 import { pdfViewerStatePlugin } from "./scale-plugin";
-import { savePDFSignatureQuery } from "@/api/queries/signature-queries";
 
 const workerUrl = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
 
@@ -50,7 +49,18 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 				),
 			);
 
-			await savePDFSignatureQuery({ file: base64Pages });
+			// Convert data to form-urlencoded format
+			const formData = new URLSearchParams();
+			formData.append('file', JSON.stringify(['hihi']));
+
+			await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/signature/pdf`, {
+				method: "POST",
+				body: formData,
+				mode: "cors",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+			});
 			setSaving(false);
 		} catch (error) {
 			console.log(error);
@@ -308,6 +318,7 @@ const ToolbarComponent = ({
 							</div>
 							<div className="flex items-center">
 								<button
+									disabled={saving}
 									onClick={savePdf}
 									className="flex w-20 h-6 items-center justify-center rounded bg-white text-xs text-primary active:opacity-80"
 								>

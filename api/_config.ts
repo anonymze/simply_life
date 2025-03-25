@@ -12,7 +12,7 @@ export const api = axios.create({
 	headers: {
 		Accept: "application/json",
 		"Content-Type": "application/json",
-		Origin: ORIGIN_MOBILE,
+		"X-Origin": ORIGIN_MOBILE,
 	},
 	// enables sending cookies with cross-origin requests - required for authentication
 	withCredentials: true,
