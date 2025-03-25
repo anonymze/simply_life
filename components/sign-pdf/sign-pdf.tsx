@@ -49,17 +49,22 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 				),
 			);
 
-			// Convert data to form-urlencoded format
+			// Create URLSearchParams object
 			const formData = new URLSearchParams();
-			formData.append('file', JSON.stringify(['hihi']));
 
+			// Add data to the form
+			base64Pages.forEach((page) => {
+				formData.append(`file[]`, page);
+			});
+
+			// Send the request
 			await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/signature/pdf`, {
-				method: "POST",
-				body: formData,
-				mode: "cors",
+				method: 'POST',
 				headers: {
-					"Content-Type": "application/x-www-form-urlencoded",
+					// Avoid preflight (it causes cors error...)
+					'Content-Type': 'application/x-www-form-urlencoded',
 				},
+				body: formData, // URLSearchParams object is automatically serialized
 			});
 			setSaving(false);
 		} catch (error) {
