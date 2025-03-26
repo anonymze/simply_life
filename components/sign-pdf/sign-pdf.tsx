@@ -57,21 +57,19 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 				formData.append(`file[]`, page);
 			});
 
-			// Send the request
 			await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/signature/pdf`, {
 				method: 'POST',
 				headers: {
-					// Avoid preflight (it causes cors error...)
-					'Content-Type': 'application/x-www-form-urlencoded',
+					// Avoid preflight with this content type (it causes cors error...)
+					"Content-Type": "application/x-www-form-urlencoded",
+					Accept: "application/json",
 				},
-				body: formData, // URLSearchParams object is automatically serialized
+				body: formData,
 			});
 			setSaving(false);
 		} catch (error) {
-			console.log(error);
 			setSaving(false);
-			alert(i18n[languageCode]("ERROR_PDF_MESSAGE"));
-			return null;
+			// alert(i18n[languageCode]("ERROR_PDF_MESSAGE"));
 		}
 	}, []);
 

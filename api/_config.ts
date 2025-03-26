@@ -5,6 +5,9 @@ import { logout } from "@/utils/auth";
 
 const ORIGIN_MOBILE = "simply-life-app://mobile";
 
+/**
+ * @description ON REACT NATIVE, AXIOS STORE / SEND THE COOKIES AUTOMATICALLY ON THE NATIVE NETWORK LAYER WITH THE WITHCREDENTIALS PROPERTY
+ */
 export const api = axios.create({
 	baseURL: process.env.EXPO_PUBLIC_API_URL || "",
 	timeout: 60 * 1000, // 60 seconds because mobile can have slow connections
@@ -14,7 +17,6 @@ export const api = axios.create({
 		"Content-Type": "application/json",
 		"X-Origin": ORIGIN_MOBILE,
 	},
-	// enables sending cookies with cross-origin requests - required for authentication
 	withCredentials: true,
 });
 
@@ -24,6 +26,7 @@ api.interceptors.response.use(
 	(error) => {
 		if (!isAxiosError(error)) return Promise.reject(error);
 
+		// if the user is not authenticated, or the token is expired, logout
 		if (error.response?.status === 403) {
 			const userInfos = getStorageUserInfos();
 			if (userInfos?.exp && userInfos.exp < Date.now() / 1000) logout({ alert: true });

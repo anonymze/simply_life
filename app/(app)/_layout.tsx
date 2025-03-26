@@ -1,7 +1,9 @@
 import { NotificationProvider } from "@/context/push-notifications";
+import { getAllNativeCookies } from "@/utils/cookies";
 import HeaderLayout from "@/layouts/headert-layout";
 import { getStorageUserInfos } from "@/utils/store";
 import { Stack, Redirect } from "expo-router";
+import React from "react";
 
 
 export default function AppLayout() {
@@ -10,6 +12,10 @@ export default function AppLayout() {
 	if (!userInfos || !userInfos.token) {
 		return <Redirect href="/login" />;
 	}
+
+	React.useEffect(() => {
+		getAllNativeCookies();
+	}, []);
 
 	return (
 		<NotificationProvider>
