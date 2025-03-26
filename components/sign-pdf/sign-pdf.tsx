@@ -14,8 +14,6 @@ import config from "@/tailwind.config";
 import { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
 import { pdfViewerStatePlugin } from "./scale-plugin";
-import { AppUser } from "@/types/user";
-import { getStorageUserInfos } from "@/utils/store";
 
 const workerUrl = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
 
@@ -23,14 +21,12 @@ const workerUrl = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js"
 export default function SignPdf({
 	dom,
 	languageCode,
-	userInfos,
+	jwtUser,
 }: {
 	dom: DOMProps;
 	languageCode: I18n;
-	userInfos: AppUser | null;
+	jwtUser: string | undefined;
 }) {
-	console.log("userInfos", userInfos);
-	console.log(getStorageUserInfos());
 	// Sample PDF URL - you can replace with your own
 	const [pdfUrl, setPdfUrl] = React.useState(require("@/assets/pdfs/adobe.pdf"));
 	const [checkingSignaturesFieldsPresence, setCheckingSignaturesFieldsPresence] = React.useState(true);
@@ -75,11 +71,14 @@ export default function SignPdf({
 					// Avoid preflight with this content type (it causes cors error...)
 					"Content-Type": "application/x-www-form-urlencoded",
 					Accept: "application/json",
+					// payload cms token = payload-token
+					Cookie: `payload-token=${jwtUser}`,
 				},
 				body: formData,
 			});
 			setSaving(false);
 		} catch (error) {
+			// TODO
 			setSaving(false);
 			// alert(i18n[languageCode]("ERROR_PDF_MESSAGE"));
 		}
