@@ -14,11 +14,23 @@ import config from "@/tailwind.config";
 import { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
 import { pdfViewerStatePlugin } from "./scale-plugin";
+import { AppUser } from "@/types/user";
+import { getStorageUserInfos } from "@/utils/store";
 
 const workerUrl = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
 
 // dom props is needed otherwise the component crash
-export default function SignPdf({ dom, languageCode }: { dom: DOMProps; languageCode: I18n }) {
+export default function SignPdf({
+	dom,
+	languageCode,
+	userInfos,
+}: {
+	dom: DOMProps;
+	languageCode: I18n;
+	userInfos: AppUser | null;
+}) {
+	console.log("userInfos", userInfos);
+	console.log(getStorageUserInfos());
 	// Sample PDF URL - you can replace with your own
 	const [pdfUrl, setPdfUrl] = React.useState(require("@/assets/pdfs/adobe.pdf"));
 	const [checkingSignaturesFieldsPresence, setCheckingSignaturesFieldsPresence] = React.useState(true);
@@ -58,7 +70,7 @@ export default function SignPdf({ dom, languageCode }: { dom: DOMProps; language
 			});
 
 			await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/signature/pdf`, {
-				method: 'POST',
+				method: "POST",
 				headers: {
 					// Avoid preflight with this content type (it causes cors error...)
 					"Content-Type": "application/x-www-form-urlencoded",
@@ -323,7 +335,7 @@ const ToolbarComponent = ({
 								<button
 									disabled={saving}
 									onClick={savePdf}
-									className="flex w-20 h-6 items-center justify-center rounded bg-white text-xs text-primary active:opacity-80"
+									className="flex h-6 w-20 items-center justify-center rounded bg-white text-xs text-primary active:opacity-80"
 								>
 									{saving ? (
 										<span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-white"></span>

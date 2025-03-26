@@ -13,10 +13,6 @@ export default function AppLayout() {
 		return <Redirect href="/login" />;
 	}
 
-	React.useEffect(() => {
-		getAllNativeCookies();
-	}, []);
-
 	return (
 		<NotificationProvider>
 			<Stack
