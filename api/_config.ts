@@ -6,7 +6,7 @@ import { logout } from "@/utils/auth";
 const ORIGIN_MOBILE = "simply-life-app://mobile";
 
 /**
- * @description ON REACT NATIVE, AXIOS STORE / SEND THE COOKIES AUTOMATICALLY ON THE NATIVE NETWORK LAYER WITH THE WITHCREDENTIALS PROPERTY
+ * @description ON REACT NATIVE, AXIOS STORE / SEND THE COOKIES AUTOMATICALLY FROM THE NATIVE NETWORK LAYER WITH THE WITHCREDENTIALS PROPERTY
  */
 export const api = axios.create({
 	baseURL: process.env.EXPO_PUBLIC_API_URL || "",
