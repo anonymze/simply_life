@@ -65,14 +65,14 @@ export default function SignPdf({
 				formData.append(`file[]`, page);
 			});
 
+			formData.append("jwt", jwtUser ?? "");
+
 			await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/signature/pdf`, {
 				method: "POST",
 				headers: {
 					// Avoid preflight with this content type (it causes cors error...)
 					"Content-Type": "application/x-www-form-urlencoded",
 					Accept: "application/json",
-					// payload cms token = payload-token
-					Cookie: `payload-token=${jwtUser}`,
 				},
 				body: formData,
 			});
