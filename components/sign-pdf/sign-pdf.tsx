@@ -21,11 +21,11 @@ const workerUrl = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js"
 export default function SignPdf({
 	dom,
 	languageCode,
-	jwtUser,
+	querySavePdf
 }: {
 	dom: DOMProps;
 	languageCode: I18n;
-	jwtUser: string | undefined;
+	querySavePdf: any
 }) {
 	// Sample PDF URL - you can replace with your own
 	const [pdfUrl, setPdfUrl] = React.useState(require("@/assets/pdfs/adobe.pdf"));
@@ -57,30 +57,12 @@ export default function SignPdf({
 				),
 			);
 
-			// Create URLSearchParams object
-			const formData = new URLSearchParams();
-
-			// Add data to the form
-			base64Pages.forEach((page) => {
-				formData.append(`file[]`, page);
-			});
-
-			formData.append("jwt", jwtUser ?? "");
-
-			await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/signature/pdf`, {
-				method: "POST",
-				headers: {
-					// Avoid preflight with this content type (it causes cors error...)
-					"Content-Type": "application/x-www-form-urlencoded",
-					Accept: "application/json",
-				},
-				body: formData,
-			});
+			await querySavePdf({ files: base64Pages });
 			setSaving(false);
 		} catch (error) {
-			// TODO
+			console.log(error)
 			setSaving(false);
-			// alert(i18n[languageCode]("ERROR_PDF_MESSAGE"));
+			alert(i18n[languageCode]("ERROR_PDF_MESSAGE"));
 		}
 	}, []);
 
