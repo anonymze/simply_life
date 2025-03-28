@@ -3,7 +3,6 @@ import { savePDFSignatureQuery } from "@/api/queries/signature-queries";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import BackgroundLayout from "@/layouts/background-layout";
 import SignPdf from "@/components/sign-pdf/sign-pdf";
-import { getStorageUserInfos } from "@/utils/store";
 import React from "react";
 
 

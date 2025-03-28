@@ -21,11 +21,11 @@ const workerUrl = "https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js"
 export default function SignPdf({
 	dom,
 	languageCode,
-	querySavePdf
+	querySavePdf,
 }: {
 	dom: DOMProps;
 	languageCode: I18n;
-	querySavePdf: any
+	querySavePdf: ({ files }: { files: string[] }) => Promise<any>;
 }) {
 	// Sample PDF URL - you can replace with your own
 	const [pdfUrl, setPdfUrl] = React.useState(require("@/assets/pdfs/adobe.pdf"));
@@ -60,7 +60,7 @@ export default function SignPdf({
 			await querySavePdf({ files: base64Pages });
 			setSaving(false);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 			setSaving(false);
 			alert(i18n[languageCode]("ERROR_PDF_MESSAGE"));
 		}
