@@ -43,7 +43,7 @@ export default function SignPdf({
 
 			// Get all page containers
 			const pageContainers = viewer.querySelectorAll(".rpv-core__page-layer");
-			
+
 			// Process canvases asynchronously
 			const base64Pages = [];
 			for (const container of Array.from(pageContainers)) {
@@ -52,6 +52,7 @@ export default function SignPdf({
 
 				// Break up the synchronous toDataURL calls (otherwise it blocks the main thread for loader state)
 				// toDataUrl is expensive synchronous call
+				// the secret is to call requestAnimationFrame to have a "rerender" before next animation
 				const dataUrl = await new Promise<string>((resolve) => {
 					requestAnimationFrame(() => {
 						resolve(canvas.toDataURL("image/png"));
