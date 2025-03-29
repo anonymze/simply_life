@@ -38,29 +38,50 @@ export default function SignPdf({
 	const savePdf = React.useCallback(async () => {
 		try {
 			setSaving(true);
-			// Get the current viewer instance
 			const viewer = document.querySelector(".rpv-core__viewer");
 			if (!viewer) return;
 
-			// Get all canvas elements from the viewer
-			const canvases = viewer.querySelectorAll("canvas");
-			const pages = Array.from(canvases);
+			// Get all page containers
+			const pageContainers = viewer.querySelectorAll(".rpv-core__page-layer");
+			
+			// Process canvases asynchronously
+			const base64Pages = [];
+			for (const container of Array.from(pageContainers)) {
+				const canvas = container.querySelector("canvas");
+				if (!canvas) continue;
 
-			// Convert each canvas to base64
-			const base64Pages = await Promise.all(
-				pages.map(
-					(canvas) =>
-						new Promise<string>((resolve) => {
-							const base64 = canvas.toDataURL("image/png");
-							resolve(base64);
-						}),
-				),
-			);
+				// Break up the synchronous toDataURL calls (otherwise it blocks the main thread for loader state)
+				// toDataUrl is expensive synchronous call
+				const dataUrl = await new Promise<string>((resolve) => {
+					requestAnimationFrame(() => {
+						resolve(canvas.toDataURL("image/png"));
+					});
+				});
+				base64Pages.push(dataUrl);
+			}
+
+			// Create a text area to copy the content
+			const textArea = document.createElement("textarea");
+			textArea.value = base64Pages[0];
+			document.body.appendChild(textArea);
+			textArea.select();
+
+			try {
+				await navigator.clipboard.writeText(textArea.value);
+				alert("Base64 copied to clipboard!");
+			} catch (err) {
+				// Fallback for older browsers
+				document.execCommand("copy");
+				alert("Base64 copied to clipboard!");
+			}
+
+			document.body.removeChild(textArea);
 
 			await querySavePdf({ files: base64Pages });
 			setSaving(false);
 		} catch (error) {
-			console.log(error);
+			document;
+
 			setSaving(false);
 			alert(i18n[languageCode]("ERROR_PDF_MESSAGE"));
 		}
@@ -98,7 +119,6 @@ export default function SignPdf({
 					const response = await fetch(pdfUrl);
 					pdfData = await response.arrayBuffer();
 				} catch (error) {
-					console.log("Could not fetch PDF as URL, using as is");
 					pdfData = pdfUrl;
 				}
 
@@ -316,13 +336,22 @@ const ToolbarComponent = ({
 								<button
 									disabled={saving}
 									onClick={savePdf}
-									className="flex h-6 w-20 items-center justify-center rounded bg-white text-xs text-primary active:opacity-80"
+									className="relative flex h-6 w-20 items-center justify-center overflow-hidden rounded bg-white text-xs text-primary active:opacity-80 disabled:opacity-90"
 								>
-									{saving ? (
-										<span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-white"></span>
-									) : (
-										<span>{i18n[languageCode]("SAVE")}</span>
-									)}
+									<span
+										className={`absolute transform transition-all duration-300 ${
+											saving ? "-translate-y-2 opacity-0" : "translate-y-0 opacity-100"
+										}`}
+									>
+										{i18n[languageCode]("SAVE")}
+									</span>
+									<span
+										className={`absolute transform transition-all duration-300 ${
+											saving ? "translate-y-0.5 opacity-100" : "translate-y-2 opacity-0"
+										}`}
+									>
+										<span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-white" />
+									</span>
 								</button>
 							</div>
 						</div>
