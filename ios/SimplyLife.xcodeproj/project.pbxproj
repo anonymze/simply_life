@@ -7,39 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AC882CE3F8E41AB98610478 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44A368D3CFC14CA697D777D7 /* InfoPlist.strings */; };
+		0B732479EBBC79F28B3D88D7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 685B9A590533C3504977A335 /* PrivacyInfo.xcprivacy */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		5E3D6B3639424A6DBB04646E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1DCC277E17C24605B0AFD2C0 /* InfoPlist.strings */; };
-		8E08E34D652D4169ABDF35BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 063FAA93B9AA4CF4B7D2DD0D /* InfoPlist.strings */; };
+		51C4547FF37F4B53B3E2F4DE /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B26DA341AB4FCBAC5472A0 /* noop-file.swift */; };
+		8B715250C23647F9B69BFD61 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6D9DC9A97EE340BCB604F1E9 /* InfoPlist.strings */; };
+		8F735F5D03AF4593B91131E3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0A1D2D7A662451EB05852ED /* InfoPlist.strings */; };
 		96905EF65AED1B983A6B3ABC /* libPods-SimplyLife.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-SimplyLife.a */; };
-		A58E61A9001652D602D9A0B1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A0B4CB3FE4C2F71ED7B04277 /* PrivacyInfo.xcprivacy */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		DCCC6826DBF84161899A55DF /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D00E5ECE4E8422D86FCEC43 /* noop-file.swift */; };
-		EAD99ADC76B14A148A58A98C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F67A86AEC9644792ADB405E9 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		063FAA93B9AA4CF4B7D2DD0D /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		00B26DA341AB4FCBAC5472A0 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "SimplyLife/noop-file.swift"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* SimplyLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimplyLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = SimplyLife/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = SimplyLife/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SimplyLife/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SimplyLife/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SimplyLife/main.m; sourceTree = "<group>"; };
-		1DCC277E17C24605B0AFD2C0 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2A57452442694C788EFD631F /* SimplyLife-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "SimplyLife-Bridging-Header.h"; path = "SimplyLife/SimplyLife-Bridging-Header.h"; sourceTree = "<group>"; };
+		44A368D3CFC14CA697D777D7 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4A3A3CD64034492EABF20D97 /* SimplyLife-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "SimplyLife-Bridging-Header.h"; path = "SimplyLife/SimplyLife-Bridging-Header.h"; sourceTree = "<group>"; };
 		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-SimplyLife.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SimplyLife.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		685B9A590533C3504977A335 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = SimplyLife/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-SimplyLife.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimplyLife.debug.xcconfig"; path = "Target Support Files/Pods-SimplyLife/Pods-SimplyLife.debug.xcconfig"; sourceTree = "<group>"; };
+		6D9DC9A97EE340BCB604F1E9 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-SimplyLife.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimplyLife.release.xcconfig"; path = "Target Support Files/Pods-SimplyLife/Pods-SimplyLife.release.xcconfig"; sourceTree = "<group>"; };
-		8D00E5ECE4E8422D86FCEC43 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "SimplyLife/noop-file.swift"; sourceTree = "<group>"; };
-		A0B4CB3FE4C2F71ED7B04277 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = SimplyLife/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = SimplyLife/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F67A86AEC9644792ADB405E9 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F0A1D2D7A662451EB05852ED /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-SimplyLife/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -55,6 +55,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0567B1B069C345BDA8B65081 /* es.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				6D9DC9A97EE340BCB604F1E9 /* InfoPlist.strings */,
+			);
+			name = es.lproj;
+			path = "";
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* SimplyLife */ = {
 			isa = PBXGroup;
 			children = (
@@ -65,9 +74,9 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				8D00E5ECE4E8422D86FCEC43 /* noop-file.swift */,
-				2A57452442694C788EFD631F /* SimplyLife-Bridging-Header.h */,
-				A0B4CB3FE4C2F71ED7B04277 /* PrivacyInfo.xcprivacy */,
+				00B26DA341AB4FCBAC5472A0 /* noop-file.swift */,
+				4A3A3CD64034492EABF20D97 /* SimplyLife-Bridging-Header.h */,
+				685B9A590533C3504977A335 /* PrivacyInfo.xcprivacy */,
 			);
 			name = SimplyLife;
 			sourceTree = "<group>";
@@ -79,6 +88,24 @@
 				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-SimplyLife.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3A5C5280005D449C83DA9564 /* fr.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				F0A1D2D7A662451EB05852ED /* InfoPlist.strings */,
+			);
+			name = fr.lproj;
+			path = "";
+			sourceTree = "<group>";
+		};
+		4DB11C8DB3FA433EB858B3D5 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				44A368D3CFC14CA697D777D7 /* InfoPlist.strings */,
+			);
+			name = en.lproj;
+			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -123,30 +150,12 @@
 			isa = PBXGroup;
 			children = (
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
-				D326444236C94110B6530C83 /* en.lproj */,
-				CD14547647774B9BB78BBE63 /* fr.lproj */,
-				E2B0849D82984B43AAD3D974 /* es.lproj */,
+				4DB11C8DB3FA433EB858B3D5 /* en.lproj */,
+				3A5C5280005D449C83DA9564 /* fr.lproj */,
+				0567B1B069C345BDA8B65081 /* es.lproj */,
 			);
 			name = Supporting;
 			path = SimplyLife/Supporting;
-			sourceTree = "<group>";
-		};
-		CD14547647774B9BB78BBE63 /* fr.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				063FAA93B9AA4CF4B7D2DD0D /* InfoPlist.strings */,
-			);
-			name = fr.lproj;
-			path = "";
-			sourceTree = "<group>";
-		};
-		D326444236C94110B6530C83 /* en.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				F67A86AEC9644792ADB405E9 /* InfoPlist.strings */,
-			);
-			name = en.lproj;
-			path = "";
 			sourceTree = "<group>";
 		};
 		D65327D7A22EEC0BE12398D9 /* Pods */ = {
@@ -166,15 +175,6 @@
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
-		E2B0849D82984B43AAD3D974 /* es.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				1DCC277E17C24605B0AFD2C0 /* InfoPlist.strings */,
-			);
-			name = es.lproj;
-			path = "";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -183,13 +183,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SimplyLife" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				6F8B4C7D7A4AFCB1BD149C47 /* [Expo] Configure project */,
+				90A8A0B61D34172DCEEAD292 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				75763A48C6CD348F401ABB11 /* [CP] Embed Pods Frameworks */,
+				8FE56F0D335D7798A722F4BA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -209,8 +209,8 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = MZKWJD856F;
 						LastSwiftMigration = 1250;
+						DevelopmentTeam = "MZKWJD856F";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -241,10 +241,10 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				EAD99ADC76B14A148A58A98C /* InfoPlist.strings in Resources */,
-				8E08E34D652D4169ABDF35BB /* InfoPlist.strings in Resources */,
-				5E3D6B3639424A6DBB04646E /* InfoPlist.strings in Resources */,
-				A58E61A9001652D602D9A0B1 /* PrivacyInfo.xcprivacy in Resources */,
+				0AC882CE3F8E41AB98610478 /* InfoPlist.strings in Resources */,
+				8F735F5D03AF4593B91131E3 /* InfoPlist.strings in Resources */,
+				8B715250C23647F9B69BFD61 /* InfoPlist.strings in Resources */,
+				0B732479EBBC79F28B3D88D7 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,43 +286,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6F8B4C7D7A4AFCB1BD149C47 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-SimplyLife/expo-configure-project.sh\"\n";
-		};
-		75763A48C6CD348F401ABB11 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SimplyLife/Pods-SimplyLife-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SimplyLife/Pods-SimplyLife-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
@@ -379,6 +342,43 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SimplyLife/Pods-SimplyLife-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8FE56F0D335D7798A722F4BA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SimplyLife/Pods-SimplyLife-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SimplyLife/Pods-SimplyLife-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		90A8A0B61D34172DCEEAD292 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-SimplyLife/expo-configure-project.sh\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -389,7 +389,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				DCCC6826DBF84161899A55DF /* noop-file.swift in Sources */,
+				51C4547FF37F4B53B3E2F4DE /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,10 +403,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SimplyLife/SimplyLife.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MZKWJD856F;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -429,6 +426,9 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				DEVELOPMENT_TEAM = "MZKWJD856F";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 			};
 			name = Debug;
 		};
@@ -439,10 +439,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SimplyLife/SimplyLife.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MZKWJD856F;
 				INFOPLIST_FILE = SimplyLife/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -459,6 +456,9 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				DEVELOPMENT_TEAM = "MZKWJD856F";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 			};
 			name = Release;
 		};

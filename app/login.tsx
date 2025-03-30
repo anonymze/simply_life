@@ -69,47 +69,52 @@ export default function Login() {
 				/>
 				<Text className="text-center text-lg font-semibold">{i18n[languageCode]("SUBTITLE_LOGIN")}</Text>
 
-				<form.Field name="email">
-					{(field) => (
-						<View className="mt-8 w-full gap-3">
-							<Text className="text-md self-start text-gray-500">{i18n[languageCode]("INPUT_EMAIL_LOGIN")}</Text>
-							<TextInput
-								returnKeyType="done"
-								autoCapitalize="none"
-								keyboardType="default"
-								textContentType="oneTimeCode"
-								placeholder="test@email.com"
-								className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
-								defaultValue={field.state.value}
-								onChangeText={field.handleChange}
-							/>
-							{field.state.meta.errors.length > 0 && (
-								<Text className="text-red-500">{field.state.meta.errors[0]?.message}</Text>
-							)}
-						</View>
-					)}
-				</form.Field>
-				<form.Field name="password">
-					{(field) => (
-						<View className="mt-3 w-full gap-3">
-							<Text className="text-md self-start text-gray-500">{i18n[languageCode]("INPUT_PASSWORD_LOGIN")}</Text>
-							<TextInput
-								secureTextEntry
-								returnKeyType="done"
-								autoCapitalize="none"
-								keyboardType="default"
-								textContentType="oneTimeCode"
-								placeholder="********"
-								className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
-								defaultValue={field.state.value}
-								onChangeText={field.handleChange}
-							/>
-							{field.state.meta.errors.length > 0 && (
-								<Text className="text-red-500">{field.state.meta.errors[0]?.message}</Text>
-							)}
-						</View>
-					)}
-				</form.Field>
+				<View className="mt-8 w-full gap-3">
+					<Text className="text-md self-start text-gray-500">{i18n[languageCode]("INPUT_EMAIL_LOGIN")}</Text>
+					<form.Field name="email">
+						{(field) => (
+							<React.Fragment>
+								<TextInput
+									returnKeyType="done"
+									autoCapitalize="none"
+									keyboardType="default"
+									textContentType="oneTimeCode"
+									placeholder="test@email.com"
+									className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
+									defaultValue={field.state.value}
+									onChangeText={field.handleChange}
+								/>
+								{field.state.meta.errors.length > 0 && (
+									<Text className="text-red-500">{field.state.meta.errors[0]?.message}</Text>
+								)}
+							</React.Fragment>
+						)}
+					</form.Field>
+				</View>
+
+				<View className="mt-3 w-full gap-3">
+					<Text className="text-md self-start text-gray-500">{i18n[languageCode]("INPUT_PASSWORD_LOGIN")}</Text>
+					<form.Field name="password">
+						{(field) => (
+							<React.Fragment>
+								<TextInput
+									secureTextEntry
+									returnKeyType="done"
+									autoCapitalize="none"
+									keyboardType="default"
+									textContentType="oneTimeCode"
+									placeholder="********"
+									className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
+									defaultValue={field.state.value}
+									onChangeText={field.handleChange}
+								/>
+								{field.state.meta.errors.length > 0 && (
+									<Text className="text-red-500">{field.state.meta.errors[0]?.message}</Text>
+								)}
+							</React.Fragment>
+						)}
+					</form.Field>
+				</View>
 				<Pressable
 					onPress={form.handleSubmit}
 					disabled={mutationLogin.isPending}
