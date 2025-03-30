@@ -1,4 +1,4 @@
-import CookieManager from '@react-native-community/cookies';
+import CookieManager from '@react-native-cookies/cookies';
 
 
 export const clearAllNativeCookies = async () => {
