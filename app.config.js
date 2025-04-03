@@ -5,8 +5,9 @@ export default {
 		version: "1.0.0",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
-		scheme: "myapp",
-		userInterfaceStyle: "automatic",
+		scheme: "simply-life",
+		// theme
+		userInterfaceStyle: "light",
 		newArchEnabled: true,
 		locales: {
 			en: "./i18n/metadata/ios/en.json",
@@ -18,8 +19,8 @@ export default {
 			bundleIdentifier: "com.anonymze.simplylife",
 			associatedDomains: ["applinks:simply-life.expo.app"],
 			infoPlist: {
-				CFBundleAllowMixedLocalizations: true,
 			},
+			CFBundleAllowMixedLocalizations: true,
 		},
 		android: {
 			adaptiveIcon: {
@@ -70,10 +71,10 @@ export default {
 				{
 					backgroundColor: "#ffffff",
 					image: "./assets/images/splash-icon.png",
-					dark: {
-						image: "./assets/images/splash-icon-dark.png",
-						backgroundColor: "#ffffff",
-					},
+					// dark: {
+					// 	image: "./assets/images/splash-icon-dark.png",
+					// 	backgroundColor: "#ffffff",
+					// },
 					imageWidth: 220,
 				},
 			],
