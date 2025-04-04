@@ -5,6 +5,7 @@ export default {
 		version: "1.0.0",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
+		// simply-life://some_path
 		scheme: "simply-life",
 		// theme
 		userInterfaceStyle: "light",

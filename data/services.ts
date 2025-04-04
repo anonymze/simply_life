@@ -53,10 +53,10 @@ const services: Service[] = [
 	},
 	{
 		id: 7,
-		name: "Slider",
+		name: "chat",
 		description: "Gérez vos billets à domicile",
 		icon: require("@/assets/images/logo.png"),
-		link: "/slider",
+		link: "/chat",
 		theme: "text-gray-700",
 	},
 	{
@@ -64,7 +64,7 @@ const services: Service[] = [
 		name: "numbers",
 		description: "Gérez vos billets à l'extérieur",
 		icon: require("@/assets/images/logo.png"),
-		link: "/number",
+		link: null,
 		theme: "text-gray-700",
 	},
 	{
