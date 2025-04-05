@@ -1,7 +1,8 @@
 import { NotificationProvider } from "@/context/push-notifications";
+import { ArrowLeftIcon, PlusCircleIcon } from "lucide-react-native";
 import HeaderLayout from "@/layouts/headert-layout";
+import { Stack, Redirect, Link } from "expo-router";
 import { getStorageUserInfos } from "@/utils/store";
-import { Stack, Redirect } from "expo-router";
 import React from "react";
 
 
@@ -61,8 +62,32 @@ export default function AppLayout() {
 				<Stack.Screen
 					name="chat"
 					options={{
-						headerShown: false,
-						header: () => <HeaderLayout title="Chat" />,
+						headerLargeTitle: true,
+						headerTitle: "Chat rooms",
+						headerRight: () => (
+							<Link href="/new-room">
+								<PlusCircleIcon size={24} color="white" />
+							</Link>
+						),
+						headerLeft: () => (
+							<Link dismissTo href="/">
+								<ArrowLeftIcon size={24} color="white" />
+							</Link>
+						),
+					}}
+				/>
+				<Stack.Screen
+					name="new-room"
+					options={{
+						presentation: "modal",
+						header: () => <HeaderLayout title="New room" />,
+					}}
+				/>
+				<Stack.Screen
+					name="settings/[chat]"
+					options={{
+						presentation: "modal",
+						header: () => <HeaderLayout title="New room" />,
 					}}
 				/>
 				<Stack.Screen

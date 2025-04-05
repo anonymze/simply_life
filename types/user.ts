@@ -4,7 +4,7 @@ export interface AppUser {
 	user: User;
 }
 
-interface User {
+export interface User {
 	id: string;
 	lastname: string;
 	firstname: string;
