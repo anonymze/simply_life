@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { View, Text } from "react-native";
 
 
 export default function Page() {
@@ -6,5 +6,5 @@ export default function Page() {
 		<View>
 			<Text>Chat</Text>
 		</View>
-	);
+	)
 }

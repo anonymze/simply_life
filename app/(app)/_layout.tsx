@@ -60,12 +60,12 @@ export default function AppLayout() {
 					}}
 				/>
 				<Stack.Screen
-					name="chat"
+					name="chat/index"
 					options={{
 						headerLargeTitle: true,
 						headerTitle: "Chat rooms",
 						headerRight: () => (
-							<Link href="/new-room">
+							<Link href="/chat/new-room">
 								<PlusCircleIcon size={24} color="white" />
 							</Link>
 						),
@@ -77,14 +77,15 @@ export default function AppLayout() {
 					}}
 				/>
 				<Stack.Screen
-					name="new-room"
+					name="chat/[chat]"
+					// Set title to empty string to prevent showing [chat] in the header while chat room title is being fetched
 					options={{
 						presentation: "modal",
-						header: () => <HeaderLayout title="New room" />,
+						header: () => <HeaderLayout title="Chat room" />,
 					}}
 				/>
 				<Stack.Screen
-					name="settings/[chat]"
+					name="chat/new-room"
 					options={{
 						presentation: "modal",
 						header: () => <HeaderLayout title="New room" />,

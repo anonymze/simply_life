@@ -5,6 +5,7 @@ export interface ChatRoom {
 	id: string;
 	title: string;
 	description: string;
+	isPrivate: boolean;
 	createdAt: Date;
 	updatedAt: Date;
 }
