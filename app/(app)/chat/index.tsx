@@ -5,6 +5,43 @@ import { Link } from "expo-router";
 import React from "react";
 
 
+export default function Page() {
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const handleRefresh = () => {};
+
+	return (
+		<FlatList
+			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+			data={chatRooms}
+			renderItem={({ item }) => (
+				<Link href={{
+					pathname: "/chat/[chat]",
+					params: {
+						chat: item.id,
+					},
+				}}>
+					<Text>{item.title}</Text>
+				</Link>
+			)}
+			// estimatedItemSize={10}
+			// strongly recommended prop (improves performance but becareful if you use states)
+			keyExtractor={(item) => item.id}
+			// recycleItems={true}
+			// ideal for chat you stay at the end of the list
+			// maintainScrollAtEnd={true}
+			// maintainScrollAtEndThreshold * screen height
+			// maintainScrollAtEndThreshold={1}
+			// otherwise content can be behind header
+			contentInsetAdjustmentBehavior="automatic"
+			contentContainerStyle= {{
+				gap: 20,
+				padding: 20,
+			}}
+		/>
+	);
+}
+
 export const chatRooms: ChatRoom[] = [
 	{
 		id: "1",
@@ -79,39 +116,3 @@ export const chatRooms: ChatRoom[] = [
 		updatedAt: new Date(),
 	},
 ];
-
-export default function Page() {
-	const [refreshing, setRefreshing] = React.useState(false);
-
-	const handleRefresh = () => {};
-
-	return (
-		<LegendList
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-			data={chatRooms}
-			renderItem={({ item }) => (
-				<Link href={{
-					pathname: "/chat/[chat]",
-					params: {
-						chat: item.id,
-					},
-				}}>
-					<Text>{item.title}</Text>
-				</Link>
-			)}
-			// estimatedItemSize={10}
-			// strongly recommended prop (improves performance but becareful if you use states)
-			keyExtractor={(item) => item.id}
-			recycleItems={true}
-			// ideal for chat you stay at the end of the list
-			maintainScrollAtEnd={true}
-			// maintainScrollAtEndThreshold * screen height
-			maintainScrollAtEndThreshold={1}
-			// otherwise content can be behind header
-			contentInsetAdjustmentBehavior="automatic"
-			contentContainerStyle= {{
-				gap: 20,
-			}}
-		/>
-	);
-}
