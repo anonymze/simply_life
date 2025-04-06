@@ -100,7 +100,7 @@ export default function Page() {
 				</Link>
 			)}
 			// estimatedItemSize={10}
-			// strongly pecommended prop (improves performance but becareful if you use states)
+			// strongly recommended prop (improves performance but becareful if you use states)
 			keyExtractor={(item) => item.id}
 			recycleItems={true}
 			// ideal for chat you stay at the end of the list
