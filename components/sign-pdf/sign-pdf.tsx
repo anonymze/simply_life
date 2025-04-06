@@ -69,11 +69,11 @@ export default function SignPdf({
 
 			try {
 				await navigator.clipboard.writeText(textArea.value);
-				alert("Base64 copied to clipboard!");
+				// alert("Base64 copied to clipboard!");
 			} catch (err) {
 				// Fallback for older browsers
 				document.execCommand("copy");
-				alert("Base64 copied to clipboard!");
+				// alert("Base64 copied to clipboard!");
 			}
 
 			document.body.removeChild(textArea);

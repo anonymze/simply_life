@@ -61,8 +61,10 @@ export default function Page() {
 			// otherwise content can be behind header
 			contentInsetAdjustmentBehavior="automatic"
 			contentContainerStyle={{
-				// gap: 25,
 				padding: 20,
+			}}
+			columnWrapperStyle={{
+				// gap: 16,
 			}}
 		/>
 	);
