@@ -12,11 +12,18 @@ export default function Page() {
 	const handleRefresh = () => {};
 
 	return (
-		<FlatList
+		<LegendList
+			// start at the end
+			initialScrollIndex={chatRooms.length - 1}
+			// with this one alignItemsAtEnd
+			alignItemsAtEnd={true}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
 			data={chatRooms}
 			renderItem={({ item }) => (
 				<Link
+					style={{
+						marginTop: 20,
+					}}
 					href={{
 						pathname: "/chat/[chat]",
 						params: {
@@ -41,18 +48,20 @@ export default function Page() {
 					</View>
 				</Link>
 			)}
-			// estimatedItemSize={10}
+			estimatedItemSize={80}
 			// strongly recommended prop (improves performance but becareful if you use states)
 			keyExtractor={(item) => item.id}
-			// recycleItems={true}
+			recycleItems={true}
+
 			// ideal for chat you stay at the end of the list
-			// maintainScrollAtEnd={true}
-			// maintainScrollAtEndThreshold * screen height
-			// maintainScrollAtEndThreshold={1}
+			maintainScrollAtEnd={true}
+			// maintainScrollAtEndThreshold * screen height (defines what percent of the screen counts as the bottom)
+			maintainScrollAtEndThreshold={1}
+
 			// otherwise content can be behind header
 			contentInsetAdjustmentBehavior="automatic"
 			contentContainerStyle={{
-				gap: 25,
+				// gap: 25,
 				padding: 20,
 			}}
 		/>
