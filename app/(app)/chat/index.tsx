@@ -61,7 +61,7 @@ export default function Page() {
 				/>
 			);
 		},
-	);
+	)();
 }
 
 function ItemTitle({ name, isPrivate }: Pick<ChatRoom, "name" | "isPrivate">) {
