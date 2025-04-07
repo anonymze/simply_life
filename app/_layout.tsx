@@ -9,12 +9,18 @@ import { Platform, AppState, AppStateStatus } from "react-native";
 import { focusManager } from "@tanstack/react-query";
 import * as Notifications from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
+import * as Sentry from '@sentry/react-native';
 import { queryClient } from "@/api/_queries";
 import { StatusBar } from "expo-status-bar";
 import * as Network from "expo-network";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import React from "react";
+
+
+Sentry.init({
+  dsn: 'https://b03eb0b4608556d0eed1d4cad51d1786@o4509069379043328.ingest.de.sentry.io/4509114349715536',
+});
 
 
 // here we set if we should show the alert of push notifications even if the app is running
@@ -48,7 +54,7 @@ function onAppStateChange(status: AppStateStatus) {
 	}
 }
 
-export default function RootLayout() {
+export default Sentry.wrap(function RootLayout() {
 	const [loaded] = useFonts({
 		// AtkinsonRegular: require("@/assets/fonts/atkinson/Atkinson-Hyperlegible-Regular-102a.woff2"),
 		// AtkinsonBold: require("@/assets/fonts/atkinson/Atkinson-Hyperlegible-Bold-102a.woff2"),
@@ -90,4 +96,4 @@ export default function RootLayout() {
 			</GestureHandlerRootView>
 		</QueryClientProvider>
 	);
-}
+});

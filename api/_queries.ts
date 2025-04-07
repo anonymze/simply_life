@@ -15,8 +15,8 @@ export const queryClient = new QueryClient({
 		queries: {
 			retry: 1,
 			// TODO
-			// staleTime: 60 * 60 * 1000, // 1 hour
-			staleTime: 0,
+			staleTime: 60 * 60 * 1000, // 1 hour
+			// staleTime: 0,
 		},
 	},
 });

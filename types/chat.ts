@@ -3,7 +3,8 @@ import { User } from "./user";
 
 export interface ChatRoom {
 	id: string;
-	title: string;
+	app_user: User["id"]
+	name: string;
 	description: string;
 	isPrivate: boolean;
 	createdAt: Date;
@@ -13,9 +14,12 @@ export interface ChatRoom {
 
 export interface Message {
 	id: string;
-	content: string;
-	sender: User
-	chatRoomId: ChatRoom["id"]
+	app_user: User["id"];
+	chat_room: ChatRoom["id"];
+	message: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
+
 
 

@@ -3,7 +3,7 @@ import { getSponsorCategoriesQuery } from "@/api/queries/sponsor-categories-quer
 import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomSheetSelect } from "@/components/bottom-sheet-select";
-import { getSponsorsQuery } from "@/api/queries/sponsors-queries";
+import { getSponsorsQuery } from "@/api/queries/sponsor-queries";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import AnimatedMapMarker from "@/components/animated-marker";
 import { SponsorCategory } from "@/types/sponsor";

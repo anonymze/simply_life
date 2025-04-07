@@ -40,3 +40,8 @@ yarn-error.*
 .vscode
 x
 .idea
+
+resources/
+
+
+

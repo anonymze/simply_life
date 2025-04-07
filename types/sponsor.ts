@@ -11,6 +11,8 @@ export interface Sponsor {
   longitude?: number | null;
   address?: string | null;
   phone?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface SponsorCategory {

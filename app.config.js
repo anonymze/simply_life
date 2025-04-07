@@ -68,6 +68,14 @@ export default {
 		plugins: [
 			"expo-router",
 			[
+				"@sentry/react-native/expo",
+				{
+					"url": "https://sentry.io/",
+					"project": "simply_life",
+					"organization": "yann-metier"
+				}
+			],
+			[
 				"expo-splash-screen",
 				{
 					backgroundColor: "#ffffff",
