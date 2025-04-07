@@ -7,6 +7,7 @@ import { View } from "react-native";
 import { api } from "@/api/_config";
 
 
+// HOC pattern
 export function withQueryWrapper<T>(
 	query: {
 		queryKey: QueryKey;
@@ -14,7 +15,8 @@ export function withQueryWrapper<T>(
 	},
 	Component: React.ComponentType<{ data: PaginatedResponse<T> }>,
 ) {
-	return function WithQueryWrapper() {
+	// need to return this anonymous function component to call the hooks 
+	return function componentQuery() {
 		const { data, isLoading, isError, error } = useQuery({
 			queryKey: query.queryKey,
 			queryFn: query.queryFn,

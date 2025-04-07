@@ -3,9 +3,9 @@ import { ChevronRightIcon, LockIcon } from "lucide-react-native";
 import { withQueryWrapper } from "@/utils/libs/react-query";
 import { LegendList } from "@legendapp/list";
 import { Text, View } from "react-native";
+import React, { useState } from "react";
 import { ChatRoom } from "@/types/chat";
 import { Link } from "expo-router";
-import React from "react";
 
 
 export default function Page() {

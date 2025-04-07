@@ -1,9 +1,8 @@
 import BackgroundLayout from "@/layouts/background-layout";
 import { ScrollView } from "react-native-gesture-handler";
-import * as Sentry from "@sentry/react-native";
 import CardLink from "@/components/card-link";
-import { Button, View } from "react-native";
 import services from "@/data/services";
+import { View } from "react-native";
 
 
 export default function Page() {
@@ -21,3 +20,4 @@ export default function Page() {
 		</View>
 	);
 }
+
