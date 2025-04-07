@@ -1,10 +1,9 @@
 import { QueryFunction, QueryKey, useQuery } from "@tanstack/react-query";
 import { ActivityIndicator, Text } from "react-native";
 import { PaginatedResponse } from "@/types/response";
-import { ChatRoom } from "@/types/chat";
+import { useEffect, useState } from "react";
 import config from "@/tailwind.config";
 import { View } from "react-native";
-import { api } from "@/api/_config";
 
 
 // HOC pattern
@@ -15,8 +14,15 @@ export function withQueryWrapper<T>(
 	},
 	Component: React.ComponentType<{ data: PaginatedResponse<T> }>,
 ) {
-	// need to return this anonymous function component to call the hooks 
-	return function componentQuery() {
+	// need to return this anonymous capitalized (convention for components) function component to call the hooks, because withQueryWrapper is a regular function
+	return function ComponentWrapperQuery() {
+
+		const [active, setActive] = useState(false);
+		
+		useEffect(() => {
+			setActive(true);
+		}, []);
+
 		const { data, isLoading, isError, error } = useQuery({
 			queryKey: query.queryKey,
 			queryFn: query.queryFn,

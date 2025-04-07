@@ -1,9 +1,9 @@
 import { getChatRoomsQuery } from "@/api/queries/chat-room-queries";
 import { ChevronRightIcon, LockIcon } from "lucide-react-native";
 import { withQueryWrapper } from "@/utils/libs/react-query";
+import React, { useEffect, useState } from "react";
 import { LegendList } from "@legendapp/list";
 import { Text, View } from "react-native";
-import React, { useState } from "react";
 import { ChatRoom } from "@/types/chat";
 import { Link } from "expo-router";
 
@@ -15,6 +15,12 @@ export default function Page() {
 			queryFn: getChatRoomsQuery,
 		},
 		({ data }) => {
+			const [active, setActive] = useState(false);
+
+			useEffect(() => {
+				setActive(true);
+			}, []);
+
 			return (
 				<LegendList
 					initialScrollIndex={data.docs.length - 1}
@@ -55,7 +61,7 @@ export default function Page() {
 				/>
 			);
 		},
-	)();
+	);
 }
 
 function ItemTitle({ name, isPrivate }: Pick<ChatRoom, "name" | "isPrivate">) {
