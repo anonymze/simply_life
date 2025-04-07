@@ -14,15 +14,8 @@ export function withQueryWrapper<T>(
 	},
 	Component: React.ComponentType<{ data: PaginatedResponse<T> }>,
 ) {
-	// need to return this anonymous capitalized (convention for components) function component to call the hooks, because withQueryWrapper is a regular function
+	// need to return this anonymous capitalized (convention for components name) function component to call the hooks, because withQueryWrapper is a regular function
 	return function ComponentWrapperQuery() {
-
-		const [active, setActive] = useState(false);
-		
-		useEffect(() => {
-			setActive(true);
-		}, []);
-
 		const { data, isLoading, isError, error } = useQuery({
 			queryKey: query.queryKey,
 			queryFn: query.queryFn,

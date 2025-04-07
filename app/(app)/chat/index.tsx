@@ -15,12 +15,6 @@ export default function Page() {
 			queryFn: getChatRoomsQuery,
 		},
 		({ data }) => {
-			const [active, setActive] = useState(false);
-
-			useEffect(() => {
-				setActive(true);
-			}, []);
-
 			return (
 				<LegendList
 					initialScrollIndex={data.docs.length - 1}
