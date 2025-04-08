@@ -187,9 +187,14 @@ const Item = React.memo(({ lastMessage, item, appUser }: ItemProps) => {
 			)}
 		>
 			<Text className="self-start text-white">{item.message}</Text>
-			<Text className="self-end text-xs text-gray-200">
-				{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
-			</Text>
+			<View className="self-end flex-row gap-1">
+				<Text className="text-xs text-gray-200">
+					{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+				</Text>
+				<Text className="text-xs text-gray-200">
+					{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+				</Text>
+			</View>
 		</Animated.View>
 	);
 });
