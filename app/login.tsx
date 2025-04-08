@@ -13,7 +13,7 @@ import React from "react";
 import { z } from "zod";
 
 
-export default function Login() {
+export default function Page() {
 	const { height } = useReanimatedKeyboardAnimation();
 	const languageCode = getLanguageCodeLocale();
 	const mutationLogin = useMutation({

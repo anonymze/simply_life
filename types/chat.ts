@@ -5,8 +5,10 @@ export interface ChatRoom {
 	id: string;
 	app_user: User["id"]
 	name: string;
-	description: string;
-	isPrivate: boolean;
+	description: string | null;
+	private: boolean | null;
+	color: string | null;
+	category: string | null;
 	createdAt: Date;
 	updatedAt: Date;
 }

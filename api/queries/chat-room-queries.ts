@@ -13,6 +13,7 @@ export async function getChatRoomsQuery({ queryKey }: { queryKey: QueryKey }) {
 }
 
 export async function createChatRoomQuery(params: APIOmittedParams<ChatRoom>) {
+	console.log(params);
 	const response = await api.post("/api/chat-rooms", params);
 	return response.data;
 }

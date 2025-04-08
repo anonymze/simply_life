@@ -40,7 +40,7 @@ export default function Page() {
 									justifyContent: "space-between",
 								}}
 							>
-								<ItemTitleAndDescription name={item.name} description={item.description} isPrivate={item.isPrivate} />
+								<ItemTitleAndDescription name={item.name} description={item.description} private={item.private} />
 								<ChevronRightIcon size={24} color="#fff" />
 							</View>
 						</Link>
@@ -58,7 +58,7 @@ export default function Page() {
 	)();
 }
 
-function ItemTitle({ name, isPrivate }: Pick<ChatRoom, "name" | "isPrivate">) {
+function ItemTitle({ name, private: isPrivate }: Pick<ChatRoom, "name" | "private">) {
 	return (
 		<View className="flex-row items-center gap-4">
 			<Text className="text-lg text-white">{name}</Text>
@@ -70,11 +70,11 @@ function ItemTitle({ name, isPrivate }: Pick<ChatRoom, "name" | "isPrivate">) {
 function ItemTitleAndDescription({
 	name,
 	description,
-	isPrivate,
-}: Pick<ChatRoom, "name" | "description" | "isPrivate">) {
+	private: isPrivate,
+}: Pick<ChatRoom, "name" | "description" | "private">) {
 	return (
 		<View className="gap-2">
-			<ItemTitle name={name} isPrivate={isPrivate} />
+			<ItemTitle name={name} private={isPrivate} />
 			<Text className="text-sm text-white">{description}</Text>
 		</View>
 	);
