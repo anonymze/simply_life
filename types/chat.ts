@@ -9,8 +9,8 @@ export interface ChatRoom {
 	private: boolean | null;
 	color: string | null;
 	category: string | null;
-	createdAt: Date;
-	updatedAt: Date;
+	createdAt: string;
+	updatedAt: string;
 }
 
 
@@ -19,8 +19,8 @@ export interface Message {
 	app_user: User["id"];
 	chat_room: ChatRoom["id"];
 	message: string;
-	createdAt: Date;
-	updatedAt: Date;
+	createdAt: string;
+	updatedAt: string;
 }
 
 

@@ -1,4 +1,4 @@
-import Animated, { useAnimatedStyle, withSpring, withTiming, EntryAnimationsValues, EntryExitAnimationFunction } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, withSpring, withTiming, EntryAnimationsValues, EntryExitAnimationFunction, } from "react-native-reanimated";
 import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
@@ -183,10 +183,13 @@ const Item = React.memo(({ lastMessage, item, appUser }: ItemProps) => {
 			className={cn(
 				item.app_user === appUser?.user.id ? "self-end" : "self-start",
 				lastMessage && "mb-3",
-				"rounded-xl bg-green-500 px-4 py-2",
+				"flex-row gap-3 rounded-xl bg-green-500 px-2.5 py-2",
 			)}
 		>
-			<Text className="text-white">{item.message}</Text>
+			<Text className="self-start text-white">{item.message}</Text>
+			<Text className="self-end text-xs text-gray-200">
+				{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+			</Text>
 		</Animated.View>
 	);
 });
