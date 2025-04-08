@@ -30,10 +30,10 @@ export default function Page() {
 	const formSchema = React.useMemo(
 		() =>
 			z.object({
-				name: z.string().min(2, {
+				name: z.string().trim().min(2, {
 					message: i18n[languageCode]("ERROR_INPUT_MIN_LENGTH"),
 				}),
-				description: z.string(),
+				description: z.string().trim(),
 			}),
 		[],
 	);
@@ -92,7 +92,6 @@ export default function Page() {
 								returnKeyType="done"
 								autoCapitalize="none"
 								keyboardType="default"
-								textContentType="oneTimeCode"
 								placeholder="Informations sur les matchs"
 								className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
 								defaultValue={field.state.value}

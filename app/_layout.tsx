@@ -20,6 +20,8 @@ import React from "react";
 
 Sentry.init({
 	dsn: "https://b03eb0b4608556d0eed1d4cad51d1786@o4509069379043328.ingest.de.sentry.io/4509114349715536",
+	// TODO
+	enabled: false,
 });
 
 // here we set if we should show the alert of push notifications even if the app is running
