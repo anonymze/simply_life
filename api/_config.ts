@@ -29,7 +29,7 @@ api.interceptors.response.use(
 	(response) => response, // return successful responses as-is
 	(error) => {
 		if (!isAxiosError(error)) return Promise.reject(error);
-
+		
 		// if the user is not authenticated, or the token is expired, logout
 		if (error.response?.status === 403) {
 			const userInfos = getStorageUserInfos();

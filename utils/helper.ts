@@ -1,6 +1,3 @@
-
-
-
 /**
  * @description correctly type Object.keys
  */
@@ -20,4 +17,14 @@ export const sleep = (time: number) => {
 	return new Promise((resolve) => {
 		setTimeout(resolve, time);
 	});
+};
+
+/**
+ * @description truncate a text to a given length
+ */
+export const truncateText = (text: string, maxLength: number) => {
+	if (text.length > maxLength) {
+		return text.slice(0, maxLength - 3) + "...";
+	}
+	return text;
 };

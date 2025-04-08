@@ -3,6 +3,7 @@ import { ArrowLeftIcon, PlusCircleIcon } from "lucide-react-native";
 import HeaderLayout from "@/layouts/headert-layout";
 import { Stack, Redirect, Link } from "expo-router";
 import { getStorageUserInfos } from "@/utils/store";
+import { truncateText } from "@/utils/helper";
 import React from "react";
 
 
@@ -80,8 +81,9 @@ export default function AppLayout() {
 					name="chat/[chat]"
 					// Set title to empty string to prevent showing [chat] in the header while chat room title is being fetched
 					options={{
-						presentation: "modal",
-						header: () => <HeaderLayout title="Chat room" />,
+						header: (props) => {
+							return <HeaderLayout title={truncateText(props.options.title || "", 22)} />;
+						},
 					}}
 				/>
 				<Stack.Screen

@@ -15,7 +15,7 @@ import { z } from "zod";
 
 export default function Page() {
 	const { height } = useReanimatedKeyboardAnimation();
-	const languageCode = getLanguageCodeLocale();
+	const languageCode = React.useMemo(() => getLanguageCodeLocale(), []);
 	const mutationLogin = useMutation({
 		mutationFn: loginQuery,
 		onError: (error) => {
@@ -44,8 +44,8 @@ export default function Page() {
 	const form = useForm({
 		// TODO: remove defaults
 		defaultValues: {
-			email: "test@test.fr",
-			password: "12341234",
+			email: "anodevfr@test.fr",
+			password: "12345678",
 		},
 		validators: {
 			onSubmit: formSchema,
@@ -60,8 +60,8 @@ export default function Page() {
 	});
 
 	return (
-		<BackgroundLayout>
-			<Animated.View className="flex-1 items-center justify-center gap-3 p-6" style={animatedStyle}>
+		<BackgroundLayout className="p-6">
+			<Animated.View className="flex-1 items-center justify-center gap-3" style={animatedStyle}>
 				<Image
 					source={require("@/assets/images/logo-full.png")}
 					style={{ height: 80, width: 200 }}

@@ -6,24 +6,23 @@ import BackgroundLayout from "@/layouts/background-layout";
 import { useMutation } from "@tanstack/react-query";
 import { getStorageUserInfos } from "@/utils/store";
 import { useForm } from "@tanstack/react-form";
+import { queryClient } from "@/api/_queries";
 import { router } from "expo-router";
 import React from "react";
 import { z } from "zod";
 
 
 export default function Page() {
-	const appUser = getStorageUserInfos();
+	const appUser = React.useMemo(() => getStorageUserInfos(), []);
+	const languageCode = React.useMemo(() => getLanguageCodeLocale(), []);
 
-	console.log(appUser);
-
-	const languageCode = getLanguageCodeLocale();
 	const mutationLogin = useMutation({
 		mutationFn: createChatRoomQuery,
 		onError: (error) => {
 			console.log(error);
 		},
 		onSuccess: async (data) => {
-			console.log(data);
+			queryClient.invalidateQueries({ queryKey: ["chat-rooms"] });
 			router.back();
 		},
 	});
@@ -60,7 +59,7 @@ export default function Page() {
 	});
 
 	return (
-		<BackgroundLayout className="p-4">
+		<BackgroundLayout className="p-6">
 			<View className="mt-8 w-full gap-3">
 				<Text className="text-md self-start text-gray-500">{i18n[languageCode]("INPUT_NAME_NEW_ROOM")}</Text>
 				<form.Field name="name">

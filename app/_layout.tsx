@@ -9,7 +9,7 @@ import { Platform, AppState, AppStateStatus } from "react-native";
 import { focusManager } from "@tanstack/react-query";
 import * as Notifications from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
-import * as Sentry from '@sentry/react-native';
+import * as Sentry from "@sentry/react-native";
 import { queryClient } from "@/api/_queries";
 import { StatusBar } from "expo-status-bar";
 import * as Network from "expo-network";
@@ -19,9 +19,8 @@ import React from "react";
 
 
 Sentry.init({
-  dsn: 'https://b03eb0b4608556d0eed1d4cad51d1786@o4509069379043328.ingest.de.sentry.io/4509114349715536',
+	dsn: "https://b03eb0b4608556d0eed1d4cad51d1786@o4509069379043328.ingest.de.sentry.io/4509114349715536",
 });
-
 
 // here we set if we should show the alert of push notifications even if the app is running
 Notifications.setNotificationHandler({
@@ -80,17 +79,17 @@ export default Sentry.wrap(function RootLayout() {
 					<StatusBar style="light" translucent />
 					<SafeAreaProvider>
 						<SafeAreaView className="flex-1 bg-primaryLight" edges={["right", "left", "top"]}>
-							<Stack
-								screenOptions={{
-									headerShown: false,
-									animation: Platform.OS === "ios" ? "simple_push" : "fade_from_bottom",
-									gestureEnabled: false,
-									fullScreenGestureEnabled: false,
-								}}
-							>
-								<Stack.Screen name="login" />
-							</Stack>
-						</SafeAreaView>
+								<Stack
+									screenOptions={{
+										headerShown: false,
+										animation: Platform.OS === "ios" ? "simple_push" : "fade_from_bottom",
+										gestureEnabled: false,
+										fullScreenGestureEnabled: false,
+									}}
+								>
+									<Stack.Screen name="login" />
+								</Stack>
+							</SafeAreaView>
 					</SafeAreaProvider>
 				</KeyboardProvider>
 			</GestureHandlerRootView>

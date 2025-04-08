@@ -1,6 +1,7 @@
 import { getChatRoomsQuery } from "@/api/queries/chat-room-queries";
 import { ChevronRightIcon, LockIcon } from "lucide-react-native";
 import { withQueryWrapper } from "@/utils/libs/react-query";
+import { FlatList } from "react-native-gesture-handler";
 import { LegendList } from "@legendapp/list";
 import { Text, View } from "react-native";
 import { ChatRoom } from "@/types/chat";
@@ -16,13 +17,10 @@ export default function Page() {
 		},
 		({ data }) => {
 			return (
-				<LegendList
-					initialScrollIndex={data.docs.length - 1}
-					alignItemsAtEnd={true}
+				<FlatList
 					data={data.docs}
 					renderItem={({ item }) => (
 						<Link
-							style={{ marginTop: 20 }}
 							href={{
 								pathname: "/chat/[chat]",
 								params: { chat: item.id },
@@ -30,7 +28,7 @@ export default function Page() {
 						>
 							<View
 								style={{
-									gap: 6,
+									gap: 10,
 									padding: 16,
 									width: "100%",
 									borderRadius: 16,
@@ -45,15 +43,52 @@ export default function Page() {
 							</View>
 						</Link>
 					)}
-					estimatedItemSize={80}
 					keyExtractor={(item) => item.id}
-					recycleItems={true}
-					maintainScrollAtEnd={true}
-					maintainScrollAtEndThreshold={1}
 					contentInsetAdjustmentBehavior="automatic"
-					contentContainerStyle={{ padding: 20 }}
+					contentContainerStyle={{
+						gap: 20,
+						padding: 20,
+					}}
 				/>
 			);
+
+			// <LegendList
+			// 		initialScrollIndex={data.docs.length - 1}
+			// 		alignItemsAtEnd={true}
+			// 		data={data.docs}
+			// 		renderItem={({ item }) => (
+			// 			<Link
+			// 				style={{ marginTop: 20 }}
+			// 				href={{
+			// 					pathname: "/chat/[chat]",
+			// 					params: { chat: item.id },
+			// 				}}
+			// 			>
+			// 				<View
+			// 					style={{
+			// 						gap: 6,
+			// 						padding: 16,
+			// 						width: "100%",
+			// 						borderRadius: 16,
+			// 						alignItems: "center",
+			// 						flexDirection: "row",
+			// 						backgroundColor: "#000",
+			// 						justifyContent: "space-between",
+			// 					}}
+			// 				>
+			// 					<ItemTitleAndDescription name={item.name} description={item.description} private={item.private} />
+			// 					<ChevronRightIcon size={24} color="#fff" />
+			// 				</View>
+			// 			</Link>
+			// 		)}
+			// 		estimatedItemSize={data.docs.length}
+			// 		keyExtractor={(item) => item.id}
+			// 		recycleItems={false}
+			// 		maintainScrollAtEnd={true}
+			// 		maintainScrollAtEndThreshold={0.1}
+			// 		contentInsetAdjustmentBehavior="automatic"
+			// 		contentContainerStyle={{ padding: 20 }}
+			// 	/>
 		},
 	)();
 }
@@ -73,9 +108,9 @@ function ItemTitleAndDescription({
 	private: isPrivate,
 }: Pick<ChatRoom, "name" | "description" | "private">) {
 	return (
-		<View className="gap-2">
+		<View className="gap-2 flex-shrink">
 			<ItemTitle name={name} private={isPrivate} />
-			<Text className="text-sm text-white">{description}</Text>
+			<Text className="text-sm text-white flex-shrink">{description}</Text>
 		</View>
 	);
 }
