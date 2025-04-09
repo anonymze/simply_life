@@ -1,12 +1,11 @@
 import "react-native-reanimated";
 import "@/styles/app.css";
 
+import { onlineManager, QueryClientProvider, focusManager } from "@tanstack/react-query";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { onlineManager, QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Platform, AppState, AppStateStatus } from "react-native";
-import { focusManager } from "@tanstack/react-query";
 import * as Notifications from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
 import * as Sentry from "@sentry/react-native";
