@@ -24,10 +24,10 @@ export default {
 			CFBundleAllowMixedLocalizations: true,
 		},
 		android: {
-			adaptiveIcon: {
-				foregroundImage: "./assets/images/adaptive-icon.png",
-				backgroundColor: "#ffffff",
-			},
+			// adaptiveIcon: {
+			// 	foregroundImage: "./assets/images/adaptive-icon.png",
+			// 	backgroundColor: "#ffffff",
+			// },
 			googleServicesFile: "./resources/google-services.json",
 			package: "com.anonymze.simplylife",
 			config: {
@@ -63,7 +63,7 @@ export default {
 		web: {
 			bundler: "metro",
 			output: "server",
-			favicon: "./assets/images/favicon.png",
+			// favicon: "./assets/images/favicon.png",
 		},
 		plugins: [
 			"expo-router",
