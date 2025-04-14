@@ -42,3 +42,5 @@ x
 .idea
 
 resources/google-services.json
+
+.env.local

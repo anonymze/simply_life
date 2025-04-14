@@ -67,12 +67,12 @@ export default function AppLayout() {
 						headerTitle: "Chat rooms",
 						headerRight: () => (
 							<Link href="/chat/new-room">
-								<PlusCircleIcon size={24} color="white" />
+								<PlusCircleIcon size={24} color="#000" />
 							</Link>
 						),
 						headerLeft: () => (
 							<Link dismissTo href="/">
-								<ArrowLeftIcon size={24} color="white" />
+								<ArrowLeftIcon size={24} color="#000" />
 							</Link>
 						),
 					}}
