@@ -69,7 +69,7 @@ export default function Page() {
 					contentFit="contain"
 				/>
 				<Text className="text-center text-lg font-semibold">{i18n[languageCode]("SUBTITLE_LOGIN")}</Text>
-
+				
 				<View className="mt-8 w-full gap-3">
 					<Text className="text-md self-start text-gray-500">{i18n[languageCode]("INPUT_EMAIL_LOGIN")}</Text>
 					<form.Field name="email">

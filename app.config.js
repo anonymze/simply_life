@@ -84,7 +84,7 @@ export default {
 					// 	image: "./assets/images/splash-icon-dark.png",
 					// 	backgroundColor: "#ffffff",
 					// },
-					imageWidth: 220,
+					// imageWidth: 220,
 				},
 			],
 			[
