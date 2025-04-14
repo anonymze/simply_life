@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "knip": "knip"
+    "knip": "knip",
+    "clean": "rm -rf node_modules && rm -rf .expo && pnpm install && pnpx expo prebuild"
   },
   "jest": {
     "preset": "jest-expo"
