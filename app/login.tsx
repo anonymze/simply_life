@@ -1,11 +1,12 @@
+import { ActivityIndicator, Alert, Pressable, Text, View, TextInput, Button } from "react-native";
 import Animated, { FadeInDown, FadeOutUp, useAnimatedStyle } from "react-native-reanimated";
-import { ActivityIndicator, Alert, Pressable, Text, View, TextInput } from "react-native";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import BackgroundLayout from "@/layouts/background-layout";
 import { loginQuery } from "@/api/queries/login-queries";
 import { useMutation } from "@tanstack/react-query";
 import { setStorageUserInfos } from "@/utils/store";
+import * as Sentry from "@sentry/react-native";
 import { useForm } from "@tanstack/react-form";
 import { router } from "expo-router";
 import { Image } from "expo-image";

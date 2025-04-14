@@ -62,6 +62,13 @@ npx expo run:ios --configuration Release --device
 
 pnpx expo-doctor
 
+//  match dependencies of expo sdk
+pnpx expo install --fix
+
+// expo atlas (bundle sizes)
+EXPO_UNSTABLE_ATLAS=true
+http://localhost:8081/_expo/atlas
+
 <!-- android switch icon -->
 <!-- Default Icon -->
 
