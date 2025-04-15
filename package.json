@@ -11,7 +11,7 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "knip": "knip",
-    "clean": "rm -rf node_modules && rm -rf .expo && pnpm install && pnpx expo prebuild"
+    "clean": "rm -rf node_modules && rm -rf .expo && pnpm install && pnpx expo prebuild && pnpm start -c"
   },
   "jest": {
     "preset": "jest-expo"
