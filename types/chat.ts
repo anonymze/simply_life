@@ -23,5 +23,7 @@ export interface Message {
 	updatedAt: string;
 }
 
-
+export interface MessageOptimistic extends Omit<Message, "updatedAt"> {
+	optimistic: true;
+}
 

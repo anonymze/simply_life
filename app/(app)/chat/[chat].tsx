@@ -34,40 +34,36 @@ export default function Page() {
 	const { data: messages } = useQuery({
 		queryKey: ["messages", chatId],
 		queryFn: getMessagesQuery,
+		// we don't want to cache the messages, we want to show the latest messages instantly
+		staleTime: 0,
 	});
 
 	const mutationLogin = useMutation({
 		mutationFn: createMessageQuery,
-		// When mutate is called:
+		// when mutate is called:
 		onMutate: async (newMessage) => {
-			// Cancel any outgoing refetches
+			// cancel any outgoing refetches
 			// (so they don't overwrite our optimistic update)
 			await queryClient.cancelQueries({ queryKey: ["messages", chatId] });
 
-			// Snapshot the previous value
-			const previousMessages = queryClient.getQueryData(["messages", chatId]) ?? [];
+			// snapshot the previous value
+			const previousMessages = queryClient.getQueryData(["messages", chatId]);
 
-			// Optimistically update to the new value
-			queryClient.setQueryData(["messages", chatId], (old: Message[] | undefined) => {
-				const message = {
-					...newMessage,
-					createdAt: new Date(),
-				};
-
-				if (old) return [...old, message];
-				return [message];
+			// optimistically update to the new value
+			queryClient.setQueryData(["messages", chatId], (old: Message[]) => {
+				return [...old, newMessage];
 			});
 
-			// Return a context object with the snapshotted value
-			return { previousMessages: previousMessages };
+			// return old messages before optimistic update for the context in onError
+			return previousMessages;
 		},
-		// If the mutation fails,
+		// if the mutation fails,
 		// use the context returned from onMutate to roll back
 		onError: (err, newMessage, context) => {
-			queryClient.setQueryData(['messages', chatId], context?.previousMessages ?? []);
+			queryClient.setQueryData(['messages', chatId], context);
 		},
-		// Always refetch after error or success:
-		onSettled: () => queryClient.invalidateQueries({ queryKey: ["messages"] }),
+		// always refetch after error or success:
+		onSettled: () => queryClient.invalidateQueries({ queryKey: ["messages", chatId] }),
 	});
 
 	const formSchema = React.useMemo(
@@ -88,10 +84,16 @@ export default function Page() {
 		},
 		onSubmit: ({ value }) => {
 			form.reset();
+
+			// we have to set an id otherwise the list will not have a key extractor, and a date to show
 			mutationLogin.mutate({
+				id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
 				app_user: appUser?.user.id || "",
 				chat_room: chatId,
 				message: value.message,
+				createdAt: new Date().toISOString(),
+				// we flag it to show it as a pending message
+				optimistic: true,
 			});
 		},
 	});
@@ -111,9 +113,6 @@ export default function Page() {
 			form.handleSubmit();
 		});
 	}, [form]);
-
-	console.log("variables");
-	console.log(mutationLogin?.context?.previousMessages);
 	
 	return (
 		<SafeAreaView className="flex-1 bg-background" edges={["bottom"]}>
@@ -140,7 +139,8 @@ export default function Page() {
 							data={messages}
 							renderItem={({ item, index }) => {
 								return (
-									<Item key={item.id} isPending={mutationLogin.context?.previousMessages?.every((message) => message.message === item.message) ? true : false} lastMessage={index === messages.length - 1 ? true : false} item={item} appUser={appUser} />
+									//@ts-ignore
+									<Item optimistic={item.optimistic} lastMessage={index === messages.length - 1 ? true : false} item={item} appUser={appUser} />
 								);
 							}}
 							// don't invert on empty list
@@ -169,7 +169,7 @@ export default function Page() {
 							)}
 						</form.Field>
 
-						<Pressable onPress={handleSubmit} disabled={mutationLogin.isPending}>
+						<Pressable onPress={handleSubmit}>
 							<SendIcon size={24} color="#666" />
 						</Pressable>
 					</View>
@@ -183,10 +183,10 @@ type ItemProps = {
 	lastMessage: boolean;
 	item: Message;
 	appUser: AppUser | null;
-	isPending: boolean;
+	optimistic?: boolean;
 };
 
-const Item = React.memo(({ lastMessage, item, appUser, isPending }: ItemProps) => {
+const Item = React.memo(({ lastMessage, item, appUser, optimistic }: ItemProps) => {
 	return (
 		<Animated.View
 			className={cn(
@@ -198,9 +198,9 @@ const Item = React.memo(({ lastMessage, item, appUser, isPending }: ItemProps) =
 			<Text className="self-start text-white">{item.message}</Text>
 			<View className="flex-row gap-1 self-end">
 				<Text className="text-xs text-gray-200">
-					{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+					{new Date(item.createdAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
 				</Text>
-				{isPending ? (
+				{optimistic ? (
 					<CheckIcon style={{ alignSelf: "flex-end" }} size={13} color="#e5e5e5e5" />
 				) : (
 					<CheckCheckIcon size={13} color="#e5e5e5e5" />

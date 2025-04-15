@@ -10,8 +10,6 @@ import { Link } from "expo-router";
 import React from "react";
 
 
-const MAX_MESSAGES = 25; // default number of messages to prefetch
-
 export default function Page() {
 	const queryClient = useQueryClient();
 
@@ -19,7 +17,7 @@ export default function Page() {
 		async (chatId: string) => {
 			// Prefetch messages for this chat room
 			await queryClient.prefetchQuery({
-				queryKey: ["messages", chatId, MAX_MESSAGES],
+				queryKey: ["messages", chatId],
 				queryFn: getMessagesQuery,
 			});
 		},
@@ -74,7 +72,7 @@ export default function Page() {
 						});
 					}}
 					viewabilityConfig={{
-						itemVisiblePercentThreshold: 50, // Item is considered visible when 50% visible
+						itemVisiblePercentThreshold: 75, // item is considered visible when 75% visible
 					}}
 				/>
 			);

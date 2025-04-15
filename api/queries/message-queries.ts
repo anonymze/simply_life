@@ -1,7 +1,6 @@
+import { Message, MessageOptimistic } from "@/types/chat";
 import { PaginatedResponse } from "@/types/response";
-import { APIOmittedParams } from "@/types/payload";
 import { QueryKey } from "@tanstack/react-query";
-import { Message } from "@/types/chat";
 
 import { api } from "../_config";
 
@@ -24,7 +23,11 @@ export async function getMessagesQuery({ queryKey }: { queryKey: QueryKey }) {
 	return response.data.docs;
 }
 
-export async function createMessageQuery(params: APIOmittedParams<Message>) {
-	const response = await api.post("/api/messages", params);
+export async function createMessageQuery(params: MessageOptimistic) {
+	const response = await api.post("/api/messages", {
+		app_user: params.app_user,
+		chat_room: params.chat_room,
+		message: params.message,
+	});
 	return response.data;
 }
