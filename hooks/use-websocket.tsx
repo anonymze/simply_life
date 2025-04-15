@@ -44,7 +44,7 @@ const useWebSocket = (
 				}, reconnectIntervalRef.current);
 			};
 		} catch (error) {
-			console.log(error);
+			console.warn(error);
 		}
 	};
 
