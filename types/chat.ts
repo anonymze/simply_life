@@ -24,6 +24,6 @@ export interface Message {
 }
 
 export interface MessageOptimistic extends Omit<Message, "updatedAt"> {
-	optimistic: true;
+	optimistic: boolean;
 }
 

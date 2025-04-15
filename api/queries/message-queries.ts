@@ -8,7 +8,7 @@ import { api } from "../_config";
 export async function getMessagesQuery({ queryKey }: { queryKey: QueryKey }) {
 	const [,chatId, maxMessages] = queryKey;
 
-	const response = await api.get<PaginatedResponse<Message>>("/api/messages", {
+	const response = await api.get<PaginatedResponse<Message | MessageOptimistic>>("/api/messages", {
 		params: {
 			where: {
 				chat_room: {

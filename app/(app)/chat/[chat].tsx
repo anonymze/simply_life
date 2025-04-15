@@ -8,11 +8,11 @@ import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import BackgroundLayout from "@/layouts/background-layout";
+import { Message, MessageOptimistic } from "@/types/chat";
 import { getStorageUserInfos } from "@/utils/store";
 import useWebSocket from "@/hooks/use-websocket";
 import { useForm } from "@tanstack/react-form";
 import { queryClient } from "@/api/_queries";
-import { Message } from "@/types/chat";
 import { AppUser } from "@/types/user";
 import { cn } from "@/utils/cn";
 import React from "react";
@@ -40,7 +40,7 @@ export default function Page() {
 		// we don't want to cache the messages, we want to show the latest messages instantly
 		staleTime: 0,
 		// keep previous data while fetching
-		placeholderData: (prev) => prev
+		placeholderData: (prev) => prev,
 	});
 
 	const mutationLogin = useMutation({
@@ -65,7 +65,7 @@ export default function Page() {
 		// if the mutation fails,
 		// use the context returned from onMutate to roll back
 		onError: (err, newMessage, context) => {
-			queryClient.setQueryData(['messages', chatId, maxMessages], context);
+			queryClient.setQueryData(["messages", chatId, maxMessages], context);
 		},
 		// always refetch after error or success:
 		onSettled: () => queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] }),
@@ -118,17 +118,17 @@ export default function Page() {
 			form.handleSubmit();
 		});
 	}, [form]);
-	
+
 	return (
 		<SafeAreaView className="flex-1 bg-background" edges={["bottom"]}>
+			<Stack.Screen options={{ title: chatId }} />
 			<BackgroundLayout className="px-6">
-				<Stack.Screen options={{ title: chatId }} />
 				{/* <Animated.View className="flex-1" style={animatedStyle}> */}
 				<View className="flex-1">
 					{messages?.length ? (
-						<FlatList
+						<FlatList<Message | MessageOptimistic>
 							contentContainerStyle={{
-									gap: 5,
+								gap: 5,
 								// needed for list empty
 								// flex: messages?.docs.length ? undefined : 1,
 							}}
@@ -145,14 +145,18 @@ export default function Page() {
 							renderItem={({ item, index }) => {
 								return (
 									//@ts-ignore
-									<Item optimistic={item.optimistic} firstMessage={index === 0 ? true : false} item={item} appUser={appUser} />
+									<Item
+										firstMessage={index === 0 ? true : false}
+										item={item}
+										appUser={appUser}
+									/>
 								);
 							}}
 							// don't invert on empty list
 							inverted={true}
 							onEndReached={() => {
 								// add more messages when on end scroll
-								setMaxMessages((props) => props + 20)
+								setMaxMessages((props) => props + 20);
 							}}
 							onEndReachedThreshold={0.2}
 						/>
@@ -192,13 +196,14 @@ export default function Page() {
 
 type ItemProps = {
 	firstMessage: boolean;
-	item: Message;
+	item: Message | MessageOptimistic;
 	appUser: AppUser | null;
-	optimistic?: boolean;
 };
 
-const Item = React.memo(({ firstMessage, item, appUser, optimistic }: ItemProps) => {
+const Item = React.memo(({ firstMessage, item, appUser }: ItemProps) => {
 	const me = item.app_user === appUser?.user.id;
+	const optimistic = "optimistic" in item ? item.optimistic : false;
+
 	return (
 		<View
 			className={cn(
@@ -213,13 +218,12 @@ const Item = React.memo(({ firstMessage, item, appUser, optimistic }: ItemProps)
 				<Text className="text-xs text-gray-200">
 					{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
 				</Text>
-				{me && (
-					optimistic ? (
+				{me &&
+					(optimistic ? (
 						<CheckIcon style={{ alignSelf: "flex-end" }} size={14} color="#e5e5e5e5" />
 					) : (
 						<CheckCheckIcon size={14} color="#55c0ff" />
-					)
-				)}
+					))}
 			</View>
 		</View>
 	);
