@@ -41,16 +41,7 @@ export default function Page() {
 							}}
 						>
 							<View
-								style={{
-									gap: 10,
-									padding: 16,
-									width: "100%",
-									borderRadius: 16,
-									alignItems: "center",
-									flexDirection: "row",
-									backgroundColor: "#000",
-									justifyContent: "space-between",
-								}}
+								className="w-full items-center flex-row justify-between bg-black	 gap-4 p-5 rounded-xl"
 							>
 								<ItemTitleAndDescription name={item.name} description={item.description} private={item.private} />
 								<ChevronRightIcon size={24} color="#fff" />
@@ -139,3 +130,4 @@ function ItemTitleAndDescription({
 		</View>
 	);
 }
+
