@@ -2,6 +2,7 @@ import React from "react";
 
 
 const useWebSocket = (
+	chatId: string,
 	onMessage?: (messageEvent: MessageEvent) => void,
 	onError?: (error: Event) => void,
 	onClose?: (event: CloseEvent) => void,
@@ -22,6 +23,10 @@ const useWebSocket = (
 			ws.current.onopen = () => {
 				setWebSocketConnected(true);
 				reconnectIntervalRef.current = 1000;
+				ws.current?.send(JSON.stringify({
+					type: "JOIN_CHAT",
+					chatId,
+				}));
 			};
 
 			ws.current.onmessage = (event) => {

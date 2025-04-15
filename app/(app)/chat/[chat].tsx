@@ -21,30 +21,32 @@ import { z } from "zod";
 import { MAX_MESSAGES } from "./index";
 
 
+const messageReceivedSchema = z.object({
+	type: z.literal("MESSAGE_RECEIVED"),
+	message: z.any(),
+});
+
 export default function Page() {
-	const onMessageWebsocket = (messageEvent: any) => {
-		console.log("WebsocketmessageEvent", messageEvent);
-	};
-
-	const onErrorWebsocket = (error: Event) => {
-		console.error("WebSocket error:", error);
-	};
-
-	const onCloseWebsocket = (event: CloseEvent) => {
-		console.log("WebSocket closed:", event);
-	};	
-
-	const websocketConnected = useWebSocket(onMessageWebsocket, onErrorWebsocket, onCloseWebsocket);
-	const [maxMessages, setMaxMessages] = React.useState(MAX_MESSAGES);
 	const { chat: chatId } = useLocalSearchParams<{ chat?: string }>();
+
+	if (!chatId) {
+		return <Redirect href="/chat" />;
+	}
+
+	const [maxMessages, setMaxMessages] = React.useState(MAX_MESSAGES);
 	const appUser = React.useMemo(() => getStorageUserInfos(), []);
 	const languageCode = React.useMemo(() => getLanguageCodeLocale(), []);
 	// const { height } = useReanimatedKeyboardAnimation();
 	// const bottomSafeAreaView = useSafeAreaInsets().bottom;
 
-	if (!chatId) {
-		return <Redirect href="/chat" />;
-	}
+	const onMessageWebsocket = (event: any) => {
+		const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));		
+		if (!success) return;
+
+		queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
+	};
+
+	const websocketConnected = useWebSocket(chatId, onMessageWebsocket);
 
 	const { data: messages } = useQuery({
 		queryKey: ["messages", chatId, maxMessages],
@@ -136,7 +138,7 @@ export default function Page() {
 			<Stack.Screen options={{ title: chatId }} />
 
 			<BackgroundLayout className="px-6">
-				<View className={cn("absolute top-4 left-4 size-4 bg-red-500", websocketConnected && "bg-green-500")}/>
+				<View className={cn("absolute left-4 top-4 size-4 bg-red-500", websocketConnected && "bg-green-500")} />
 				{/* <Animated.View className="flex-1" style={animatedStyle}> */}
 				<View className="flex-1">
 					{messages?.length ? (
@@ -159,11 +161,7 @@ export default function Page() {
 							renderItem={({ item, index }) => {
 								return (
 									//@ts-ignore
-									<Item
-										firstMessage={index === 0 ? true : false}
-										item={item}
-										appUser={appUser}
-									/>
+									<Item firstMessage={index === 0 ? true : false} item={item} appUser={appUser} />
 								);
 							}}
 							// don't invert on empty list

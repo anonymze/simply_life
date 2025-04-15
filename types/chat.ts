@@ -17,7 +17,7 @@ export interface ChatRoom {
 export interface Message {
 	id: string;
 	app_user: User["id"];
-	chat_room: ChatRoom["id"];
+	chat_room: ChatRoom | ChatRoom["id"];
 	message: string;
 	createdAt: string;
 	updatedAt: string;
