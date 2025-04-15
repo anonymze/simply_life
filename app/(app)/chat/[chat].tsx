@@ -12,6 +12,7 @@ import { Pressable } from "react-native-gesture-handler";
 import { getStorageUserInfos } from "@/utils/store";
 import { useForm } from "@tanstack/react-form";
 import { queryClient } from "@/api/_queries";
+import config from "@/tailwind.config";
 import { Message } from "@/types/chat";
 import { AppUser } from "@/types/user";
 import { cn } from "@/utils/cn";
@@ -203,7 +204,7 @@ const Item = React.memo(({ lastMessage, item, appUser, optimistic }: ItemProps) 
 				{optimistic ? (
 					<CheckIcon style={{ alignSelf: "flex-end" }} size={13} color="#e5e5e5e5" />
 				) : (
-					<CheckCheckIcon size={13} color="#e5e5e5e5" />
+					<CheckCheckIcon size={13} color="#269ee6" />
 				)}
 			</View>
 		</Animated.View>
