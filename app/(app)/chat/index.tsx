@@ -10,14 +10,16 @@ import { Link } from "expo-router";
 import React from "react";
 
 
+export const MAX_MESSAGES = 25;
+
 export default function Page() {
 	const queryClient = useQueryClient();
 
 	const prefetchMessages = React.useCallback(
 		async (chatId: string) => {
-			// Prefetch messages for this chat room
+			// prefetch messages for this chat room
 			await queryClient.prefetchQuery({
-				queryKey: ["messages", chatId],
+				queryKey: ["messages", chatId, MAX_MESSAGES],
 				queryFn: getMessagesQuery,
 			});
 		},

@@ -1,27 +1,27 @@
 import Animated, { useAnimatedStyle, withSpring, withTiming, EntryAnimationsValues, EntryExitAnimationFunction, } from "react-native-reanimated";
+import { View, TextInput, FlatList, Text, Pressable, RefreshControl } from "react-native";
 import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { CheckCheckIcon, CheckIcon, SendIcon } from "lucide-react-native";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
-import { View, TextInput, FlatList, Text } from "react-native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import BackgroundLayout from "@/layouts/background-layout";
-import { Pressable } from "react-native-gesture-handler";
 import { getStorageUserInfos } from "@/utils/store";
 import { useForm } from "@tanstack/react-form";
 import { queryClient } from "@/api/_queries";
-import config from "@/tailwind.config";
 import { Message } from "@/types/chat";
 import { AppUser } from "@/types/user";
 import { cn } from "@/utils/cn";
 import React from "react";
 import { z } from "zod";
 
+import { MAX_MESSAGES } from ".";
+
 
 export default function Page() {
-	const [maxMessages, setMaxMessages] = React.useState(25);
+	const [maxMessages, setMaxMessages] = React.useState(MAX_MESSAGES);
 	const { chat: chatId } = useLocalSearchParams<{ chat?: string }>();
 	const { height } = useReanimatedKeyboardAnimation();
 	const appUser = React.useMemo(() => getStorageUserInfos(), []);
@@ -37,6 +37,8 @@ export default function Page() {
 		queryFn: getMessagesQuery,
 		// we don't want to cache the messages, we want to show the latest messages instantly
 		staleTime: 0,
+		// keep previous data while fetching
+		placeholderData: (prev) => prev
 	});
 
 	const mutationLogin = useMutation({
@@ -123,8 +125,7 @@ export default function Page() {
 					{messages?.length ? (
 						<FlatList
 							contentContainerStyle={{
-								// flexDirection: "column-reverse",
-								gap: 5,
+									gap: 5,
 								// needed for list empty
 								// flex: messages?.docs.length ? undefined : 1,
 							}}
@@ -146,6 +147,10 @@ export default function Page() {
 							}}
 							// don't invert on empty list
 							inverted={true}
+							onEndReached={(props) => {
+								setMaxMessages((props) => props + 20)
+							}}
+							onEndReachedThreshold={0.2}
 						/>
 					) : (
 						<View className="flex-1 items-center justify-center">
@@ -153,7 +158,7 @@ export default function Page() {
 						</View>
 					)}
 
-					<View className="flex-row items-center gap-2 rounded-2xl border border-gray-300 p-3">
+					<View className="flex-row items-center gap-2 rounded-2xl border border-gray-300 p-2 pl-3">
 						<form.Field name="message">
 							{(field) => (
 								<TextInput
@@ -170,8 +175,8 @@ export default function Page() {
 							)}
 						</form.Field>
 
-						<Pressable onPress={handleSubmit}>
-							<SendIcon size={24} color="#666" />
+						<Pressable onPress={handleSubmit} className="p-1.5">
+							<SendIcon size={20} color="#666" />
 						</Pressable>
 					</View>
 				</Animated.View>
