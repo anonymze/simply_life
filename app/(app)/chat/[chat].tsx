@@ -33,7 +33,7 @@ export default function Page() {
 	}
 
 	const { data: messages } = useQuery({
-		queryKey: ["messages", chatId],
+		queryKey: ["messages", chatId, maxMessages],
 		queryFn: getMessagesQuery,
 		// we don't want to cache the messages, we want to show the latest messages instantly
 		staleTime: 0,
@@ -45,14 +45,14 @@ export default function Page() {
 		onMutate: async (newMessage) => {
 			// cancel any outgoing refetches
 			// (so they don't overwrite our optimistic update)
-			await queryClient.cancelQueries({ queryKey: ["messages", chatId] });
+			await queryClient.cancelQueries({ queryKey: ["messages", chatId, maxMessages] });
 
 			// snapshot the previous value
-			const previousMessages = queryClient.getQueryData(["messages", chatId]);
+			const previousMessages = queryClient.getQueryData(["messages", chatId, maxMessages]);
 
 			// optimistically update to the new value
-			queryClient.setQueryData(["messages", chatId], (old: Message[]) => {
-				return [...old, newMessage];
+			queryClient.setQueryData(["messages", chatId, maxMessages], (old: Message[]) => {
+				return [newMessage, ...old];
 			});
 
 			// return old messages before optimistic update for the context in onError
@@ -61,10 +61,10 @@ export default function Page() {
 		// if the mutation fails,
 		// use the context returned from onMutate to roll back
 		onError: (err, newMessage, context) => {
-			queryClient.setQueryData(['messages', chatId], context);
+			queryClient.setQueryData(['messages', chatId, maxMessages], context);
 		},
 		// always refetch after error or success:
-		onSettled: () => queryClient.invalidateQueries({ queryKey: ["messages", chatId] }),
+		onSettled: () => queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] }),
 	});
 
 	const formSchema = React.useMemo(
@@ -123,7 +123,7 @@ export default function Page() {
 					{messages?.length ? (
 						<FlatList
 							contentContainerStyle={{
-								flexDirection: "column-reverse",
+								// flexDirection: "column-reverse",
 								gap: 5,
 								// needed for list empty
 								// flex: messages?.docs.length ? undefined : 1,
@@ -141,7 +141,7 @@ export default function Page() {
 							renderItem={({ item, index }) => {
 								return (
 									//@ts-ignore
-									<Item optimistic={item.optimistic} lastMessage={index === messages.length - 1 ? true : false} item={item} appUser={appUser} />
+									<Item optimistic={item.optimistic} firstMessage={index === 0 ? true : false} item={item} appUser={appUser} />
 								);
 							}}
 							// don't invert on empty list
@@ -181,18 +181,18 @@ export default function Page() {
 }
 
 type ItemProps = {
-	lastMessage: boolean;
+	firstMessage: boolean;
 	item: Message;
 	appUser: AppUser | null;
 	optimistic?: boolean;
 };
 
-const Item = React.memo(({ lastMessage, item, appUser, optimistic }: ItemProps) => {
+const Item = React.memo(({ firstMessage, item, appUser, optimistic }: ItemProps) => {
 	return (
 		<Animated.View
 			className={cn(
 				item.app_user === appUser?.user.id ? "self-end" : "self-start",
-				lastMessage && "mb-3",
+				firstMessage && "mb-3",
 				"flex-row gap-3 rounded-xl bg-green-500 px-2.5 py-2",
 			)}
 		>

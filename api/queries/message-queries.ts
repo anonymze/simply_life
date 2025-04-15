@@ -15,7 +15,7 @@ export async function getMessagesQuery({ queryKey }: { queryKey: QueryKey }) {
 					equals: chatId
 				},
 			},
-			sort: "createdAt",
+			sort: "-createdAt",
 			limit: maxMessages,
 		},
 	});
