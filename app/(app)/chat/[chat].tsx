@@ -2,6 +2,7 @@ import Animated, { useAnimatedStyle, withSpring, withTiming, EntryAnimationsValu
 import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { CheckCheckIcon, CheckIcon, SendIcon } from "lucide-react-native";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import { View, TextInput, FlatList, Text } from "react-native";
@@ -10,7 +11,6 @@ import BackgroundLayout from "@/layouts/background-layout";
 import { Pressable } from "react-native-gesture-handler";
 import { getStorageUserInfos } from "@/utils/store";
 import { useForm } from "@tanstack/react-form";
-import { SendIcon } from "lucide-react-native";
 import { queryClient } from "@/api/_queries";
 import { Message } from "@/types/chat";
 import { AppUser } from "@/types/user";
@@ -18,25 +18,6 @@ import { cn } from "@/utils/cn";
 import React from "react";
 import { z } from "zod";
 
-
-const customEntering: EntryExitAnimationFunction = (targetValues: EntryAnimationsValues) => {
-	"worklet";
-	const animations = {
-		transform: [
-			{ scale: withSpring(1, { damping: 12, mass: 1, stiffness: 100 }) },
-			{ translateY: withTiming(0, { duration: 300 }) },
-		],
-		opacity: withTiming(1, { duration: 300 }),
-	};
-	const initialValues = {
-		transform: [{ scale: 0.8 }, { translateY: 10 }],
-		opacity: 0,
-	};
-	return {
-		initialValues,
-		animations,
-	};
-};
 
 export default function Page() {
 	const [maxMessages, setMaxMessages] = React.useState(25);
@@ -51,18 +32,42 @@ export default function Page() {
 	}
 
 	const { data: messages } = useQuery({
-		queryKey: ["messages", chatId, maxMessages],
+		queryKey: ["messages", chatId],
 		queryFn: getMessagesQuery,
 	});
 
 	const mutationLogin = useMutation({
 		mutationFn: createMessageQuery,
-		onError: (error) => {
-			console.log(error);
+		// When mutate is called:
+		onMutate: async (newMessage) => {
+			// Cancel any outgoing refetches
+			// (so they don't overwrite our optimistic update)
+			await queryClient.cancelQueries({ queryKey: ["messages", chatId] });
+
+			// Snapshot the previous value
+			const previousMessages = queryClient.getQueryData(["messages", chatId]) ?? [];
+
+			// Optimistically update to the new value
+			queryClient.setQueryData(["messages", chatId], (old: Message[] | undefined) => {
+				const message = {
+					...newMessage,
+					createdAt: new Date(),
+				};
+
+				if (old) return [...old, message];
+				return [message];
+			});
+
+			// Return a context object with the snapshotted value
+			return { previousMessages: previousMessages };
 		},
-		onSuccess: async (data) => {
-			queryClient.invalidateQueries({ queryKey: ["messages"] });
+		// If the mutation fails,
+		// use the context returned from onMutate to roll back
+		onError: (err, newMessage, context) => {
+			queryClient.setQueryData(['messages', chatId], context?.previousMessages ?? []);
 		},
+		// Always refetch after error or success:
+		onSettled: () => queryClient.invalidateQueries({ queryKey: ["messages"] }),
 	});
 
 	const formSchema = React.useMemo(
@@ -107,12 +112,15 @@ export default function Page() {
 		});
 	}, [form]);
 
+	console.log("variables");
+	console.log(mutationLogin?.context?.previousMessages);
+	
 	return (
 		<SafeAreaView className="flex-1 bg-background" edges={["bottom"]}>
 			<BackgroundLayout className="px-6">
 				<Stack.Screen options={{ title: chatId }} />
 				<Animated.View className="flex-1" style={animatedStyle}>
-					{messages?.docs.length ? (
+					{messages?.length ? (
 						<FlatList
 							contentContainerStyle={{
 								flexDirection: "column-reverse",
@@ -129,10 +137,10 @@ export default function Page() {
 							// }}
 							keyExtractor={(item) => item.id}
 							showsVerticalScrollIndicator={false}
-							data={messages.docs}
+							data={messages}
 							renderItem={({ item, index }) => {
 								return (
-									<Item lastMessage={index === messages.docs.length - 1 ? true : false} item={item} appUser={appUser} />
+									<Item key={item.id} isPending={mutationLogin.context?.previousMessages?.every((message) => message.message === item.message) ? true : false} lastMessage={index === messages.length - 1 ? true : false} item={item} appUser={appUser} />
 								);
 							}}
 							// don't invert on empty list
@@ -175,9 +183,10 @@ type ItemProps = {
 	lastMessage: boolean;
 	item: Message;
 	appUser: AppUser | null;
+	isPending: boolean;
 };
 
-const Item = React.memo(({ lastMessage, item, appUser }: ItemProps) => {
+const Item = React.memo(({ lastMessage, item, appUser, isPending }: ItemProps) => {
 	return (
 		<Animated.View
 			className={cn(
@@ -187,13 +196,15 @@ const Item = React.memo(({ lastMessage, item, appUser }: ItemProps) => {
 			)}
 		>
 			<Text className="self-start text-white">{item.message}</Text>
-			<View className="self-end flex-row gap-1">
+			<View className="flex-row gap-1 self-end">
 				<Text className="text-xs text-gray-200">
 					{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
 				</Text>
-				<Text className="text-xs text-gray-200">
-					{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
-				</Text>
+				{isPending ? (
+					<CheckIcon style={{ alignSelf: "flex-end" }} size={13} color="#e5e5e5e5" />
+				) : (
+					<CheckCheckIcon size={13} color="#e5e5e5e5" />
+				)}
 			</View>
 		</Animated.View>
 	);

@@ -1,15 +1,31 @@
 import { getChatRoomsQuery } from "@/api/queries/chat-room-queries";
+import { getMessagesQuery } from "@/api/queries/message-queries";
 import { ChevronRightIcon, LockIcon } from "lucide-react-native";
 import { withQueryWrapper } from "@/utils/libs/react-query";
 import { FlatList } from "react-native-gesture-handler";
-import { LegendList } from "@legendapp/list";
+import { useQueryClient } from "@tanstack/react-query";
 import { Text, View } from "react-native";
 import { ChatRoom } from "@/types/chat";
 import { Link } from "expo-router";
 import React from "react";
 
 
+const MAX_MESSAGES = 25; // default number of messages to prefetch
+
 export default function Page() {
+	const queryClient = useQueryClient();
+
+	const prefetchMessages = React.useCallback(
+		async (chatId: string) => {
+			// Prefetch messages for this chat room
+			await queryClient.prefetchQuery({
+				queryKey: ["messages", chatId, MAX_MESSAGES],
+				queryFn: getMessagesQuery,
+			});
+		},
+		[queryClient]
+	);
+
 	return withQueryWrapper<ChatRoom>(
 		{
 			queryKey: ["chat-rooms"],
@@ -48,6 +64,17 @@ export default function Page() {
 					contentContainerStyle={{
 						gap: 20,
 						padding: 20,
+					}}
+					onViewableItemsChanged={({ viewableItems }) => {
+						// prefetch messages for visible chat rooms
+						viewableItems.forEach((viewableItem) => {
+							if (viewableItem.isViewable) {
+								prefetchMessages(viewableItem.item.id);
+							}
+						});
+					}}
+					viewabilityConfig={{
+						itemVisiblePercentThreshold: 50, // Item is considered visible when 50% visible
 					}}
 				/>
 			);

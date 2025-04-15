@@ -21,7 +21,7 @@ export async function getMessagesQuery({ queryKey }: { queryKey: QueryKey }) {
 		},
 	});
 	
-	return response.data;
+	return response.data.docs;
 }
 
 export async function createMessageQuery(params: APIOmittedParams<Message>) {

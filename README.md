@@ -155,3 +155,6 @@ changement icone + push notifs + depp link + traduction + pdf signature, text to
 Unit tests
 reset expiration token on success
 
+// limit fetch like maximum response per request
+// optimisitc messages on chat
+
