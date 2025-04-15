@@ -64,7 +64,7 @@ export default function Page() {
 		<BackgroundLayout className="p-6">
 			<Animated.View className="flex-1 items-center justify-center gap-3" style={animatedStyle}>
 				<Image
-					source={require("@/assets/images/logo-full.png")}
+					source={require("@/assets/images/logo.png")}
 					style={{ height: 80, width: 200 }}
 					contentFit="contain"
 				/>
