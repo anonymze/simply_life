@@ -13,7 +13,7 @@ export interface Service {
 const services: Service[] = [
 	{
 		id: 1,
-		name: "Présentation",
+		name: "Commisions indépendants",
 		description: "Gérez votre planning professionnel",
 		icon: require("@/assets/images/logo.png"),
 		link: "/presentation",
@@ -21,7 +21,7 @@ const services: Service[] = [
 	},
 	{
 		id: 2,
-		name: "Sponsors",
+		name: "Fournisseurs",
 		description: "Prenez vos rendez-vous médicaux",
 		icon: require("@/assets/images/logo.png"),
 		link: "/sponsors",
@@ -29,7 +29,7 @@ const services: Service[] = [
 	},
 	{
 		id: 3,
-		name: "Signature",
+		name: "Partenaires",
 		description: "Accédez à vos séances de kinésithérapie",
 		icon: require("@/assets/images/logo.png"),
 		link: "/signature",
@@ -37,7 +37,7 @@ const services: Service[] = [
 	},
 	{
 		id: 4,
-		name: "Chat",
+		name: "Messagerie",
 		description: "Suivez votre plan nutritionnel",
 		icon: require("@/assets/images/logo.png"),
 		link: "/chat",
@@ -45,7 +45,7 @@ const services: Service[] = [
 	},
 	{
 		id: 5,
-		name: "Speech",
+		name: "Commissions associés",
 		description: "Suivez vos performances",
 		icon: require("@/assets/images/logo.png"),
 		link: "/performance",
@@ -53,7 +53,7 @@ const services: Service[] = [
 	},
 	{
 		id: 7,
-		name: "chat",
+		name: "Calendrier personnel",
 		description: "Gérez vos billets à domicile",
 		icon: require("@/assets/images/logo.png"),
 		link: "/chat",
@@ -61,7 +61,7 @@ const services: Service[] = [
 	},
 	{
 		id: 8,
-		name: "numbers",
+		name: "Calendrier groupe valorem",
 		description: "Gérez vos billets à l'extérieur",
 		icon: require("@/assets/images/logo.png"),
 		link: null,
@@ -69,7 +69,7 @@ const services: Service[] = [
 	},
 	{
 		id: 9,
-		name: "...",
+		name: "Rendez-vous",
 		description: "Communiquez avec votre équipe",
 		icon: require("@/assets/images/logo.png"),
 		link: null,
@@ -77,7 +77,7 @@ const services: Service[] = [
 	},
 	{
 		id: 10,
-		name: "...",
+		name: "Vie d'agence",
 		description: "Accédez aux informations importantes",
 		icon: require("@/assets/images/logo.png"),
 		link: null,
@@ -85,7 +85,7 @@ const services: Service[] = [
 	},
 	{
 		id: 11,
-		name: "...",
+		name: "Fundesys",
 		description: "Signez vos documents électroniquement",
 		icon: require("@/assets/images/logo.png"),
 		link: null,
@@ -93,7 +93,7 @@ const services: Service[] = [
 	},
 	{
 		id: 12,
-		name: "...",
+		name: "Demandes immobiliers",
 		description: "Accédez à vos documents sécurisés",
 		icon: require("@/assets/images/logo.png"),
 		link: null,
@@ -101,7 +101,7 @@ const services: Service[] = [
 	},
 	{
 		id: 13,
-		name: "...",
+		name: "Concours indépendants",
 		description: "Accédez à vos documents sécurisés",
 		icon: require("@/assets/images/logo.png"),
 		link: null,
@@ -109,7 +109,39 @@ const services: Service[] = [
 	},
 	{
 		id: 14,
-		name: "...",
+		name: "Contacts utiles",
+		description: "Accédez à vos documents sécurisés",
+		icon: require("@/assets/images/logo.png"),
+		link: "/login",
+		theme: "text-blue-600",
+	},
+	{
+		id: 15,
+		name: "Guide d'accueil",
+		description: "Accédez à vos documents sécurisés",
+		icon: require("@/assets/images/logo.png"),
+		link: "/login",
+		theme: "text-blue-600",
+	},
+	{
+		id: 16,
+		name: "Organigramme",
+		description: "Accédez à vos documents sécurisés",
+		icon: require("@/assets/images/logo.png"),
+		link: "/login",
+		theme: "text-blue-600",
+	},
+	{
+		id: 17,
+		name: "Lettres de mission",
+		description: "Accédez à vos documents sécurisés",
+		icon: require("@/assets/images/logo.png"),
+		link: "/login",
+		theme: "text-blue-600",
+	},
+	{
+		id: 18,
+		name: "Informations réunion",
 		description: "Accédez à vos documents sécurisés",
 		icon: require("@/assets/images/logo.png"),
 		link: "/login",

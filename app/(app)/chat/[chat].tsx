@@ -130,7 +130,7 @@ export default function Page() {
 							// ListEmptyComponent={() => {
 							// 	return (
 							// 		<View className="flex-1 items-center justify-center">
-							// 			<Text className="text-gray-500">No messages</Text>
+							// 			<Text className="text-gray-500">Pas de message</Text>
 							// 		</View>
 							// 	);
 							// }}
@@ -148,7 +148,7 @@ export default function Page() {
 						/>
 					) : (
 						<View className="flex-1 items-center justify-center">
-							<Text className="text-gray-500">No messages</Text>
+							<Text className="text-gray-500">Pas de message</Text>
 						</View>
 					)}
 

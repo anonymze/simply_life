@@ -192,7 +192,7 @@ export function Chat({ className, onError }: ChatProps) {
 				<View className="flex-1 bg-background">
 					{messages.length === 0 ? (
 						<View className="flex-1 items-center justify-center">
-							<Text className="text-gray-500">No messages yet</Text>
+							<Text className="text-gray-500">Pas de message</Text>
 						</View>
 					) : (
 						<FlatList
