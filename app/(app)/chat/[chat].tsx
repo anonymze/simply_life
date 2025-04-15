@@ -1,14 +1,15 @@
-import Animated, { useAnimatedStyle, withSpring, withTiming, EntryAnimationsValues, EntryExitAnimationFunction, } from "react-native-reanimated";
-import { View, TextInput, FlatList, Text, Pressable, RefreshControl } from "react-native";
 import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { View, TextInput, FlatList, Text, Pressable } from "react-native";
 import { CheckCheckIcon, CheckIcon, SendIcon } from "lucide-react-native";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import BackgroundLayout from "@/layouts/background-layout";
 import { getStorageUserInfos } from "@/utils/store";
+import useWebSocket from "@/hooks/use-websocket";
 import { useForm } from "@tanstack/react-form";
 import { queryClient } from "@/api/_queries";
 import { Message } from "@/types/chat";
@@ -17,10 +18,11 @@ import { cn } from "@/utils/cn";
 import React from "react";
 import { z } from "zod";
 
-import { MAX_MESSAGES } from ".";
+import { MAX_MESSAGES } from "./index";
 
 
 export default function Page() {
+	const websocketConnected = useWebSocket();
 	const [maxMessages, setMaxMessages] = React.useState(MAX_MESSAGES);
 	const { chat: chatId } = useLocalSearchParams<{ chat?: string }>();
 	const { height } = useReanimatedKeyboardAnimation();
@@ -101,14 +103,14 @@ export default function Page() {
 		},
 	});
 
-	const animatedStyle = useAnimatedStyle(() => {
-		const spacing = 12;
-		return {
-			transform: [{ translateY: height.value ? height.value + bottomSafeAreaView - spacing : 0 }],
-			// otherwise the top of the list is cut
-			marginTop: height.value ? -(height.value + bottomSafeAreaView - spacing) : 0,
-		};
-	});
+	// const animatedStyle = useAnimatedStyle(() => {
+	// 	const spacing = 12;
+	// 	return {
+	// 		transform: [{ translateY: height.value ? height.value + bottomSafeAreaView - spacing : 0 }],
+	// 		// otherwise the top of the list is cut
+	// 		marginTop: height.value ? -(height.value + bottomSafeAreaView - spacing) : 0,
+	// 	};
+	// });
 
 	const handleSubmit = React.useCallback(() => {
 		// delay to the next frame to avoid autocorrect messing up
@@ -121,7 +123,8 @@ export default function Page() {
 		<SafeAreaView className="flex-1 bg-background" edges={["bottom"]}>
 			<BackgroundLayout className="px-6">
 				<Stack.Screen options={{ title: chatId }} />
-				<Animated.View className="flex-1" style={animatedStyle}>
+				{/* <Animated.View className="flex-1" style={animatedStyle}> */}
+				<View className="flex-1">
 					{messages?.length ? (
 						<FlatList
 							contentContainerStyle={{
@@ -147,7 +150,8 @@ export default function Page() {
 							}}
 							// don't invert on empty list
 							inverted={true}
-							onEndReached={(props) => {
+							onEndReached={() => {
+								// add more messages when on end scroll
 								setMaxMessages((props) => props + 20)
 							}}
 							onEndReachedThreshold={0.2}
@@ -179,7 +183,8 @@ export default function Page() {
 							<SendIcon size={20} color="#666" />
 						</Pressable>
 					</View>
-				</Animated.View>
+				</View>
+				{/* </Animated.View> */}
 			</BackgroundLayout>
 		</SafeAreaView>
 	);
@@ -193,26 +198,30 @@ type ItemProps = {
 };
 
 const Item = React.memo(({ firstMessage, item, appUser, optimistic }: ItemProps) => {
+	const me = item.app_user === appUser?.user.id;
 	return (
-		<Animated.View
+		<View
 			className={cn(
-				item.app_user === appUser?.user.id ? "self-end" : "self-start",
+				me ? "self-end" : "self-start",
+				me ? "bg-green-600" : "bg-gray-600",
 				firstMessage && "mb-3",
-				"flex-row gap-3 rounded-xl bg-green-500 px-2.5 py-2",
+				"flex-row gap-3 rounded-xl px-2.5 py-2",
 			)}
 		>
 			<Text className="self-start text-white">{item.message}</Text>
 			<View className="flex-row gap-1 self-end">
 				<Text className="text-xs text-gray-200">
-					{new Date(item.createdAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+					{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
 				</Text>
-				{optimistic ? (
-					<CheckIcon style={{ alignSelf: "flex-end" }} size={13} color="#e5e5e5e5" />
-				) : (
-					<CheckCheckIcon size={13} color="#269ee6" />
+				{me && (
+					optimistic ? (
+						<CheckIcon style={{ alignSelf: "flex-end" }} size={14} color="#e5e5e5e5" />
+					) : (
+						<CheckCheckIcon size={14} color="#55c0ff" />
+					)
 				)}
 			</View>
-		</Animated.View>
+		</View>
 	);
 });
 
