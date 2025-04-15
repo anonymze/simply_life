@@ -1,15 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 
 
 const useWebSocket = (
 	onMessage?: (messageEvent: MessageEvent) => void,
 	onError?: (error: Event) => void,
-	onClose?: (event: CloseEvent) => void
+	onClose?: (event: CloseEvent) => void,
 ) => {
-	const [webSocketConnected, setWebSocketConnected] = useState(false);
-	const ws = useRef<WebSocket | null>(null);
-	const reconnectIntervalRef = useRef(1000);
-	const url = process.env.WEBSOCKET_URL;
+	const [webSocketConnected, setWebSocketConnected] = React.useState(false);
+	const ws = React.useRef<WebSocket | null>(null);
+	const reconnectIntervalRef = React.useRef(1000);
+	const unmountedRef = React.useRef(false);
+	const url = process.env.EXPO_PUBLIC_WEBSOCKET_URL;
 
 	const connectWebSocket = () => {
 		try {
@@ -34,6 +35,8 @@ const useWebSocket = (
 			ws.current.onclose = (event) => {
 				setWebSocketConnected(false);
 				onClose?.(event);
+
+				if (unmountedRef.current) return;
 				// attempt to reconnect
 				setTimeout(() => {
 					reconnectIntervalRef.current = Math.min(reconnectIntervalRef.current * 2, 30000); // exponential backoff, max 30 seconds
@@ -45,12 +48,12 @@ const useWebSocket = (
 		}
 	};
 
-	useEffect(() => {
+	React.useEffect(() => {
 		connectWebSocket();
 		// clean up WebSocket connection on component unmount
 		return () => {
-			if (!ws.current) return;
-			ws.current.close();
+			unmountedRef.current = true;
+			ws?.current?.close();
 		};
 	}, [url]);
 
