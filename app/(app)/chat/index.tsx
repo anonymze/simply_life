@@ -21,7 +21,7 @@ export default function Page() {
 				queryFn: getMessagesQuery,
 			});
 		},
-		[queryClient]
+		[queryClient],
 	);
 
 	return withQueryWrapper<ChatRoom>(
@@ -40,9 +40,7 @@ export default function Page() {
 								params: { chat: item.id },
 							}}
 						>
-							<View
-								className="w-full items-center flex-row justify-between bg-black	 gap-4 p-5 rounded-xl"
-							>
+							<View className="w-full flex-row items-center justify-between gap-4 rounded-xl bg-black p-5">
 								<ItemTitleAndDescription name={item.name} description={item.description} private={item.private} />
 								<ChevronRightIcon size={24} color="#fff" />
 							</View>
@@ -56,11 +54,10 @@ export default function Page() {
 					}}
 					onViewableItemsChanged={({ viewableItems }) => {
 						// prefetch messages for visible chat rooms
-						viewableItems.forEach((viewableItem) => {
-							if (viewableItem.isViewable) {
-								prefetchMessages(viewableItem.item.id);
-							}
-						});
+						for (const item of viewableItems) {
+							if (!item.isViewable) continue;
+							prefetchMessages(item.item.id);
+						}
 					}}
 					viewabilityConfig={{
 						itemVisiblePercentThreshold: 75, // item is considered visible when 75% visible
@@ -124,10 +121,9 @@ function ItemTitleAndDescription({
 	private: isPrivate,
 }: Pick<ChatRoom, "name" | "description" | "private">) {
 	return (
-		<View className="gap-2 flex-shrink">
+		<View className="flex-shrink gap-2">
 			<ItemTitle name={name} private={isPrivate} />
-			<Text className="text-sm text-white flex-shrink">{description}</Text>
+			<Text className="flex-shrink text-sm text-white">{description}</Text>
 		</View>
 	);
 }
-
