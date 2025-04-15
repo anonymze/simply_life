@@ -122,7 +122,9 @@ export default function Page() {
 	return (
 		<SafeAreaView className="flex-1 bg-background" edges={["bottom"]}>
 			<Stack.Screen options={{ title: chatId }} />
+
 			<BackgroundLayout className="px-6">
+				<View className={cn("absolute top-4 left-4 size-4 bg-red-500", websocketConnected && "bg-green-500")}/>
 				{/* <Animated.View className="flex-1" style={animatedStyle}> */}
 				<View className="flex-1">
 					{messages?.length ? (
