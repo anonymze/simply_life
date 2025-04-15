@@ -22,13 +22,25 @@ import { MAX_MESSAGES } from "./index";
 
 
 export default function Page() {
-	const websocketConnected = useWebSocket();
+	const onMessageWebsocket = (messageEvent: any) => {
+		console.log("WebsocketmessageEvent", messageEvent);
+	};
+
+	const onErrorWebsocket = (error: Event) => {
+		console.error("WebSocket error:", error);
+	};
+
+	const onCloseWebsocket = (event: CloseEvent) => {
+		console.log("WebSocket closed:", event);
+	};	
+
+	const websocketConnected = useWebSocket(onMessageWebsocket, onErrorWebsocket, onCloseWebsocket);
 	const [maxMessages, setMaxMessages] = React.useState(MAX_MESSAGES);
 	const { chat: chatId } = useLocalSearchParams<{ chat?: string }>();
-	const { height } = useReanimatedKeyboardAnimation();
 	const appUser = React.useMemo(() => getStorageUserInfos(), []);
 	const languageCode = React.useMemo(() => getLanguageCodeLocale(), []);
-	const bottomSafeAreaView = useSafeAreaInsets().bottom;
+	// const { height } = useReanimatedKeyboardAnimation();
+	// const bottomSafeAreaView = useSafeAreaInsets().bottom;
 
 	if (!chatId) {
 		return <Redirect href="/chat" />;
