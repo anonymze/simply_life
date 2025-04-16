@@ -34,6 +34,7 @@ const useWebSocket = (
 			};
 
 			ws.current.onerror = (error) => {
+				console.warn(error)
 				onError?.(error);
 			};
 

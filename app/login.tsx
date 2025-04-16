@@ -43,10 +43,9 @@ export default function Page() {
 	);
 
 	const form = useForm({
-		// TODO: remove defaults
 		defaultValues: {
-			email: "anodevfr@test.fr",
-			password: "12345678",
+			email: process.env.NODE_ENV === "development" ? "anodevfr@test.fr" : "",
+			password: process.env.NODE_ENV === "development" ? "1234" : "",
 		},
 		validators: {
 			onSubmit: formSchema,

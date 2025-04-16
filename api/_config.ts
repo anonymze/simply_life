@@ -12,8 +12,8 @@ const ORIGIN_MOBILE = "simply-life-app://mobile";
  */
 export const api = axios.create({
 	// TODO
-	// baseURL: process.env.EXPO_PUBLIC_API_URL || "",
-	baseURL: "http://localhost:3000",
+	baseURL: process.env.EXPO_PUBLIC_API_URL || "",
+	// baseURL: "http://localhost:3000",
 	timeout: 60 * 1000, // 60 seconds because mobile can have slow connections
 	responseType: "json",
 	headers: {
@@ -29,6 +29,12 @@ api.interceptors.response.use(
 	(response) => response, // return successful responses as-is
 	(error) => {
 		if (!isAxiosError(error)) return Promise.reject(error);
+
+		console.log(error.cause);
+		console.log(error.message);
+		console.log(error.request);
+		console.log(error.status);
+		console.log(error.response);
 		
 		// if the user is not authenticated, or the token is expired, logout
 		if (error.response?.status === 403) {
