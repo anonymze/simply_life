@@ -1,36 +1,60 @@
-import { Text, View } from "react-native";
+import { ActivityIndicator, Button, SafeAreaView, StyleSheet, Text } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useState, useTransition } from "react";
 
 
-export default function Page() {
-	return withWrapper(
-		"test",
-		"coucou",
-		function TestComponent({data}) {
-			return (
-				<View>
-					<Text>{ data }</Text>
-				</View>
-			);
-		}
+function TransitionScreen() {
+	const [count, setCount] = useState(0);
+	const [slowCount, setSlowCount] = useState(0);
+	const [isPending, startTransition] = useTransition();
+
+
+  for (let index = 0; index < 20000; index++) {
+    console.log(index)
+  }
+
+  useFocusEffect(
+    () => {
+      console.log('focused')
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+        console.log('unfocused')
+      };
+    }
+  );
+
+  React.useEffect(() => {
+    console.log('mounted')
+
+    return () => {
+      console.log('unmounted')
+    }
+  }, [])
+  
+	const handleIncrement = () => {
+		setCount((prevCount) => prevCount + 1);
+
+		startTransition(() => {
+			setSlowCount((prevSlowCount) => prevSlowCount + 1);
+		});
+	};
+	return (
+		<SafeAreaView>
+			<CounterNumber count={count} />
+			<SlowComponent count={slowCount} />
+			{isPending ? <ActivityIndicator size="large" color="#0000ff" /> : null}
+			<Button onPress={handleIncrement} title="Increment" />
+		</SafeAreaView>
 	);
 }
+export default TransitionScreen;
 
-const withWrapper = (test: string, coucou: string, Component: React.ComponentType<{ data: 'oui'}>) => {
-	if (test === "test") {
-		return (
-			<View>
-				<Text>test !!!!</Text>
-			</View>
-		);
-	}
+const CounterNumber = ({ count }: { count: number }) => {
+	return <Text>{count}</Text>;
+};
 
-	if (coucou === "coucou") {
-		return (
-			<View>
-				<Text>coucou !!!!</Text>
-			</View>
-		);
-	}
-
-	return <Component data="oui" />;
+const SlowComponent = ({ count }: { count: number }) => {
+	return <Text>{count}</Text>;
 };

@@ -15,6 +15,7 @@ const useWebSocket = (
 
 	const connectWebSocket = () => {
 		try {
+			console.log(url)
 			if (!url) throw new Error("No websocket url");
 			// create a WebSocket connection
 			ws.current = new WebSocket(url);

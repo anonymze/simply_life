@@ -24,16 +24,8 @@ const services: Service[] = [
 		name: "Fournisseurs",
 		description: "Prenez vos rendez-vous médicaux",
 		icon: require("@/assets/images/logo.png"),
-		link: "/sponsors",
-		theme: "text-blue-500",
-	},
-	{
-		id: 3,
-		name: "Partenaires",
-		description: "Accédez à vos séances de kinésithérapie",
-		icon: require("@/assets/images/logo.png"),
 		link: "/signature",
-		theme: "text-green-500",
+		theme: "text-blue-500",
 	},
 	{
 		id: 4,
@@ -48,7 +40,7 @@ const services: Service[] = [
 		name: "Commissions associés",
 		description: "Suivez vos performances",
 		icon: require("@/assets/images/logo.png"),
-		link: "/performance",
+		link: "/test",
 		theme: "text-red-500",
 	},
 	{
@@ -64,7 +56,7 @@ const services: Service[] = [
 		name: "Calendrier groupe valorem",
 		description: "Gérez vos billets à l'extérieur",
 		icon: require("@/assets/images/logo.png"),
-		link: null,
+		link: "/test2",
 		theme: "text-gray-700",
 	},
 	{
