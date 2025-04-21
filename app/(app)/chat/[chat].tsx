@@ -36,8 +36,8 @@ export default function Page() {
 	const [maxMessages, setMaxMessages] = React.useState(MAX_MESSAGES);
 	const appUser = React.useMemo(() => getStorageUserInfos(), []);
 	const languageCode = React.useMemo(() => getLanguageCodeLocale(), []);
-	// const { height } = useReanimatedKeyboardAnimation();
-	// const bottomSafeAreaView = useSafeAreaInsets().bottom;
+	const { height } = useReanimatedKeyboardAnimation();
+	const bottomSafeAreaView = useSafeAreaInsets().bottom;
 
 	const onMessageWebsocket = (event: any) => {
 		const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));		
@@ -117,14 +117,14 @@ export default function Page() {
 		},
 	});
 
-	// const animatedStyle = useAnimatedStyle(() => {
-	// 	const spacing = 12;
-	// 	return {
-	// 		transform: [{ translateY: height.value ? height.value + bottomSafeAreaView - spacing : 0 }],
-	// 		// otherwise the top of the list is cut
-	// 		marginTop: height.value ? -(height.value + bottomSafeAreaView - spacing) : 0,
-	// 	};
-	// });
+	const animatedStyle = useAnimatedStyle(() => {
+		const spacing = 12;
+		return {
+			transform: [{ translateY: height.value ? height.value + bottomSafeAreaView - spacing : 0 }],
+			// otherwise the top of the list is cut
+			marginTop: height.value ? -(height.value + bottomSafeAreaView - spacing) : 0,
+		};
+	});
 
 	const handleSubmit = React.useCallback(() => {
 		// delay to the next frame to avoid autocorrect messing up
@@ -139,7 +139,7 @@ export default function Page() {
 
 			<BackgroundLayout className="px-6">
 				<View className={cn("absolute left-4 top-4 size-4 bg-red-500", websocketConnected && "bg-green-500")} />
-				{/* <Animated.View className="flex-1" style={animatedStyle}> */}
+				<Animated.View className="flex-1" style={animatedStyle}>
 				<View className="flex-1">
 					{messages?.length ? (
 						<FlatList<Message | MessageOptimistic>
@@ -200,7 +200,7 @@ export default function Page() {
 						</Pressable>
 					</View>
 				</View>
-				{/* </Animated.View> */}
+				</Animated.View>
 			</BackgroundLayout>
 		</SafeAreaView>
 	);

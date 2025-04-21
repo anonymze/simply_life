@@ -1,12 +1,13 @@
 export default {
 	expo: {
-		name: "Simply Life",
+		name: "Simply Life : Groupe Valorem",
+		// slug used by expo for your project
 		slug: "simply-life",
 		version: "1.0.0",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		// simply-life://some_path
-		scheme: "simply-life",
+		scheme: "simply-life-groupe-valorem",
 		// theme
 		userInterfaceStyle: "light",
 		newArchEnabled: true,

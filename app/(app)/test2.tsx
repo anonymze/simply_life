@@ -37,7 +37,6 @@ function DelayedComponent() {
 
 // Main component
 export default function App() {
-
 	React.useEffect(() => {
 		return () => {
 			console.log('unmount')

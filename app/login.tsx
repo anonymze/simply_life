@@ -2,6 +2,7 @@ import { ActivityIndicator, Alert, Pressable, Text, View, TextInput, Button } fr
 import Animated, { FadeInDown, FadeOutUp, useAnimatedStyle } from "react-native-reanimated";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import BackgroundLayout from "@/layouts/background-layout";
 import { loginQuery } from "@/api/queries/login-queries";
 import { useMutation } from "@tanstack/react-query";
@@ -115,6 +116,14 @@ export default function Page() {
 						)}
 					</form.Field>
 				</View>
+				<TouchableOpacity
+					onPress={() => {
+						
+					}}
+					className=""
+				>
+					<Text className="text-md text-gray-500 mt-4">Mot de passe oublié ?</Text>
+				</TouchableOpacity>
 				<Pressable
 					onPress={form.handleSubmit}
 					disabled={mutationLogin.isPending}
