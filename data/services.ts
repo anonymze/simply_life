@@ -8,9 +8,27 @@ export interface Service {
 	icon: string;
 	link: LinkProps["href"] | null;
 	theme?: string;
+	pastille?: boolean;
 }
 
 const services: Service[] = [
+	{
+		id: 4,
+		name: "Canaux de discussion / Chat",
+		description: "Suivez votre plan nutritionnel",
+		icon: require("@/assets/images/logo.png"),
+		link: "/chat",
+		theme: "text-green-600",
+		pastille: true,
+	},
+	{
+		id: 14,
+		name: "Contacts utiles",
+		description: "Accédez à vos documents sécurisés",
+		icon: require("@/assets/images/logo.png"),
+		link: "/login",
+		theme: "text-blue-600",
+	},
 	{
 		id: 2,
 		name: "Fournisseurs",
@@ -27,14 +45,7 @@ const services: Service[] = [
 		link: "/sponsors",
 		theme: "text-purple-600",
 	},
-	{
-		id: 4,
-		name: "Canaux de discussion / Chat",
-		description: "Suivez votre plan nutritionnel",
-		icon: require("@/assets/images/logo.png"),
-		link: "/chat",
-		theme: "text-green-600",
-	},
+
 	{
 		id: 11,
 		name: "Fundesys",
@@ -75,14 +86,6 @@ const services: Service[] = [
 		icon: require("@/assets/images/logo.png"),
 		link: null,
 		theme: "text-yellow-500",
-	},
-	{
-		id: 14,
-		name: "Contacts utiles",
-		description: "Accédez à vos documents sécurisés",
-		icon: require("@/assets/images/logo.png"),
-		link: "/login",
-		theme: "text-blue-600",
 	},
 	{
 		id: 15,

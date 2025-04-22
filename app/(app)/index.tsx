@@ -12,7 +12,7 @@ export default function Page() {
 				<BackgroundLayout className="p-4">
 					<View className="flex-1 flex-row flex-wrap gap-4">
 						{services.map((service) => (
-							<CardLink key={service.id} service={service} />
+							<CardLink key={service.id} service={service} pastille={service.pastille} />
 						))}
 					</View>
 				</BackgroundLayout>
