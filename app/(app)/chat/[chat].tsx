@@ -10,7 +10,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import BackgroundLayout from "@/layouts/background-layout";
 import { Message, MessageOptimistic } from "@/types/chat";
 import { getStorageUserInfos } from "@/utils/store";
-import useWebSocket from "@/hooks/use-websocket";
+// import useWebSocket from "@/hooks/use-websocket";
 import { useForm } from "@tanstack/react-form";
 import { queryClient } from "@/api/_queries";
 import { AppUser } from "@/types/user";
@@ -40,14 +40,14 @@ export default function Page() {
 	const { height } = useReanimatedKeyboardAnimation();
 	const bottomSafeAreaView = useSafeAreaInsets().bottom;
 
-	const onMessageWebsocket = (event: any) => {
-		const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));
-		if (!success) return;
+	// const onMessageWebsocket = (event: any) => {
+	// 	const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));
+	// 	if (!success) return;
 
-		queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
-	};
+	// 	queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
+	// };
 
-	const websocketConnected = useWebSocket(chatId, onMessageWebsocket);
+	// const websocketConnected = useWebSocket(chatId, onMessageWebsocket);
 
 	const { data: messages, isLoading: loadingMessages } = useQuery({
 		queryKey: ["messages", chatId, maxMessages],
@@ -140,7 +140,7 @@ export default function Page() {
 			<Stack.Screen options={{ title: chatId }} />
 
 			<BackgroundLayout className="px-6">
-				<View className={cn("absolute left-4 top-4 size-4 bg-red-500", websocketConnected && "bg-green-500")} />
+				{/* <View className={cn("absolute left-4 top-4 size-4 bg-red-500", websocketConnected && "bg-green-500")} /> */}
 				<Animated.View className="flex-1" style={animatedStyle}>
 					<View className="flex-1">
 						{messages?.length ? (
