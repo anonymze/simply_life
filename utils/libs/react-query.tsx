@@ -11,6 +11,7 @@ export function withQueryWrapper<T>(
 	query: {
 		queryKey: QueryKey;
 		queryFn: QueryFunction<PaginatedResponse<T>>;
+		refetchInterval?: number,
 	},
 	Component: React.ComponentType<{ data: PaginatedResponse<T> }>,
 ) {
@@ -19,6 +20,7 @@ export function withQueryWrapper<T>(
 		const { data, isLoading, isError, error } = useQuery({
 			queryKey: query.queryKey,
 			queryFn: query.queryFn,
+			refetchInterval: query.refetchInterval,
 		});
 
 		if (isError) {

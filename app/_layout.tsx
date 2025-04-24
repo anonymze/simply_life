@@ -1,10 +1,11 @@
 import "react-native-reanimated";
 import "@/styles/app.css";
 
-import { onlineManager, QueryClientProvider, focusManager } from "@tanstack/react-query";
+import { onlineManager, QueryClientProvider, focusManager, useQueryClient } from "@tanstack/react-query";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { getChatRoomsQuery } from "@/api/queries/chat-room-queries";
 import { Platform, AppState, AppStateStatus } from "react-native";
 import * as Notifications from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
@@ -55,6 +56,14 @@ function onAppStateChange(status: AppStateStatus) {
 }
 
 export default Sentry.wrap(function RootLayout() {
+	return (
+		<QueryClientProvider client={queryClient}>
+			<Layout />
+		</QueryClientProvider>
+	);
+});
+
+const Layout = () => {
 	const [loaded] = useFonts({
 		// AtkinsonRegular: require("@/assets/fonts/atkinson/Atkinson-Hyperlegible-Regular-102a.woff2"),
 		// AtkinsonBold: require("@/assets/fonts/atkinson/Atkinson-Hyperlegible-Bold-102a.woff2"),
@@ -67,6 +76,7 @@ export default Sentry.wrap(function RootLayout() {
 
 	// refetch on app focus
 	React.useEffect(() => {
+		prefetchSomeData();
 		const subscription = AppState.addEventListener("change", onAppStateChange);
 		return () => subscription.remove();
 	}, []);
@@ -74,26 +84,31 @@ export default Sentry.wrap(function RootLayout() {
 	if (!loaded) return null;
 
 	return (
-		<QueryClientProvider client={queryClient}>
-			<GestureHandlerRootView>
-				<KeyboardProvider>
-					<StatusBar style="light" translucent />
-					<SafeAreaProvider>
-						<SafeAreaView className="flex-1 bg-primaryLight" edges={["right", "left", "top"]}>
-								<Stack
-									screenOptions={{
-										headerShown: false,
-										animation: Platform.OS === "ios" ? "simple_push" : "fade_from_bottom",
-										gestureEnabled: false,
-										fullScreenGestureEnabled: false,
-									}}
-								>
-									<Stack.Screen name="login" />
-								</Stack>
-							</SafeAreaView>
-					</SafeAreaProvider>
-				</KeyboardProvider>
-			</GestureHandlerRootView>
-		</QueryClientProvider>
+		<GestureHandlerRootView>
+			<KeyboardProvider>
+				<StatusBar style="light" translucent />
+				<SafeAreaProvider>
+					<SafeAreaView className="flex-1 bg-primaryLight" edges={["right", "left", "top"]}>
+						<Stack
+							screenOptions={{
+								headerShown: false,
+								animation: Platform.OS === "ios" ? "simple_push" : "fade_from_bottom",
+								gestureEnabled: false,
+								fullScreenGestureEnabled: false,
+							}}
+						>
+							<Stack.Screen name="login" />
+						</Stack>
+					</SafeAreaView>
+				</SafeAreaProvider>
+			</KeyboardProvider>
+		</GestureHandlerRootView>
 	);
-});
+};
+
+const prefetchSomeData = async () => {
+	queryClient.prefetchQuery({
+		queryKey: ["chat-rooms"],
+		queryFn: getChatRoomsQuery,
+	});
+};

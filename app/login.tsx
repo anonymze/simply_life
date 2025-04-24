@@ -104,7 +104,7 @@ export default function Page() {
 									autoCapitalize="none"
 									keyboardType="default"
 									textContentType="oneTimeCode"
-									placeholder="********"
+									placeholder="**********"
 									className="w-full rounded-lg bg-gray-200 p-5 placeholder:text-gray-400"
 									defaultValue={field.state.value}
 									onChangeText={field.handleChange}

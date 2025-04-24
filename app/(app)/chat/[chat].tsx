@@ -1,7 +1,7 @@
 import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
+import { View, TextInput, FlatList, Text, Pressable, Platform } from "react-native";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-import { View, TextInput, FlatList, Text, Pressable } from "react-native";
 import { CheckCheckIcon, CheckIcon, SendIcon } from "lucide-react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
@@ -14,6 +14,7 @@ import useWebSocket from "@/hooks/use-websocket";
 import { useForm } from "@tanstack/react-form";
 import { queryClient } from "@/api/_queries";
 import { AppUser } from "@/types/user";
+import { Image } from "expo-image";
 import { cn } from "@/utils/cn";
 import React from "react";
 import { z } from "zod";
@@ -40,7 +41,7 @@ export default function Page() {
 	const bottomSafeAreaView = useSafeAreaInsets().bottom;
 
 	const onMessageWebsocket = (event: any) => {
-		const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));		
+		const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));
 		if (!success) return;
 
 		queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
@@ -48,13 +49,14 @@ export default function Page() {
 
 	const websocketConnected = useWebSocket(chatId, onMessageWebsocket);
 
-	const { data: messages } = useQuery({
+	const { data: messages, isLoading: loadingMessages } = useQuery({
 		queryKey: ["messages", chatId, maxMessages],
 		queryFn: getMessagesQuery,
 		// we don't want to cache the messages, we want to show the latest messages instantly
 		staleTime: 0,
 		// keep previous data while fetching
 		placeholderData: (prev) => prev,
+		refetchInterval: 6000,
 	});
 
 	const mutationLogin = useMutation({
@@ -140,66 +142,87 @@ export default function Page() {
 			<BackgroundLayout className="px-6">
 				<View className={cn("absolute left-4 top-4 size-4 bg-red-500", websocketConnected && "bg-green-500")} />
 				<Animated.View className="flex-1" style={animatedStyle}>
-				<View className="flex-1">
-					{messages?.length ? (
-						<FlatList<Message | MessageOptimistic>
-							contentContainerStyle={{
-								gap: 5,
-								// needed for list empty
-								// flex: messages?.docs.length ? undefined : 1,
-							}}
-							// ListEmptyComponent={() => {
-							// 	return (
-							// 		<View className="flex-1 items-center justify-center">
-							// 			<Text className="text-gray-500">Pas de message</Text>
-							// 		</View>
-							// 	);
-							// }}
-							keyExtractor={(item) => item.id}
-							showsVerticalScrollIndicator={false}
-							data={messages}
-							renderItem={({ item, index }) => {
-								return (
-									//@ts-ignore
-									<Item firstMessage={index === 0 ? true : false} item={item} appUser={appUser} />
-								);
-							}}
-							// don't invert on empty list
-							inverted={true}
-							onEndReached={() => {
-								// add more messages when on end scroll
-								setMaxMessages((props) => props + 20);
-							}}
-							onEndReachedThreshold={0.2}
-						/>
-					) : (
-						<View className="flex-1 items-center justify-center">
-							<Text className="text-gray-500">Pas de message</Text>
-						</View>
-					)}
+					<View className="flex-1">
+						{messages?.length ? (
+							<FlatList<Message | MessageOptimistic>
+								contentContainerStyle={
+									{
+										// gap: 5,
+										// width: "100%",
+										// needed for list empty
+										// flex: messages?.docs.length ? undefined : 1,
+									}
+								}
+								// ListEmptyComponent={() => {
+								// 	return (
+								// 		<View className="flex-1 items-center justify-center">
+								// 			<Text className="text-gray-500">Pas de message</Text>
+								// 		</View>
+								// 	);
+								// }}
+								keyExtractor={(item) => item.id}
+								showsVerticalScrollIndicator={false}
+								data={messages}
+								renderItem={({ item, index }) => {
+									const lastMessageUser = messages[index + 1]?.app_user !== item.app_user;
+									const newMessageUser = messages[index - 1]?.app_user !== item.app_user;
+									return (
+										<Item
+											stateMessage={{
+												lastMessageUser,
+												newMessageUser,
+											}}
+											firstMessage={index === 0 ? true : false}
+											item={item}
+											appUser={appUser}
+										/>
+									);
+								}}
+								// don't invert on empty list
+								inverted={true}
+								onEndReached={() => {
+									// add more messages when on end scroll
+									setMaxMessages((props) => props + 20);
+								}}
+								onEndReachedThreshold={0.2}
+							/>
+						) : (
+							<View className="flex-1 items-center justify-center">
+								{loadingMessages ? (
+									<Text className="text-gray-500">Chargement...</Text>
+								) : (
+									<Text className="text-gray-500">Pas de message</Text>
+								)}
+							</View>
+						)}
 
-					<View className="flex-row items-center gap-2 rounded-2xl border border-gray-300 p-2 pl-3">
-						<form.Field name="message">
-							{(field) => (
-								<TextInput
-									returnKeyType="default"
-									autoCapitalize="none"
-									keyboardType="default"
-									submitBehavior="newline"
-									multiline={true}
-									placeholder={`${i18n[languageCode]("MESSAGE")}...`}
-									className="flex-1 p-0"
-									onChangeText={field.handleChange}
-									defaultValue={field.state.value}
-								/>
+						<View
+							className={cn(
+								"flex-row items-center gap-2 rounded-2xl border border-gray-300 p-2 pl-3",
+								Platform.OS === "android" && "mb-3",
 							)}
-						</form.Field>
+						>
+							<form.Field name="message">
+								{(field) => (
+									<TextInput
+										returnKeyType="default"
+										autoCapitalize="none"
+										keyboardType="default"
+										submitBehavior="newline"
+										multiline={true}
+										placeholder={`${i18n[languageCode]("MESSAGE")}...`}
+										className="flex-1 p-0"
+										onChangeText={field.handleChange}
+										defaultValue={field.state.value}
+									/>
+								)}
+							</form.Field>
 
-						<Pressable onPress={handleSubmit} className="p-1.5">
-							<SendIcon size={20} color="#666" />
-						</Pressable>
+							<Pressable onPress={handleSubmit} className="p-1.5">
+								<SendIcon size={20} color="#666" />
+							</Pressable>
+						</View>
 					</View>
-				</View>
 				</Animated.View>
 			</BackgroundLayout>
 		</SafeAreaView>
@@ -210,32 +233,40 @@ type ItemProps = {
 	firstMessage: boolean;
 	item: Message | MessageOptimistic;
 	appUser: AppUser | null;
+	stateMessage: {
+		newMessageUser: boolean;
+		lastMessageUser: boolean;
+	};
 };
 
-const Item = React.memo(({ firstMessage, item, appUser }: ItemProps) => {
+const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProps) => {
 	const me = item.app_user === appUser?.user.id;
 	const optimistic = "optimistic" in item ? item.optimistic : false;
 
 	return (
 		<View
 			className={cn(
+				"my-[0.15rem] items-end gap-1",
 				me ? "self-end" : "self-start",
-				me ? "bg-green-600" : "bg-gray-600",
+				me ? "flex-row-reverse" : "flex-row",
 				firstMessage && "mb-3",
-				"flex-row gap-3 rounded-xl px-2.5 py-2",
+				stateMessage.lastMessageUser && "mt-2",
 			)}
 		>
-			<Text className="self-start text-white">{item.message}</Text>
-			<View className="flex-row gap-1 self-end">
-				<Text className="text-xs text-gray-200">
-					{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
-				</Text>
-				{me &&
-					(optimistic ? (
-						<CheckIcon style={{ alignSelf: "flex-end" }} size={14} color="#e5e5e5e5" />
-					) : (
-						<CheckCheckIcon size={14} color="#55c0ff" />
-					))}
+			<Image source={require("@/assets/icons/placeholder_user.svg")} style={{ width: 28, height: 28 }} />
+			<View className={cn(me ? "bg-green-600" : "bg-gray-600", "flex-shrink flex-row gap-3 rounded-xl px-2.5 py-2.5")}>
+				<Text className="flex-shrink self-start text-white">{item.message}</Text>
+				<View className="flex-row gap-1 self-end">
+					<Text className="text-xs text-gray-200">
+						{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+					</Text>
+					{me &&
+						(optimistic ? (
+							<CheckIcon style={{ alignSelf: "flex-end" }} size={14} color="#e5e5e5e5" />
+						) : (
+							<CheckCheckIcon size={14} color="#55c0ff" />
+						))}
+				</View>
 			</View>
 		</View>
 	);

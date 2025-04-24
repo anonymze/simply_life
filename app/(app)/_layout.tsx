@@ -4,6 +4,7 @@ import HeaderLayout from "@/layouts/headert-layout";
 import { Stack, Redirect, Link } from "expo-router";
 import { getStorageUserInfos } from "@/utils/store";
 import { truncateText } from "@/utils/helper";
+import { userHierarchy } from "@/types/user";
 import React from "react";
 
 
@@ -65,11 +66,15 @@ export default function AppLayout() {
 					options={{
 						headerLargeTitle: true,
 						headerTitle: "Chat rooms",
-						headerRight: () => (
-							<Link href="/chat/new-room">
-								<PlusCircleIcon size={24} color="#000" />
-							</Link>
-						),
+						headerRight: () => {
+							if (userHierarchy[userInfos.user.role] > 0) return null;
+
+							return (
+								<Link href="/chat/new-room">
+									<PlusCircleIcon size={24} color="#000" />
+								</Link>
+							);
+						},
 						headerLeft: () => (
 							<Link dismissTo href="/">
 								<ArrowLeftIcon size={24} color="#000" />

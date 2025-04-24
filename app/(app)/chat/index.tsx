@@ -3,7 +3,7 @@ import { getMessagesQuery } from "@/api/queries/message-queries";
 import { ChevronRightIcon, LockIcon } from "lucide-react-native";
 import { withQueryWrapper } from "@/utils/libs/react-query";
 import { FlatList } from "react-native-gesture-handler";
-import { useQueryClient } from "@tanstack/react-query";
+import { queryClient } from "@/api/_queries";
 import { Text, View } from "react-native";
 import { ChatRoom } from "@/types/chat";
 import { Link } from "expo-router";
@@ -13,18 +13,13 @@ import React from "react";
 export const MAX_MESSAGES = 25;
 
 export default function Page() {
-	const queryClient = useQueryClient();
-
-	const prefetchMessages = React.useCallback(
-		async (chatId: string) => {
-			// prefetch messages for this chat room
-			await queryClient.prefetchQuery({
-				queryKey: ["messages", chatId, MAX_MESSAGES],
-				queryFn: getMessagesQuery,
-			});
-		},
-		[queryClient],
-	);
+	const prefetchMessages = React.useCallback(async (chatId: string) => {
+		// prefetch messages for this chat room
+		await queryClient.prefetchQuery({
+			queryKey: ["messages", chatId, MAX_MESSAGES],
+			queryFn: getMessagesQuery,
+		});
+	}, []);
 
 	return withQueryWrapper<ChatRoom>(
 		{
