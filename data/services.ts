@@ -42,7 +42,7 @@ const services: Service[] = [
 		name: "Mes commissions",
 		description: "Gérez votre planning professionnel",
 		icon: require("@/assets/images/logo.png"),
-		link: "/sponsors",
+		link: "/contacts",
 		theme: "text-purple-600",
 	},
 

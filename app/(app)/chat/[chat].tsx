@@ -22,10 +22,10 @@ import { z } from "zod";
 import { MAX_MESSAGES } from "./index";
 
 
-const messageReceivedSchema = z.object({
-	type: z.literal("MESSAGE_RECEIVED"),
-	message: z.any(),
-});
+// const messageReceivedSchema = z.object({
+// 	type: z.literal("MESSAGE_RECEIVED"),
+// 	message: z.any(),
+// });
 
 export default function Page() {
 	const { chat: chatId } = useLocalSearchParams<{ chat?: string }>();
@@ -59,7 +59,7 @@ export default function Page() {
 		refetchInterval: 6000,
 	});
 
-	const mutationLogin = useMutation({
+	const mutationMessages = useMutation({
 		mutationFn: createMessageQuery,
 		// when mutate is called:
 		onMutate: async (newMessage) => {
@@ -107,7 +107,7 @@ export default function Page() {
 			form.reset();
 
 			// we have to set an id otherwise the list will not have a key extractor, and a date to show
-			mutationLogin.mutate({
+			mutationMessages.mutate({
 				id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
 				app_user: appUser?.user.id || "",
 				chat_room: chatId,
@@ -134,6 +134,9 @@ export default function Page() {
 			form.handleSubmit();
 		});
 	}, [form]);
+
+	console.log(messages?.[0]);
+	
 
 	return (
 		<SafeAreaView className="flex-1 bg-background" edges={["bottom"]}>

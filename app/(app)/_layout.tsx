@@ -43,10 +43,10 @@ export default function AppLayout() {
 					}}
 				/>
 				<Stack.Screen
-					name="sponsors"
+					name="contacts"
 					options={{
 						gestureEnabled: false,
-						header: () => <HeaderLayout title="Sponsors" />,
+						header: () => <HeaderLayout title="Contacts" />,
 					}}
 				/>
 				<Stack.Screen

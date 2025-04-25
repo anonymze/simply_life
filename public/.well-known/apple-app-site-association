@@ -3,7 +3,7 @@
 		"details": [
 			{
 				"appID": "MZKWJD856F.com.anonymze.simplylife",
-				"paths": ["/sponsors", "/login"]
+				"paths": ["/contacts", "/login"]
 			}
 		]
 	}

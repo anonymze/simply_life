@@ -1,13 +1,13 @@
 import { ActivityIndicator, Alert, Platform, Pressable, Text, View, TextInput } from "react-native";
-import { getSponsorCategoriesQuery } from "@/api/queries/sponsor-categories-query";
+import { getContactCategoriesQuery } from "@/api/queries/contact-categories-queries";
 import BackgroundLayout, { stylesLayout } from "@/layouts/background-layout";
-import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomSheetSelect } from "@/components/bottom-sheet-select";
-import { getSponsorsQuery } from "@/api/queries/sponsor-queries";
+import { getContactsQuery } from "@/api/queries/contact-queries";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import AnimatedMapMarker from "@/components/animated-marker";
-import { SponsorCategory } from "@/types/sponsor";
+import { ContactCategory } from "@/types/contact";
 import { useQuery } from "@tanstack/react-query";
+import { FontAwesome } from "@expo/vector-icons";
 import BottomSheet from "@gorhom/bottom-sheet";
 import config from "@/tailwind.config";
 import React from "react";
@@ -15,48 +15,48 @@ import React from "react";
 
 export default function Page() {
 	const bottomSheetRef = React.useRef<BottomSheet>(null);
-	const [selectedCategories, setSelectedCategories] = React.useState<SponsorCategory[]>([]);
+	const [selectedCategories, setSelectedCategories] = React.useState<ContactCategory[]>([]);
 	const [input, setInput] = React.useState<string>("");
 	const mapRef = React.useRef<MapView>(null);
 	const {
-		error: errorSponsors,
-		isLoading: isLoadingSponsors,
-		data: dataSponsors,
+		error: errorContacts,
+		isLoading: isLoadingContacts,
+		data: dataContacts,
 	} = useQuery({
-		queryKey: ["sponsors"],
-		queryFn: getSponsorsQuery,
+		queryKey: ["contacts"],
+		queryFn: getContactsQuery,
 	});
-	const { isLoading: isLoadingCategorySponsors, data: dataCategorySponsors } = useQuery({
-		queryKey: ["sponsor-categories"],
-		queryFn: getSponsorCategoriesQuery,
+	const { isLoading: isLoadingCategoryContacts, data: dataCategoryContacts } = useQuery({
+		queryKey: ["contact-categories"],
+		queryFn: getContactCategoriesQuery,
 	});
 
-	// filter sponsors based on search input and selected categories
-	const filteredSponsors = React.useMemo(() => {
-		if (!dataSponsors?.docs) return [];
+	// filter contacts based on search input and selected categories
+	const filteredContacts = React.useMemo(() => {
+		if (!dataContacts?.docs) return [];
 
-		// return all sponsors if no filters are applied
-		if (input.length < 2 && selectedCategories.length === 0) return dataSponsors.docs;
+		// return all contacts if no filters are applied
+		if (input.length < 2 && selectedCategories.length === 0) return dataContacts.docs;
 
 		const searchTerm = input.toLowerCase().trim();
 		const hasSearchTerm = searchTerm.length >= 2;
 		const hasCategories = selectedCategories.length > 0;
 
-		return dataSponsors.docs.filter((sponsor) => {
+		return dataContacts.docs.filter((contact) => {
 			// text search condition
-			const matchesSearch = !hasSearchTerm || sponsor.name.toLowerCase().includes(searchTerm);
+			const matchesSearch = !hasSearchTerm || contact.name.toLowerCase().includes(searchTerm);
 
 			// category filter condition
 			const matchesCategory =
-				!hasCategories || selectedCategories.some((category) => category.name === sponsor.category.name);
+				!hasCategories || selectedCategories.some((category) => category.name === contact.category.name);
 
 			// Both conditions must be true
 			return matchesSearch && matchesCategory;
 		});
-	}, [dataSponsors?.docs, input, selectedCategories]);
+	}, [dataContacts?.docs, input, selectedCategories]);
 
-	if (errorSponsors) {
-		Alert.alert("Erreur de connexion", "Les sponsors n'ont pas pu être récupérés.");
+	if (errorContacts) {
+		Alert.alert("Erreur de connexion", "Les contacts n'ont pas pu être récupérés.");
 	}
 
 	return (
@@ -64,7 +64,7 @@ export default function Page() {
 			<View className="flex-row items-center gap-4 bg-white p-4 pt-2">
 				<View className="basis-8/12">
 					<TextInput
-						editable={!isLoadingSponsors && !isLoadingCategorySponsors}
+						editable={!isLoadingContacts && !isLoadingCategoryContacts}
 						returnKeyType="search"
 						autoCorrect={false}
 						autoCapitalize="none"
@@ -82,7 +82,7 @@ export default function Page() {
 					/>
 				</View>
 				<Pressable
-					disabled={isLoadingSponsors || isLoadingCategorySponsors}
+					disabled={isLoadingContacts || isLoadingCategoryContacts}
 					className="grow rounded-xl bg-black/85 p-4 disabled:opacity-80"
 					onPress={() => {
 						bottomSheetRef.current?.expand();
@@ -100,12 +100,12 @@ export default function Page() {
 					zoomTapEnabled={true}
 					// onMapReady={() => {
 					// 	// fit to markers when map is ready
-					// 	if (filteredSponsors.length > 0) {
-					// 		const coordinates = filteredSponsors
-					// 			.filter(sponsor => sponsor.latitude && sponsor.longitude)
-					// 			.map(sponsor => ({
-					// 				latitude: Number(sponsor.latitude),
-					// 				longitude: Number(sponsor.longitude),
+					// 	if (filteredContacts.length > 0) {
+					// 		const coordinates = filteredContacts
+					// 			.filter(contact => contact.latitude && contact.longitude)
+					// 			.map(contact => ({
+					// 				latitude: Number(contact.latitude),
+					// 				longitude: Number(contact.longitude),
 					// 			}));
 
 					// 		if (coordinates.length > 0) {
@@ -117,7 +117,7 @@ export default function Page() {
 					// 	}
 					// }}
 				>
-					{filteredSponsors.map(
+					{filteredContacts.map(
 						(doc, idx) =>
 							doc.latitude &&
 							doc.longitude && (
@@ -134,24 +134,24 @@ export default function Page() {
 							),
 					)}
 				</MapView>
-				{isLoadingSponsors && (
+				{isLoadingContacts && (
 					<ActivityIndicator
 						className="absolute bottom-0 left-0 right-0 top-0"
 						size="large"
 						color={config.theme.extend.colors.defaultGray}
 					/>
 				)}
-				{!isLoadingSponsors && filteredSponsors.length === 0 && (
+				{!isLoadingContacts && filteredContacts.length === 0 && (
 					<View className="absolute bottom-0 left-0 right-0 top-0 items-center justify-center bg-white/60">
-						<Text className="text-lg font-bold text-gray-800">Aucun sponsor trouvé</Text>
+						<Text className="text-lg font-bold text-gray-800">Aucun contact trouvé</Text>
 					</View>
 				)}
 			</View>
 			<BottomSheetSelect
 				ref={bottomSheetRef}
-				data={dataCategorySponsors?.docs ?? []}
+				data={dataCategoryContacts?.docs ?? []}
 				onSelect={(item) => {
-					setSelectedCategories(item);
+					setSelectedCategories(item as ContactCategory[]);
 				}}
 			/>
 		</BackgroundLayout>

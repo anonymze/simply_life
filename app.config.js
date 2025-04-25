@@ -55,7 +55,7 @@ export default {
 					data: {
 						host: "simply-life.expo.app",
 						scheme: "https",
-						pathPrefix: "/sponsors",
+						pathPrefix: "/contacts",
 					},
 					category: ["DEFAULT", "BROWSABLE"],
 				},
