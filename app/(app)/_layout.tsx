@@ -43,7 +43,7 @@ export default function AppLayout() {
 					}}
 				/>
 				<Stack.Screen
-					name="contacts"
+					name="contact"
 					options={{
 						gestureEnabled: false,
 						header: () => <HeaderLayout title="Contacts" />,

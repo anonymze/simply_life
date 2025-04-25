@@ -46,7 +46,7 @@
       </intent-filter>
       <intent-filter android:autoVerify="true" data-generated="true">
         <action android:name="android.intent.action.VIEW"/>
-        <data android:host="simply-life.expo.app" android:scheme="https" android:pathPrefix="/contacts"/>
+        <data android:host="simply-life.expo.app" android:scheme="https" android:pathPrefix="/contact"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
       </intent-filter>

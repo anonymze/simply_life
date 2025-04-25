@@ -1,8 +1,8 @@
+import { View, TextInput, FlatList, Text, Platform, TouchableOpacity, Pressable } from "react-native";
+import { CheckCheckIcon, CheckIcon, PaperclipIcon, SendIcon } from "lucide-react-native";
 import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
-import { View, TextInput, FlatList, Text, Pressable, Platform } from "react-native";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-import { CheckCheckIcon, CheckIcon, SendIcon } from "lucide-react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
@@ -13,6 +13,7 @@ import { getStorageUserInfos } from "@/utils/store";
 // import useWebSocket from "@/hooks/use-websocket";
 import { useForm } from "@tanstack/react-form";
 import { queryClient } from "@/api/_queries";
+import config from "@/tailwind.config";
 import { AppUser } from "@/types/user";
 import { Image } from "expo-image";
 import { cn } from "@/utils/cn";
@@ -136,7 +137,6 @@ export default function Page() {
 	}, [form]);
 
 	console.log(messages?.[0]);
-	
 
 	return (
 		<SafeAreaView className="flex-1 bg-background" edges={["bottom"]}>
@@ -199,37 +199,45 @@ export default function Page() {
 							</View>
 						)}
 
-						<View
-							className={cn(
-								"flex-row items-center gap-2 rounded-2xl border border-gray-300 p-2 pl-3",
-								Platform.OS === "android" && "mb-3",
-							)}
-						>
-							<form.Field name="message">
-								{(field) => (
-									<TextInput
-										returnKeyType="default"
-										autoCapitalize="none"
-										keyboardType="default"
-										submitBehavior="newline"
-										multiline={true}
-										placeholder={`${i18n[languageCode]("MESSAGE")}...`}
-										className="flex-1 p-0"
-										onChangeText={field.handleChange}
-										defaultValue={field.state.value}
-									/>
+						<View className="flex-row items-center gap-0.5">
+							<View
+								className={cn(
+									"flex-shrink flex-row items-center rounded-2xl border border-gray-300",
+									Platform.OS === "android" && "mb-3",
 								)}
-							</form.Field>
-
-							<Pressable onPress={handleSubmit} className="p-1.5">
-								<SendIcon size={20} color="#666" />
+							>
+								<form.Field name="message">
+									{(field) => (
+										<TextInput
+											placeholderTextColor={config.theme.extend.colors.lightGray}
+											returnKeyType="default"
+											autoCapitalize="none"
+											keyboardType="default"
+											submitBehavior="newline"
+											multiline={true}
+											placeholder={`${i18n[languageCode]("MESSAGE")}...`}
+											className="flex-1 p-3 pr-0"
+											onChangeText={field.handleChange}
+											defaultValue={field.state.value}
+										/>
+									)}
+								</form.Field>
+								<TouchableOpacity onPress={() => {}} className="p-2.5">
+									<PaperclipIcon size={17} color={config.theme.extend.colors.primaryLight} />
+								</TouchableOpacity>
+							</View>
+							<Pressable
+								onPress={handleSubmit}
+								className={cn("p-1.5 pr-0.5", Platform.OS === "android" && "mb-3")}
+							>
+								<SendIcon size={20} color={config.theme.extend.colors.primaryLight} />
 							</Pressable>
 						</View>
 					</View>
 				</Animated.View>
 			</BackgroundLayout>
-		</SafeAreaView>
-	);
+			</SafeAreaView>
+		);
 }
 
 type ItemProps = {
@@ -253,22 +261,24 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProp
 				me ? "self-end" : "self-start",
 				me ? "flex-row-reverse" : "flex-row",
 				firstMessage && "mb-3",
-				stateMessage.lastMessageUser && "mt-2",
+				stateMessage.lastMessageUser && "mt-2.5",
 			)}
 		>
-			<Image source={require("@/assets/icons/placeholder_user.svg")} style={{ width: 28, height: 28 }} />
-			<View className={cn(me ? "bg-green-600" : "bg-gray-600", "flex-shrink flex-row gap-3 rounded-xl px-2.5 py-2.5")}>
-				<Text className="flex-shrink self-start text-white">{item.message}</Text>
+			<Image
+				source={require("@/assets/icons/placeholder_user.svg")}
+				style={{ width: 28, height: 28, borderRadius: 99 }}
+			/>
+			<View className={cn(me ? "bg-greenChat" : "bg-grayChat", "flex-shrink flex-row gap-3 rounded-xl px-2.5 py-2.5")}>
+				<View className="flex-shrink gap-1">
+					{!me && stateMessage.lastMessageUser && <Text className="text-sm font-bold text-primaryLight">User</Text>}
+					<Text className="flex-shrink self-start text-white">{item.message}</Text>
+				</View>
 				<View className="flex-row gap-1 self-end">
 					<Text className="text-xs text-gray-200">
 						{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
 					</Text>
 					{me &&
-						(optimistic ? (
-							<CheckIcon style={{ alignSelf: "flex-end" }} size={14} color="#e5e5e5e5" />
-						) : (
-							<CheckCheckIcon size={14} color="#55c0ff" />
-						))}
+						(optimistic ? <CheckIcon size={14} color="#e5e5e5e5" /> : <CheckCheckIcon size={14} color="#55c0ff" />)}
 				</View>
 			</View>
 		</View>

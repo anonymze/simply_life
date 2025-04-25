@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { getChatRoomsQuery } from "@/api/queries/chat-room-queries";
 import { Platform, AppState, AppStateStatus } from "react-native";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import * as Notifications from "expo-notifications";
 import * as SplashScreen from "expo-splash-screen";
 import * as Sentry from "@sentry/react-native";
@@ -85,9 +86,10 @@ const Layout = () => {
 
 	return (
 		<GestureHandlerRootView>
-			<KeyboardProvider>
-				<StatusBar style="light" translucent />
-				<SafeAreaProvider>
+			{/* <BottomSheetModalProvider> */}
+				<KeyboardProvider>
+					<StatusBar style="light" translucent />
+					<SafeAreaProvider>
 					<SafeAreaView className="flex-1 bg-primaryLight" edges={["right", "left", "top"]}>
 						<Stack
 							screenOptions={{
@@ -100,8 +102,9 @@ const Layout = () => {
 							<Stack.Screen name="login" />
 						</Stack>
 					</SafeAreaView>
-				</SafeAreaProvider>
-			</KeyboardProvider>
+					</SafeAreaProvider>
+				</KeyboardProvider>
+			{/* </BottomSheetModalProvider> */}
 		</GestureHandlerRootView>
 	);
 };

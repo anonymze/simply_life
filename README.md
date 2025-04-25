@@ -158,3 +158,6 @@ reset expiration token on success
 // limit fetch like maximum response per request
 // optimisitc messages on chat
 
+animation send message + son ?
+get full user
+remove chat room

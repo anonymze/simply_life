@@ -16,3 +16,8 @@ export async function createChatRoomQuery(params: APIOmittedParams<ChatRoom>) {
 	const response = await api.post("/api/chat-rooms", params);
 	return response.data;
 }
+
+export async function deleteChatRoomQuery(chatRoomId: ChatRoom["id"]) {
+	const response = await api.delete(`/api/chat-rooms/${chatRoomId}`);
+	return response.data;
+}
