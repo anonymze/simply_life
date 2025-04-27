@@ -1,9 +1,14 @@
-import { getChatRoomsQuery } from "@/api/queries/chat-room-queries";
+import { deleteChatRoomQuery, getChatRoomsQuery } from "@/api/queries/chat-room-queries";
+import { BinaryIcon, ChevronRightIcon, LockIcon, TrashIcon } from "lucide-react-native";
+import { Alert, Button, Text, TouchableOpacity, View } from "react-native";
+import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import { getMessagesQuery } from "@/api/queries/message-queries";
-import { ChevronRightIcon, LockIcon } from "lucide-react-native";
 import { withQueryWrapper } from "@/utils/libs/react-query";
 import { FlatList } from "react-native-gesture-handler";
-import { Button, Text, View } from "react-native";
+import { PaginatedResponse } from "@/types/response";
+import { useMutation } from "@tanstack/react-query";
+import { getStorageUserInfos } from "@/utils/store";
+import { userHierarchy } from "@/types/user";
 import { queryClient } from "@/api/_queries";
 import { ChatRoom } from "@/types/chat";
 import { Link } from "expo-router";
@@ -13,35 +18,90 @@ import React from "react";
 export const MAX_MESSAGES = 25;
 
 export default function Page() {
-	const prefetchMessages = React.useCallback(async (chatId: string) => {
-		await queryClient.prefetchQuery({
-			queryKey: ["messages", chatId, MAX_MESSAGES],
-			queryFn: getMessagesQuery,
-		});
-	}, []);
-
 	return withQueryWrapper<ChatRoom>(
 		{
 			queryKey: ["chat-rooms"],
 			queryFn: getChatRoomsQuery,
 		},
 		({ data }) => {
+			const userInfos = getStorageUserInfos();
+			const languageCode = React.useMemo(() => getLanguageCodeLocale(), []);
+			const mutationChatRoom = useMutation({
+				mutationFn: deleteChatRoomQuery,
+				// when mutate is called:
+				onMutate: async (chatRoomId) => {
+					// cancel any outgoing refetches
+					// (so they don't overwrite our optimistic update)
+					await queryClient.cancelQueries({ queryKey: ["chat-rooms"] });
+
+					// snapshot the previous value
+					const previousChatRooms = queryClient.getQueryData(["chat-rooms"]);
+
+					// optimistically update to the new value
+					queryClient.setQueryData(["chat-rooms"], (old: PaginatedResponse<ChatRoom>) => {
+						return {
+							...old,
+							docs: old.docs.filter((chatRoom) => chatRoom.id !== chatRoomId),
+						};
+					});
+
+					// return old messages before optimistic update for the context in onError
+					return previousChatRooms;
+				},
+				// if the mutation fails,
+				// use the context returned from onMutate to roll back
+				onError: (err, chatRoomId, context) => {
+					queryClient.setQueryData(["chat-rooms"], context);
+				},
+				// always refetch after error or success:
+				onSettled: () => queryClient.invalidateQueries({ queryKey: ["chat-rooms"] }),
+			});
+
+			const prefetchMessages = React.useCallback(async (chatId: string) => {
+				await queryClient.prefetchQuery({
+					queryKey: ["messages", chatId, MAX_MESSAGES],
+					queryFn: getMessagesQuery,
+				});
+			}, []);
 			return (
 				<>
 					<FlatList
 						data={data.docs}
 						renderItem={({ item }) => (
-							<Link
-								href={{
-									pathname: "/chat/[chat]",
-									params: { chat: item.id },
-								}}
-							>
-								<View className="w-full flex-row items-center justify-between gap-4 rounded-xl bg-black p-5">
-									<ItemTitleAndDescription name={item.name} description={item.description} private={item.private} />
-									<ChevronRightIcon size={24} color="#fff" />
-								</View>
-							</Link>
+							<View className="w-full flex-row items-center justify-between gap-4">
+								{userHierarchy[userInfos?.user?.role!] < 1 && (
+									<TouchableOpacity
+										onPress={() => {
+											Alert.alert(
+												i18n[languageCode]("CHAT_ROOM_DELETE"),
+												i18n[languageCode]("CHAT_ROOM_DELETE_CONFIRMATION"),
+												[
+													{ text: i18n[languageCode]("CANCEL"), style: "cancel" },
+													{
+														text: i18n[languageCode]("DELETE"),
+														style: "destructive",
+														onPress: () => mutationChatRoom.mutate(item.id),
+													},
+												],
+											);
+										}}
+									>
+										<TrashIcon size={24} color="#000" />
+									</TouchableOpacity>
+								)}
+								<Link
+									href={{
+										pathname: "/chat/[chat]",
+										params: { chat: item.id },
+									}}
+									className="flex-1"
+								>
+									<View className="w-full flex-row items-center justify-between gap-4 rounded-xl bg-black p-5">
+										<ItemTitleAndDescription name={item.name} description={item.description} private={item.private} />
+										<ChevronRightIcon size={24} color="#fff" />
+									</View>
+								</Link>
+							</View>
 						)}
 						keyExtractor={(item) => item.id}
 						contentInsetAdjustmentBehavior="automatic"
@@ -59,7 +119,7 @@ export default function Page() {
 						viewabilityConfig={{
 							itemVisiblePercentThreshold: 75, // item is considered visible when 75% visible
 						}}
-					/>			
+					/>
 				</>
 			);
 

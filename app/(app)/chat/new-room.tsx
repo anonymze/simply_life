@@ -1,12 +1,14 @@
-import { ActivityIndicator, Pressable, Text, View, TextInput } from "react-native";
-import Animated, { FadeInDown, FadeOutUp } from "react-native-reanimated";
+import { ActivityIndicator, Pressable, Text, View, TextInput, Alert } from "react-native";
+import Animated, { FadeInDown, FadeOutUp, runOnJS } from "react-native-reanimated";
 import { createChatRoomQuery } from "@/api/queries/chat-room-queries";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import BackgroundLayout from "@/layouts/background-layout";
+import { PaginatedResponse } from "@/types/response";
 import { useMutation } from "@tanstack/react-query";
 import { getStorageUserInfos } from "@/utils/store";
 import { useForm } from "@tanstack/react-form";
 import { queryClient } from "@/api/_queries";
+import { ChatRoom } from "@/types/chat";
 import { router } from "expo-router";
 import React from "react";
 import { z } from "zod";
@@ -16,14 +18,19 @@ export default function Page() {
 	const appUser = React.useMemo(() => getStorageUserInfos(), []);
 	const languageCode = React.useMemo(() => getLanguageCodeLocale(), []);
 
-	const mutationLogin = useMutation({
+	const mutationChatRoom = useMutation({
 		mutationFn: createChatRoomQuery,
 		onError: (error) => {
-			console.log(error);
+			Alert.alert(i18n[languageCode]("ERROR_GENERIC_PART1"), i18n[languageCode]("ERROR_GENERIC_PART2"));
 		},
 		onSuccess: async (data) => {
-			queryClient.invalidateQueries({ queryKey: ["chat-rooms"] });
-			router.back();
+			queryClient.setQueryData(["chat-rooms"], (prev: PaginatedResponse<ChatRoom>) => {
+				return {
+					...prev,
+					docs: [data.doc, ...prev.docs]
+				}
+
+			});
 		},
 	});
 
@@ -48,7 +55,7 @@ export default function Page() {
 			onSubmit: formSchema,
 		},
 		onSubmit: ({ value }) => {
-			mutationLogin.mutate({
+			mutationChatRoom.mutate({
 				...value,
 				app_user: appUser?.user.id || "",
 				private: false,
@@ -57,6 +64,10 @@ export default function Page() {
 			});
 		},
 	});
+
+	const handleExitComplete = () => {
+		router.back();
+	};
 
 	return (
 		<BackgroundLayout className="p-6">
@@ -106,11 +117,18 @@ export default function Page() {
 			</View>
 			<Pressable
 				onPress={form.handleSubmit}
-				disabled={mutationLogin.isPending}
+				disabled={mutationChatRoom.isPending}
 				className="mt-4 h-14 w-full items-center justify-center rounded-lg bg-primary disabled:opacity-70"
 			>
-				{mutationLogin.isPending ? (
-					<Animated.View entering={FadeInDown.springify().duration(1200)} exiting={FadeOutUp.duration(300)}>
+				{mutationChatRoom.isPending ? (
+					<Animated.View 
+						entering={FadeInDown.springify().duration(1200)} 
+						exiting={FadeOutUp.duration(300).withCallback((finished) => {
+							if (finished) {
+								runOnJS(handleExitComplete)();
+							}
+						})}
+					>
 						<ActivityIndicator size="small" color="white" />
 					</Animated.View>
 				) : (

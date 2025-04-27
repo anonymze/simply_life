@@ -1,11 +1,16 @@
 export default {
-	SUBTITLE_LOGIN: "La gestión de su vida profesional nunca ha sido tan simple.",
 	INPUT_NAME_NEW_ROOM: "Su nombre de sala:",
 	INPUT_DESCRIPTION_NEW_ROOM: "Su descripción de sala:",
 	INPUT_EMAIL_LOGIN: "Su correo electrónico de conexión:",
 	INPUT_PASSWORD_LOGIN: "Su contraseña de conexión:",
 	BUTTON_CREATE_ROOM: "Crear sala",
 	BUTTON_LOGIN: "Conectarse",
+	CANCEL: "Cancelar",
+	CHAT_ROOM_DELETE: "Eliminar una sala de chat",
+	CHAT_ROOM_DELETE_CONFIRMATION: "Eliminar una sala de chat eliminará todos los mensajes de la conversación, ¿está seguro?",
+	DELETE: "Eliminar",
+	ERROR_GENERIC_PART1: "Ocurrió un error desconocido",
+	ERROR_GENERIC_PART2: "Contacte a los desarrolladores.",
 	ERROR_LOGIN: "Error de conexión",
 	ERROR_LOGIN_MESSAGE: "Verifique sus credenciales.",
 	ERROR_EMAIL_INVALID: "Correo electrónico inválido",
@@ -21,4 +26,5 @@ export default {
 	SIGNATURE_HERE: "Firma aquí",
 	SIGNATURE: "Firma",
 	SIGNATURES: "Firmas",
+	SUBTITLE_LOGIN: "La gestión de su vida profesional nunca ha sido tan simple.",
 };

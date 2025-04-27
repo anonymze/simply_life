@@ -1,11 +1,16 @@
 export default {
-	SUBTITLE_LOGIN: "Your professional daily management has never been so simplified.",
 	INPUT_NAME_NEW_ROOM: "Your room name:",
 	INPUT_DESCRIPTION_NEW_ROOM: "Your room description:",
 	INPUT_EMAIL_LOGIN: "Your login email:",
 	INPUT_PASSWORD_LOGIN: "Your login password:",
 	BUTTON_CREATE_ROOM: "Create a room chat",
 	BUTTON_LOGIN: "Login",
+	CANCEL: "Cancel",
+	CHAT_ROOM_DELETE: "Delete a chat room",
+	CHAT_ROOM_DELETE_CONFIRMATION: "Deleting a chat room will delete all messages from the conversation, are you sure?",
+	DELETE: "Delete",
+	ERROR_GENERIC_PART1: "An unknown error occurred",
+	ERROR_GENERIC_PART2: "Contact developpers.",
 	ERROR_LOGIN: "Login error",
 	ERROR_LOGIN_MESSAGE: "Check your credentials.",
 	ERROR_EMAIL_INVALID: "Invalid email",
@@ -21,4 +26,5 @@ export default {
 	SIGNATURE_HERE: "Sign here",
 	SIGNATURE: "Signature",
 	SIGNATURES: "Signatures",
+	SUBTITLE_LOGIN: "Your professional daily management has never been so simplified.",
 };

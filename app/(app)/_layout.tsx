@@ -1,19 +1,22 @@
 import { NotificationProvider } from "@/context/push-notifications";
 import { ArrowLeftIcon, PlusCircleIcon } from "lucide-react-native";
+import { Stack, Redirect, Link, router } from "expo-router";
 import HeaderLayout from "@/layouts/headert-layout";
-import { Stack, Redirect, Link } from "expo-router";
 import { getStorageUserInfos } from "@/utils/store";
+import { TouchableOpacity } from "react-native";
 import { truncateText } from "@/utils/helper";
 import { userHierarchy } from "@/types/user";
 import React from "react";
 
 
 export default function AppLayout() {
-	const userInfos = getStorageUserInfos();
+	const userInfos = React.useMemo(() => getStorageUserInfos(), []);
 
 	if (!userInfos || !userInfos.token) {
 		return <Redirect href="/login" />;
 	}
+
+	console.log(userInfos);
 
 	return (
 		<NotificationProvider>
@@ -70,9 +73,11 @@ export default function AppLayout() {
 							if (userHierarchy[userInfos.user.role] > 0) return null;
 
 							return (
-								<Link href="/chat/new-room">
+								<TouchableOpacity onPress={() => {
+									router.push("/chat/new-room");
+								}}>
 									<PlusCircleIcon size={24} color="#000" />
-								</Link>
+								</TouchableOpacity>
 							);
 						},
 						headerLeft: () => (

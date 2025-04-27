@@ -53,13 +53,10 @@ export default function Page() {
 	const { data: messages, isLoading: loadingMessages } = useQuery({
 		queryKey: ["messages", chatId, maxMessages],
 		queryFn: getMessagesQuery,
-		// we don't want to cache the messages, we want to show the latest messages instantly
-		staleTime: 0,
-		// keep previous data while fetching
 		placeholderData: (prev) => prev,
 		refetchInterval: 6000,
 	});
-
+	
 	const mutationMessages = useMutation({
 		mutationFn: createMessageQuery,
 		// when mutate is called:
@@ -136,8 +133,6 @@ export default function Page() {
 		});
 	}, [form]);
 
-	console.log(messages?.[0]);
-
 	return (
 		<SafeAreaView className="flex-1 bg-background" edges={["bottom"]}>
 			<Stack.Screen options={{ title: chatId }} />
@@ -146,7 +141,7 @@ export default function Page() {
 				{/* <View className={cn("absolute left-4 top-4 size-4 bg-red-500", websocketConnected && "bg-green-500")} /> */}
 				<Animated.View className="flex-1" style={animatedStyle}>
 					<View className="flex-1">
-						{messages?.length ? (
+						{!!messages?.length ? (
 							<FlatList<Message | MessageOptimistic>
 								contentContainerStyle={
 									{
@@ -185,7 +180,9 @@ export default function Page() {
 								inverted={true}
 								onEndReached={() => {
 									// add more messages when on end scroll
-									setMaxMessages((props) => props + 20);
+									if (!!messages.length && messages.length >= maxMessages) {
+										setMaxMessages((props) => props + 20);
+									}
 								}}
 								onEndReachedThreshold={0.2}
 							/>

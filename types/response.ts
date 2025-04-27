@@ -10,3 +10,8 @@ export interface PaginatedResponse<T> {
   totalDocs: number;
   totalPages: number;
 }
+
+export interface SuccessCreateResponse<T> {
+  doc: T;
+  message: string;
+}
