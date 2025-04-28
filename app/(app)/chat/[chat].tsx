@@ -225,7 +225,13 @@ export default function Page() {
 								</TouchableOpacity>
 							</View>
 							<Pressable
-								onPress={handleSubmit}
+								onPress={() => {
+									if (loadingMessages) return;
+									handleSubmit();
+								}}
+								style={{
+									opacity: loadingMessages ? 0.5 : 1,
+								}}
 								className={cn("p-1.5 pr-0.5", Platform.OS === "android" && "mb-3")}
 							>
 								<SendIcon size={20} color={config.theme.extend.colors.primaryLight} />
