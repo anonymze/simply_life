@@ -1,4 +1,4 @@
-import { View, TextInput, FlatList, Text, Platform, TouchableOpacity, Pressable } from "react-native";
+import { View, TextInput, Text, Platform, TouchableOpacity, Pressable } from "react-native";
 import { CheckCheckIcon, CheckIcon, PaperclipIcon, SendIcon } from "lucide-react-native";
 import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
@@ -9,6 +9,7 @@ import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import BackgroundLayout from "@/layouts/background-layout";
 import { Message, MessageOptimistic } from "@/types/chat";
+import { FlatList } from "react-native-gesture-handler";
 import { getStorageUserInfos } from "@/utils/store";
 // import useWebSocket from "@/hooks/use-websocket";
 import { useForm } from "@tanstack/react-form";

@@ -1,6 +1,6 @@
 import { deleteChatRoomQuery, getChatRoomsQuery } from "@/api/queries/chat-room-queries";
-import { BinaryIcon, ChevronRightIcon, LockIcon, TrashIcon } from "lucide-react-native";
-import { Alert, Button, Text, TouchableOpacity, View } from "react-native";
+import { ChevronRightIcon, LockIcon, TrashIcon } from "lucide-react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import { getMessagesQuery } from "@/api/queries/message-queries";
 import { withQueryWrapper } from "@/utils/libs/react-query";
@@ -63,47 +63,48 @@ export default function Page() {
 					queryFn: getMessagesQuery,
 				});
 			}, []);
+
 			return (
 				<>
 					<FlatList
 						data={data.docs}
-						renderItem={({ item }) => (
-							<View className="w-full flex-row items-center justify-between gap-4">
-								{userHierarchy[userInfos?.user?.role!] < 1 && (
-									<TouchableOpacity
-										onPress={() => {
-											Alert.alert(
-												i18n[languageCode]("CHAT_ROOM_DELETE"),
-												i18n[languageCode]("CHAT_ROOM_DELETE_CONFIRMATION"),
-												[
-													{ text: i18n[languageCode]("CANCEL"), style: "cancel" },
-													{
-														text: i18n[languageCode]("DELETE"),
-														style: "destructive",
-														onPress: () => mutationChatRoom.mutate(item.id),
-													},
-												],
-											);
-										}}
-									>
-										<TrashIcon size={24} color="#000" />
-									</TouchableOpacity>
-								)}
-								<Link
-									href={{
-										pathname: "/chat/[chat]",
-										params: { chat: item.id },
-									}}
-									className="flex-1"
-								>
-									<View className="w-full flex-row items-center justify-between gap-4 rounded-xl bg-black p-5">
-										<ItemTitleAndDescription name={item.name} description={item.description} private={item.private} />
-										<ChevronRightIcon size={24} color="#fff" />
-									</View>
-								</Link>
-							</View>
-						)}
 						keyExtractor={(item) => item.id}
+						renderItem={({ item }) => (
+								<View className="flex-row items-center justify-between gap-4">
+									{userHierarchy[userInfos?.user?.role!] < 1 && (
+										<TouchableOpacity
+											onPress={() => {
+												Alert.alert(
+													i18n[languageCode]("CHAT_ROOM_DELETE"),
+													i18n[languageCode]("CHAT_ROOM_DELETE_CONFIRMATION"),
+													[
+														{ text: i18n[languageCode]("CANCEL"), style: "cancel" },
+														{
+															text: i18n[languageCode]("DELETE"),
+															style: "destructive",
+															onPress: () => mutationChatRoom.mutate(item.id),
+														},
+													],
+												);
+											}}
+										>
+											<TrashIcon size={24} color="#000" />
+										</TouchableOpacity>
+									)}
+									<Link
+										href={{
+											pathname: "/chat/[chat]",
+											params: { chat: item.id },
+										}}
+										className="flex-1"
+									>
+										<View className="w-full flex-row items-center justify-between gap-4 rounded-xl bg-black p-5">
+											<ItemTitleAndDescription name={item.name} description={item.description} private={item.private} />
+											<ChevronRightIcon size={24} color="#fff" />
+										</View>
+									</Link>
+								</View>
+						)}
 						contentInsetAdjustmentBehavior="automatic"
 						contentContainerStyle={{
 							gap: 20,
