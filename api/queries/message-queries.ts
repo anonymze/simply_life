@@ -29,6 +29,7 @@ export async function createMessageQuery(params: MessageOptimistic) {
 		app_user: params.app_user.id,
 		chat_room: params.chat_room,
 		message: params.message,
+		file: params.file,
 	});
 	return response.data;
 }

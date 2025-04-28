@@ -1,21 +1,26 @@
-import { View, TextInput, Text, Platform, TouchableOpacity, Pressable } from "react-native";
+import { View, TextInput, Text, Platform, TouchableOpacity, Pressable, Alert, ActivityIndicator } from "react-native";
 import { CheckCheckIcon, CheckIcon, PaperclipIcon, SendIcon } from "lucide-react-native";
 import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
+import { UIImagePickerPresentationStyle } from "expo-image-picker";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
+import { createMediaQuery } from "@/api/queries/media-queries";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import BackgroundLayout from "@/layouts/background-layout";
 import { Message, MessageOptimistic } from "@/types/chat";
+import { SuccessCreateResponse } from "@/types/response";
 import { FlatList } from "react-native-gesture-handler";
 import { getStorageUserInfos } from "@/utils/store";
+import * as ImagePicker from "expo-image-picker";
 // import useWebSocket from "@/hooks/use-websocket";
 import { useForm } from "@tanstack/react-form";
 import { queryClient } from "@/api/_queries";
 import config from "@/tailwind.config";
 import { AppUser } from "@/types/user";
+import { Media } from "@/types/media";
 import { Image } from "expo-image";
 import { cn } from "@/utils/cn";
 import React from "react";
@@ -41,15 +46,6 @@ export default function Page() {
 	const languageCode = React.useMemo(() => getLanguageCodeLocale(), []);
 	const { height } = useReanimatedKeyboardAnimation();
 	const bottomSafeAreaView = useSafeAreaInsets().bottom;
-
-	// const onMessageWebsocket = (event: any) => {
-	// 	const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));
-	// 	if (!success) return;
-
-	// 	queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
-	// };
-
-	// const websocketConnected = useWebSocket(chatId, onMessageWebsocket);
 
 	const { data: messages, isLoading: loadingMessages } = useQuery({
 		queryKey: ["messages", chatId, maxMessages],
@@ -95,6 +91,23 @@ export default function Page() {
 		[],
 	);
 
+	const mutationMedia = useMutation({
+		mutationFn: createMediaQuery,
+		onSuccess: (data) => {
+			mutationMessages.mutate({
+				id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+				app_user: appUser.user,
+				chat_room: chatId,
+				file: data[0].doc.id,
+				createdAt: new Date().toISOString(),
+				optimistic: true,
+			});
+		},
+		onError: (_) => {
+			Alert.alert(i18n[languageCode]("ERROR_GENERIC_PART1"), i18n[languageCode]("ERROR_GENERIC_PART2"));
+		},
+	});
+
 	const form = useForm({
 		defaultValues: {
 			message: "",
@@ -117,6 +130,21 @@ export default function Page() {
 			});
 		},
 	});
+
+	const pickImage = React.useCallback(async () => {
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ["images", "videos"],
+			allowsEditing: false,
+			aspect: [1, 1],
+			quality: 0.5,
+			allowsMultipleSelection: true,
+			presentationStyle: UIImagePickerPresentationStyle.POPOVER,
+		});
+
+		if (result.canceled) return;
+
+		mutationMedia.mutate(result.assets);
+	}, []);
 
 	const animatedStyle = useAnimatedStyle(() => {
 		const spacing = 12;
@@ -163,8 +191,8 @@ export default function Page() {
 								showsVerticalScrollIndicator={false}
 								data={messages}
 								renderItem={({ item, index }) => {
-									const lastMessageUser = messages[index + 1]?.app_user !== item.app_user;
-									const newMessageUser = messages[index - 1]?.app_user !== item.app_user;
+									const lastMessageUser = messages[index + 1]?.app_user.id !== item.app_user.id;
+									const newMessageUser = messages[index - 1]?.app_user.id !== item.app_user.id;
 									return (
 										<Item
 											stateMessage={{
@@ -220,22 +248,24 @@ export default function Page() {
 										/>
 									)}
 								</form.Field>
-								<TouchableOpacity onPress={() => {}} className="p-2.5">
+								<TouchableOpacity onPress={pickImage} className="p-2.5">
 									<PaperclipIcon size={17} color={config.theme.extend.colors.primaryLight} />
 								</TouchableOpacity>
 							</View>
-							<Pressable
-								onPress={() => {
-									if (loadingMessages) return;
-									handleSubmit();
-								}}
+							{mutationMedia.isPending ? (
+								<ActivityIndicator className="p-1.5 pr-0.5" size="small" color={config.theme.extend.colors.primaryLight} />
+							) : (
+								<Pressable
+								onPress={handleSubmit}
+								disabled={loadingMessages}
 								style={{
 									opacity: loadingMessages ? 0.5 : 1,
 								}}
 								className={cn("p-1.5 pr-0.5", Platform.OS === "android" && "mb-3")}
 							>
-								<SendIcon size={20} color={config.theme.extend.colors.primaryLight} />
-							</Pressable>
+									<SendIcon size={20} color={config.theme.extend.colors.primaryLight} />
+								</Pressable>
+							)}
 						</View>
 					</View>
 				</Animated.View>
@@ -258,7 +288,6 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProp
 	const me = item.app_user.id === appUser?.user.id;
 	const optimistic = "optimistic" in item ? item.optimistic : false;
 
-	console.log(item.app_user.photo?.url);
 	return (
 		<View
 			className={cn(
@@ -298,3 +327,13 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProp
 
 // for debugging in react devtools
 Item.displayName = "Item";
+
+
+	// const onMessageWebsocket = (event: any) => {
+	// 	const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));
+	// 	if (!success) return;
+
+	// 	queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
+	// };
+
+	// const websocketConnected = useWebSocket(chatId, onMessageWebsocket);
