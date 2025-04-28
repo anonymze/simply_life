@@ -27,7 +27,7 @@ const uploadMedia = async (asset: ImagePicker.ImagePickerAsset, apiUrl: string) 
 		alt: asset.fileName ?? "file",
 	}));
 
-  const response = await fetch("http://localhost:3000" + apiUrl, {
+  const response = await fetch((process.env.EXPO_PUBLIC_API_URL || "") + apiUrl, {
     method: "POST",
     body: formData,
   });
