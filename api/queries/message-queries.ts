@@ -8,7 +8,8 @@ import { api } from "../_config";
 export async function getMessagesQuery({ queryKey }: { queryKey: QueryKey }) {
 	const [,chatId, maxMessages] = queryKey;
 
-	const response = await api.get<PaginatedResponse<Message | MessageOptimistic>>("/api/messages", {
+	// be careful it's a custom route, so it will not handle every params
+	const response = await api.get<PaginatedResponse<Message | MessageOptimistic>>("/api/messages/messages-by-room", {
 		params: {
 			where: {
 				chat_room: {
