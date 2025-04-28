@@ -16,14 +16,19 @@ export interface ChatRoom {
 
 export interface Message {
 	id: string;
-	app_user: User["id"];
-	chat_room: ChatRoom | ChatRoom["id"];
+	app_user: User;
+	chat_room: ChatRoom["id"];
 	message: string;
 	createdAt: string;
 	updatedAt: string;
 }
 
-export interface MessageOptimistic extends Omit<Message, "updatedAt"> {
+export interface MessageOptimistic {
+	id: Message["id"];
+	app_user: User;
+	chat_room: ChatRoom["id"];
+	message: Message["message"];
 	optimistic: boolean;
+	createdAt: Message["createdAt"];
 }
 

@@ -1,3 +1,6 @@
+import { Media } from "./media";
+
+
 export interface AppUser {
 	exp: number;
 	token: string;
@@ -11,7 +14,7 @@ export interface User {
 	email: string;
 	role: UserRole;
 	phone?: string;
-	photo?: string;
+	photo?: Media;
 }
 
 type UserRole = "associate" | "independent" | "visitor" | "employee";

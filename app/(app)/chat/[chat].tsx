@@ -31,13 +31,13 @@ import { MAX_MESSAGES } from "./index";
 
 export default function Page() {
 	const { chat: chatId } = useLocalSearchParams<{ chat?: string }>();
+	const appUser = React.useMemo(() => getStorageUserInfos(), []);
 
-	if (!chatId) {
+	if (!chatId || !appUser) {
 		return <Redirect href="/chat" />;
 	}
 
 	const [maxMessages, setMaxMessages] = React.useState(MAX_MESSAGES);
-	const appUser = React.useMemo(() => getStorageUserInfos(), []);
 	const languageCode = React.useMemo(() => getLanguageCodeLocale(), []);
 	const { height } = useReanimatedKeyboardAnimation();
 	const bottomSafeAreaView = useSafeAreaInsets().bottom;
@@ -57,7 +57,7 @@ export default function Page() {
 		placeholderData: (prev) => prev,
 		refetchInterval: 6000,
 	});
-	
+
 	const mutationMessages = useMutation({
 		mutationFn: createMessageQuery,
 		// when mutate is called:
@@ -108,7 +108,7 @@ export default function Page() {
 			// we have to set an id otherwise the list will not have a key extractor, and a date to show
 			mutationMessages.mutate({
 				id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-				app_user: appUser?.user.id || "",
+				app_user: appUser.user,
 				chat_room: chatId,
 				message: value.message,
 				createdAt: new Date().toISOString(),
@@ -240,8 +240,8 @@ export default function Page() {
 					</View>
 				</Animated.View>
 			</BackgroundLayout>
-			</SafeAreaView>
-		);
+		</SafeAreaView>
+	);
 }
 
 type ItemProps = {
@@ -255,9 +255,10 @@ type ItemProps = {
 };
 
 const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProps) => {
-	const me = item.app_user === appUser?.user.id;
+	const me = item.app_user.id === appUser?.user.id;
 	const optimistic = "optimistic" in item ? item.optimistic : false;
 
+	console.log(item.app_user.photo?.url);
 	return (
 		<View
 			className={cn(
@@ -268,13 +269,19 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProp
 				stateMessage.lastMessageUser && "mt-2.5",
 			)}
 		>
-			<Image
-				source={require("@/assets/icons/placeholder_user.svg")}
-				style={{ width: 28, height: 28, borderRadius: 99 }}
-			/>
+			{!me && (
+				<Image
+					placeholderContentFit="contain"
+					placeholder={require("@/assets/icons/placeholder_user.svg")}
+					source={item.app_user.photo?.url}
+					style={{ width: 28, height: 28, borderRadius: 99, objectFit: "contain" }}
+				/>
+			)}
 			<View className={cn(me ? "bg-greenChat" : "bg-grayChat", "flex-shrink flex-row gap-3 rounded-xl px-2.5 py-2.5")}>
 				<View className="flex-shrink gap-1">
-					{!me && stateMessage.lastMessageUser && <Text className="text-sm font-bold text-primaryLight">User</Text>}
+					{!me && stateMessage.lastMessageUser && (
+						<Text className="text-sm font-bold text-primaryLight">{`${item.app_user.firstname} ${item.app_user.lastname}`}</Text>
+					)}
 					<Text className="flex-shrink self-start text-white">{item.message}</Text>
 				</View>
 				<View className="flex-row gap-1 self-end">
