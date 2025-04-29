@@ -102,15 +102,16 @@ export default function Page() {
 	const mutationMedia = useMutation({
 		mutationFn: createMediaQuery,
 		onSuccess: (data) => {
-			mutationMessages.mutate({
-				id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-				app_user: appUser.user,
-				chat_room: chatId,
-				// todo all files
-				file: data[0].doc.id,
-				createdAt: new Date().toISOString(),
-				optimistic: true,
-			});
+			for (let media of data) {
+				mutationMessages.mutate({
+					id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+					app_user: appUser.user,
+					chat_room: chatId,
+					file: media.doc.id,
+					createdAt: new Date().toISOString(),
+					optimistic: true,
+				});
+			}
 		},
 		onError: (_) => {
 			Alert.alert(i18n[languageCode]("ERROR_GENERIC_PART1"), i18n[languageCode]("ERROR_GENERIC_PART2"));
@@ -367,14 +368,12 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage, languageCo
 											try {
 												if (!destination.exists) destination.create();
 												const output = await File.downloadFileAsync(item.file.url, destination);
-												console.log(output.exists); // true
-												console.log(output.uri); // path to the downloaded file, e.g. '${cacheDirectory}/pdfs/sample.pdf'
 											} catch (error) {
-												console.error(error);
-												Alert.alert(
-													i18n[languageCode]("ERROR_GENERIC_PART1"),
-													i18n[languageCode]("ERROR_GENERIC_PART2"),
-												);
+												console.warn(error);
+												// Alert.alert(
+												// 	i18n[languageCode]("ERROR_GENERIC_PART1"),
+												// 	i18n[languageCode]("ERROR_GENERIC_PART2"),
+												// );
 											}
 										}}
 									>
