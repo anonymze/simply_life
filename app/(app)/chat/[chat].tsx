@@ -2,13 +2,13 @@ import { View, TextInput, Text, Platform, TouchableOpacity, Pressable, Alert, Ac
 import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { ImageIcon, PaperclipIcon, SendIcon } from "lucide-react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { UIImagePickerPresentationStyle } from "expo-image-picker";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import { createMediaQuery } from "@/api/queries/media-queries";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { PaperclipIcon, SendIcon } from "lucide-react-native";
 import BackgroundLayout from "@/layouts/background-layout";
 import { Message, MessageOptimistic } from "@/types/chat";
 import { FlatList } from "react-native-gesture-handler";
@@ -249,7 +249,10 @@ export default function Page() {
 										/>
 									)}
 								</form.Field>
-								<TouchableOpacity onPress={pickImage} className="p-2.5">
+								<TouchableOpacity onPress={pickImage} className="px-2 py-2.5">
+									<ImageIcon size={18} color={config.theme.extend.colors.primaryLight} />
+								</TouchableOpacity>
+								<TouchableOpacity onPress={() =>{}} className="pr-2.5 pl-2 py-2.5">
 									<PaperclipIcon size={17} color={config.theme.extend.colors.primaryLight} />
 								</TouchableOpacity>
 							</View>
