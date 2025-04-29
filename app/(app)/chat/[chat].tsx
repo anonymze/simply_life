@@ -279,10 +279,6 @@ export default function Page() {
 	);
 }
 
-
-
-
-
 // const onMessageWebsocket = (event: any) => {
 // 	const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));
 // 	if (!success) return;

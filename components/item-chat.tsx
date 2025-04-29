@@ -113,7 +113,7 @@ export const Item = React.memo(({ firstMessage, item, appUser, stateMessage, lan
 											<Image
 												source={(item.file as Media).url}
 												contentFit="cover"
-												style={{ width: widthWindow, height: heightWindow / 1.8, borderRadius: 6 }}
+												style={{ width: widthWindow, height: heightWindow / 1.8, borderRadius: styles.image.borderRadius }}
 											/>
 										)}
 
