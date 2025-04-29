@@ -20,7 +20,7 @@ export interface Message {
 	app_user: User;
 	chat_room: ChatRoom["id"];
 	message?: string;
-	file?: Media["id"];
+	file?: Media;
 	createdAt: string;
 	updatedAt: string;
 }

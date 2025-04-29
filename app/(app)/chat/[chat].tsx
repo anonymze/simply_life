@@ -76,6 +76,7 @@ export default function Page() {
 		// if the mutation fails,
 		// use the context returned from onMutate to roll back
 		onError: (err, newMessage, context) => {
+			Alert.alert(i18n[languageCode]("ERROR_GENERIC_PART1"), err.message);
 			queryClient.setQueryData(["messages", chatId, maxMessages], context);
 		},
 		// always refetch after error or success:
@@ -98,6 +99,7 @@ export default function Page() {
 				id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
 				app_user: appUser.user,
 				chat_room: chatId,
+				// todo all files
 				file: data[0].doc.id,
 				createdAt: new Date().toISOString(),
 				optimistic: true,
@@ -253,16 +255,20 @@ export default function Page() {
 								</TouchableOpacity>
 							</View>
 							{mutationMedia.isPending ? (
-								<ActivityIndicator className="p-1.5 pr-0.5" size="small" color={config.theme.extend.colors.primaryLight} />
+								<ActivityIndicator
+									className="p-1.5 pr-0.5"
+									size="small"
+									color={config.theme.extend.colors.primaryLight}
+								/>
 							) : (
 								<Pressable
-								onPress={handleSubmit}
-								disabled={loadingMessages}
-								style={{
-									opacity: loadingMessages ? 0.5 : 1,
-								}}
-								className={cn("p-1.5 pr-0.5", Platform.OS === "android" && "mb-3")}
-							>
+									onPress={handleSubmit}
+									disabled={loadingMessages}
+									style={{
+										opacity: loadingMessages ? 0.5 : 1,
+									}}
+									className={cn("p-1.5 pr-0.5", Platform.OS === "android" && "mb-3")}
+								>
 									<SendIcon size={20} color={config.theme.extend.colors.primaryLight} />
 								</Pressable>
 							)}
@@ -288,6 +294,8 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProp
 	const me = item.app_user.id === appUser?.user.id;
 	const optimistic = "optimistic" in item ? item.optimistic : false;
 
+	console.log(item.file);
+
 	return (
 		<View
 			className={cn(
@@ -306,14 +314,36 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProp
 					style={{ width: 28, height: 28, borderRadius: 99, objectFit: "contain" }}
 				/>
 			)}
-			<View className={cn(me ? "bg-greenChat" : "bg-grayChat", "flex-shrink flex-row gap-3 rounded-xl px-2.5 py-2.5")}>
+			<View
+				className={cn(
+					"flex-shrink flex-row gap-3 rounded-xl p-2.5",
+					me ? "bg-greenChat" : "bg-grayChat",
+					item.file && "p-1.5",
+				)}
+			>
 				<View className="flex-shrink gap-1">
 					{!me && stateMessage.lastMessageUser && (
 						<Text className="text-sm font-bold text-primaryLight">{`${item.app_user.firstname} ${item.app_user.lastname}`}</Text>
 					)}
-					<Text className="flex-shrink self-start text-white">{item.message}</Text>
+					{item.message && <Text className="flex-shrink self-start text-white">{item.message}</Text>}
+					{item.file && (
+						<Image
+							source={item.file.url}							
+							onLoadStart={() => {
+								console.log("load start");
+							}}
+							onLoad={() => {
+								console.log("load");
+							}}
+							onLoadEnd={() => {
+								console.log("load end");
+							}}
+							contentFit="cover"
+							style={{ width: 140, height: 180, borderRadius: 6 }}
+						/>
+					)}
 				</View>
-				<View className="flex-row gap-1 self-end">
+				<View className={cn("flex-row gap-1 self-end", item.file && "absolute bottom-2 right-2")}>
 					<Text className="text-xs text-gray-200">
 						{new Date(item.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
 					</Text>
@@ -328,12 +358,11 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProp
 // for debugging in react devtools
 Item.displayName = "Item";
 
+// const onMessageWebsocket = (event: any) => {
+// 	const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));
+// 	if (!success) return;
 
-	// const onMessageWebsocket = (event: any) => {
-	// 	const { data, success } = messageReceivedSchema.safeParse(JSON.parse(event));
-	// 	if (!success) return;
+// 	queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
+// };
 
-	// 	queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
-	// };
-
-	// const websocketConnected = useWebSocket(chatId, onMessageWebsocket);
+// const websocketConnected = useWebSocket(chatId, onMessageWebsocket);

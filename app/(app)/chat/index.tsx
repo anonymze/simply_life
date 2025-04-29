@@ -4,7 +4,6 @@ import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import { getMessagesQuery } from "@/api/queries/message-queries";
 import { withQueryWrapper } from "@/utils/libs/react-query";
-import { useSharedValue } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
 import { PaginatedResponse } from "@/types/response";
 import { useMutation } from "@tanstack/react-query";
