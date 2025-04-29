@@ -7,6 +7,7 @@ import Animated, { FadeIn, useAnimatedStyle } from "react-native-reanimated";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { UIImagePickerPresentationStyle } from "expo-image-picker";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
+import { Directory, File, Paths } from "expo-file-system/next";
 import { createMediaQuery } from "@/api/queries/media-queries";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import BackgroundLayout from "@/layouts/background-layout";
@@ -31,6 +32,7 @@ import { z } from "zod";
 import { MAX_MESSAGES } from "./index";
 
 
+const destination = new Directory(Paths.cache, "simply-life");
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
@@ -337,7 +339,7 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage, languageCo
 						) : (
 							<ContextMenu.Root>
 								<ContextMenu.Trigger>
-									<Animated.View style={{ width: 140, height: 180, borderRadius: 6 }} entering={FadeIn.duration(400)}>
+									<Animated.View style={{ width: 140, height: 180, borderRadius: 6 }} entering={FadeIn.duration(300)}>
 										<Image
 											placeholder={(item.file as Media).blurhash}
 											placeholderContentFit="cover"
@@ -359,8 +361,21 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage, languageCo
 									{/* <ContextMenu.Label>Actions</ContextMenu.Label> */}
 									<ContextMenu.Item
 										key="download"
-										onSelect={() => {
-											console.log("download");
+										onSelect={async () => {
+											if (typeof item.file === "string" || !item.file?.url) return;
+
+											try {
+												if (!destination.exists) destination.create();
+												const output = await File.downloadFileAsync(item.file.url, destination);
+												console.log(output.exists); // true
+												console.log(output.uri); // path to the downloaded file, e.g. '${cacheDirectory}/pdfs/sample.pdf'
+											} catch (error) {
+												console.error(error);
+												Alert.alert(
+													i18n[languageCode]("ERROR_GENERIC_PART1"),
+													i18n[languageCode]("ERROR_GENERIC_PART2"),
+												);
+											}
 										}}
 									>
 										<ContextMenu.ItemTitle>{i18n[languageCode]("DOWNLOAD")}</ContextMenu.ItemTitle>
