@@ -104,6 +104,13 @@ export default {
 					androidSpeechServicePackages: ["com.google.android.googlequicksearchbox"],
 				},
 			],
+			[
+        "expo-video",
+        {
+					supportsBackgroundPlayback: true,
+					supportsPictureInPicture: true,
+				},
+			],
 			"expo-font",
 			"expo-localization",
 		],

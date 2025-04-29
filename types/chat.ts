@@ -23,15 +23,16 @@ export interface Message {
 	file?: Media;
 	createdAt: string;
 	updatedAt: string;
+	optimistic?: never;
 }
 
 export interface MessageOptimistic {
 	id: Message["id"];
 	app_user: User;
-	chat_room: ChatRoom["id"];
+	chat_room: Message["chat_room"];
 	message?: Message["message"];
 	file?: Media["id"];
-	optimistic: boolean;
+	optimistic: true;
 	createdAt: Message["createdAt"];
 }
 

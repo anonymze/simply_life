@@ -5,6 +5,7 @@ export interface Media {
   updatedAt: string;
   createdAt: string;
   url?: string | null;
+  blurhash?: string | null;
   thumbnailURL?: string | null;
   filename?: string | null;
   mimeType?: string | null;

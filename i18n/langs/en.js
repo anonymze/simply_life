@@ -9,6 +9,7 @@ export default {
 	CHAT_ROOM_DELETE: "Delete a chat room",
 	CHAT_ROOM_DELETE_CONFIRMATION: "Deleting a chat room will delete all messages from the conversation, are you sure?",
 	DELETE: "Delete",
+	DOWNLOAD: "Download",
 	ERROR_GENERIC_PART1: "An unknown error occurred",
 	ERROR_GENERIC_PART2: "Contact developpers.",
 	ERROR_LOGIN: "Login error",

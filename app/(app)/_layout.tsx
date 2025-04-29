@@ -1,9 +1,9 @@
 import { NotificationProvider } from "@/context/push-notifications";
 import { ArrowLeftIcon, PlusCircleIcon } from "lucide-react-native";
 import { Stack, Redirect, Link, router } from "expo-router";
+import { Platform, TouchableOpacity } from "react-native";
 import HeaderLayout from "@/layouts/headert-layout";
 import { getStorageUserInfos } from "@/utils/store";
-import { TouchableOpacity } from "react-native";
 import { truncateText } from "@/utils/helper";
 import { userHierarchy } from "@/types/user";
 import React from "react";
@@ -73,9 +73,11 @@ export default function AppLayout() {
 							if (userHierarchy[userInfos.user.role] > 0) return null;
 
 							return (
-								<TouchableOpacity onPress={() => {
-									router.push("/chat/new-room");
-								}}>
+								<TouchableOpacity
+									onPress={() => {
+										router.push("/chat/new-room");
+									}}
+								>
 									<PlusCircleIcon size={24} color="#000" />
 								</TouchableOpacity>
 							);
@@ -99,7 +101,8 @@ export default function AppLayout() {
 				<Stack.Screen
 					name="chat/new-room"
 					options={{
-						presentation: "modal",
+						presentation: Platform.OS === "ios" ? "formSheet" : undefined,
+						sheetAllowedDetents: Platform.OS === "ios" ? "fitToContents" : undefined,
 						header: () => <HeaderLayout title="New room" />,
 					}}
 				/>

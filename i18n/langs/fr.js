@@ -9,6 +9,7 @@ export default {
 	CHAT_ROOM_DELETE: "Supprimer un chat",
 	CHAT_ROOM_DELETE_CONFIRMATION: "Supprimer un chat supprimera tous les messages de la conversation, en êtes vous sûr ?",
 	DELETE: "Supprimer",
+	DOWNLOAD: "Télécharger",
 	ERROR_LOGIN: "Erreur de connexion",
 	ERROR_GENERIC_PART1: "Une erreur inconnue est survenue",
 	ERROR_GENERIC_PART2: "Contactez les développeurs.",

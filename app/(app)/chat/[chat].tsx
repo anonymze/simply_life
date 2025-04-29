@@ -3,7 +3,7 @@ import { CheckCheckIcon, CheckIcon, PaperclipIcon, SendIcon } from "lucide-react
 import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import Animated, { FadeIn, useAnimatedStyle } from "react-native-reanimated";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { UIImagePickerPresentationStyle } from "expo-image-picker";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
@@ -11,16 +11,18 @@ import { createMediaQuery } from "@/api/queries/media-queries";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import BackgroundLayout from "@/layouts/background-layout";
 import { Message, MessageOptimistic } from "@/types/chat";
-import { SuccessCreateResponse } from "@/types/response";
 import { FlatList } from "react-native-gesture-handler";
 import { getStorageUserInfos } from "@/utils/store";
+import * as ContextMenu from "zeego/context-menu";
 import * as ImagePicker from "expo-image-picker";
 // import useWebSocket from "@/hooks/use-websocket";
 import { useForm } from "@tanstack/react-form";
 import { queryClient } from "@/api/_queries";
+import { Dimensions } from "react-native";
 import config from "@/tailwind.config";
 import { AppUser } from "@/types/user";
 import { Media } from "@/types/media";
+import { I18n } from "@/types/i18n";
 import { Image } from "expo-image";
 import { cn } from "@/utils/cn";
 import React from "react";
@@ -28,6 +30,9 @@ import { z } from "zod";
 
 import { MAX_MESSAGES } from "./index";
 
+
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
 // const messageReceivedSchema = z.object({
 // 	type: z.literal("MESSAGE_RECEIVED"),
@@ -197,6 +202,7 @@ export default function Page() {
 									const newMessageUser = messages[index - 1]?.app_user.id !== item.app_user.id;
 									return (
 										<Item
+											languageCode={languageCode}
 											stateMessage={{
 												lastMessageUser,
 												newMessageUser,
@@ -288,13 +294,12 @@ type ItemProps = {
 		newMessageUser: boolean;
 		lastMessageUser: boolean;
 	};
+	languageCode: I18n;
 };
 
-const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProps) => {
+const Item = React.memo(({ firstMessage, item, appUser, stateMessage, languageCode }: ItemProps) => {
 	const me = item.app_user.id === appUser?.user.id;
-	const optimistic = "optimistic" in item ? item.optimistic : false;
-
-	console.log(item.file);
+	const optimistic = "optimistic" in item ? true : false;
 
 	return (
 		<View
@@ -326,22 +331,65 @@ const Item = React.memo(({ firstMessage, item, appUser, stateMessage }: ItemProp
 						<Text className="text-sm font-bold text-primaryLight">{`${item.app_user.firstname} ${item.app_user.lastname}`}</Text>
 					)}
 					{item.message && <Text className="flex-shrink self-start text-white">{item.message}</Text>}
-					{item.file && (
-						<Image
-							source={item.file.url}							
-							onLoadStart={() => {
-								console.log("load start");
-							}}
-							onLoad={() => {
-								console.log("load");
-							}}
-							onLoadEnd={() => {
-								console.log("load end");
-							}}
-							contentFit="cover"
-							style={{ width: 140, height: 180, borderRadius: 6 }}
-						/>
-					)}
+					{item.file ? (
+						optimistic ? (
+							<ActivityIndicator size="small" style={{ width: 140, height: 180, borderRadius: 6 }} color="#fff" />
+						) : (
+							<ContextMenu.Root>
+								<ContextMenu.Trigger>
+									<Animated.View style={{ width: 140, height: 180, borderRadius: 6 }} entering={FadeIn.duration(400)}>
+										<Image
+											placeholder={(item.file as Media).blurhash}
+											placeholderContentFit="cover"
+											source={(item.file as Media).url}
+											transition={300}
+											contentFit="cover"
+											style={{ width: 140, height: 180, borderRadius: 6 }}
+										/>
+									</Animated.View>
+								</ContextMenu.Trigger>
+								<ContextMenu.Content>
+									<ContextMenu.Preview>
+										<Image
+											source={(item.file as Media).url}
+											contentFit="cover"
+											style={{ width: width, height: height / 1.8, borderRadius: 6 }}
+										/>
+									</ContextMenu.Preview>
+									{/* <ContextMenu.Label>Actions</ContextMenu.Label> */}
+									<ContextMenu.Item
+										key="download"
+										onSelect={() => {
+											console.log("download");
+										}}
+									>
+										<ContextMenu.ItemTitle>{i18n[languageCode]("DOWNLOAD")}</ContextMenu.ItemTitle>
+										<ContextMenu.ItemIcon
+											// androidIconName="arrow_down_float"
+											ios={{
+												name: "arrow.down", // required
+												pointSize: 15,
+												weight: "semibold",
+												// scale: "medium",
+												// can also be a color string. Requires iOS 15+
+												// hierarchicalColor: {
+												// 	dark: "blue",
+												// 	light: "green",
+												// },
+												// alternative to hierarchical color. Requires iOS 15+
+												paletteColors: [
+													{
+														dark: config.theme.extend.colors.primaryLight,
+														light: config.theme.extend.colors.primaryLight,
+													},
+												],
+											}}
+										/>
+									</ContextMenu.Item>
+								</ContextMenu.Content>
+							</ContextMenu.Root>
+						)
+					) : null}
 				</View>
 				<View className={cn("flex-row gap-1 self-end", item.file && "absolute bottom-2 right-2")}>
 					<Text className="text-xs text-gray-200">
