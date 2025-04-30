@@ -8,14 +8,14 @@ export async function createMediaQuery(assets: ImagePicker.ImagePickerAsset[]) {
 	const promises = [];
 
 	for (let asset of assets) {
-		promises.push(uploadMedia(asset, "/api/media"));
+		promises.push(uploadMedia(asset));
 	}
 
 	return Promise.all(promises);
 }
 
 // use fetch for file upload polyfill
-const uploadMedia = async (asset: ImagePicker.ImagePickerAsset, apiUrl: string) => {
+const uploadMedia = async (asset: ImagePicker.ImagePickerAsset) => {
 	const formData = new FormData();
 	formData.append("file", {
 		uri: asset.uri,
@@ -27,7 +27,7 @@ const uploadMedia = async (asset: ImagePicker.ImagePickerAsset, apiUrl: string) 
 		alt: asset.fileName ?? "file",
 	}));
 
-  const response = await fetch((process.env.EXPO_PUBLIC_API_URL || "") + apiUrl, {
+  const response = await fetch((process.env.EXPO_PUBLIC_API_URL || "") + "/api/media", {
     method: "POST",
     body: formData,
   });
