@@ -170,7 +170,8 @@ export default function Page() {
 			id: "",
 			app_user: appUser.user,
 			chat_room: chatId,
-			file: result.assets,
+			// following the order of the files selected
+			file: result.assets.reverse(),
 			createdAt: new Date().toISOString(),
 			// we flag it to show it as a pending message
 			optimistic: true,
