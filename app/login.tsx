@@ -44,8 +44,8 @@ export default function Page() {
 
 	const form = useForm({
 		defaultValues: {
-			email: process.env.NODE_ENV === "development" ? "anodevfr@test.fr" : "",
-			password: process.env.NODE_ENV === "development" ? "1234" : "",
+			email: process.env.NODE_ENV === "development" ? "mila.simon@iwillcodeit.io" : "",
+			password: process.env.NODE_ENV === "development" ? "" : "",
 		},
 		validators: {
 			onSubmit: formSchema,

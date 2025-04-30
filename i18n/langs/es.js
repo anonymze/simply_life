@@ -19,6 +19,7 @@ export default {
 	ERROR_INPUT_MIN_LENGTH: "El campo debe tener al menos 2 caracteres.",
 	ERROR_PDF: "Error PDF",
 	ERROR_PDF_MESSAGE: "No se puede guardar el PDF",
+	FILE_NOT_SUPPORTED: "El tipo de archivo no es compatible.",
 	MESSAGE: "Mensaje",
 	PDF_LOADING: "Cargando PDF...",
 	SAVE: "Guardar",

@@ -3,14 +3,11 @@ import { Directory, File, Paths } from "expo-file-system/next";
 import { CheckCheckIcon } from "lucide-react-native";
 import * as ContextMenu from "zeego/context-menu";
 import { MessageOptimistic } from "@/types/chat";
-import { FadeIn } from "react-native-reanimated";
 import { CheckIcon } from "lucide-react-native";
-import Animated from "react-native-reanimated";
 import { i18n } from "@/i18n/translations";
 import config from "@/tailwind.config";
 import { Message } from "@/types/chat";
 import { AppUser } from "@/types/user";
-import { Media } from "@/types/media";
 import { I18n } from "@/types/i18n";
 import { Image } from "expo-image";
 import { cn } from "@/utils/cn";
@@ -22,7 +19,6 @@ import VideoScreen from "./video-screen";
 const destination = new Directory(Paths.cache, "simply-life");
 const widthWindow = Dimensions.get("window").width;
 const heightWindow = Dimensions.get("window").height;
-
 
 type ItemProps = {
 	firstMessage: boolean;
@@ -72,59 +68,85 @@ export const Item = React.memo(({ firstMessage, item, appUser, stateMessage, lan
 					{item.message && <Text className="flex-shrink self-start text-white">{item.message}</Text>}
 					{item.file ? (
 						optimistic ? (
-							<ActivityIndicator size="small" style={{ width: 140, height: 180, borderRadius: 6 }} color="#fff" />
-						) : (
-							<ContextMenu.Root
-								onOpenChange={(open) => {
-									setOpen(open);
-								}}
-							>
-								<ContextMenu.Trigger
-									onClick={() => {
-										console.log("click");
+							<>
+								<Image
+									// @ts-expect-error
+									source={item.file.uri}
+									transition={300}
+									contentFit="cover"
+									style={styles.image}
+								/>
+								<ActivityIndicator
+									size="small"
+									style={{
+										position: "absolute",
+										top: 0,
+										left: 0,
+										right: 0,
+										bottom: 0,
+										backgroundColor: "rgba(0, 0, 0, 0.5)",
+										borderRadius: 6,
 									}}
-								>
-									<Animated.View style={{ width: 140, height: 180, borderRadius: 6 }} entering={FadeIn.duration(300)}>
-										{(item.file as Media).mimeType?.startsWith("image") && (
+									color="#fff"
+								/>
+							</>
+						) : (
+							<ContextMenu.Root onOpenChange={setOpen}>
+								<ContextMenu.Trigger>
+									<>
+										{item.file.mimeType?.startsWith("image") ? (
 											<Image
-												placeholder={(item.file as Media).blurhash}
+												// @ts-expect-error
+												placeholder={item.file.blurhash}
 												placeholderContentFit="cover"
-												source={(item.file as Media).url}
+												// @ts-expect-error
+												source={item.file.url}
 												transition={300}
 												contentFit="cover"
 												style={styles.image}
 											/>
-										)}
-										{(item.file as Media).mimeType?.startsWith("video") && (
+										) : // TODO: add video
+										item.file.mimeType?.startsWith("image") ? (
 											<Image
-												placeholder={(item.file as Media).blurhash}
+												// @ts-expect-error
+												placeholder={item.file.blurhash}
 												placeholderContentFit="cover"
-												source={(item.file as Media).blurhash}
+												// @ts-expect-error
+												source={item.file.url}
 												transition={300}
 												contentFit="cover"
 												style={styles.image}
 											/>
+										) : (
+											<View style={styles.image} className="items-center justify-center">
+												<Text className="text-center text-white">{i18n[languageCode]("FILE_NOT_SUPPORTED")}</Text>
+											</View>
 										)}
-									</Animated.View>
+									</>
 								</ContextMenu.Trigger>
 								<ContextMenu.Content>
 									<ContextMenu.Preview>
-										{(item.file as Media).mimeType?.startsWith("image") && (
+										{item.file.mimeType?.startsWith("image") && (
 											<Image
-												source={(item.file as Media).url}
+												// @ts-expect-error
+												source={item.file.url}
 												contentFit="cover"
-												style={{ width: widthWindow, height: heightWindow / 1.8, borderRadius: styles.image.borderRadius }}
+												style={{
+													width: widthWindow,
+													height: heightWindow / 1.8,
+													borderRadius: styles.image.borderRadius,
+												}}
 											/>
 										)}
 
-										{(item.file as Media).mimeType?.startsWith("video") && (
+										{item.file.mimeType?.startsWith("video") && (
 											<VideoScreen controls={open} width={widthWindow} height={heightWindow / 1.8} />
 										)}
 									</ContextMenu.Preview>
 									<ContextMenu.Item
 										key="download"
 										onSelect={async () => {
-											if (typeof item.file === "string" || !item.file?.url) return;
+											if (!item.file || "uri" in item?.file || !item.file.url) return;
 
 											try {
 												if (!destination.exists) destination.create();

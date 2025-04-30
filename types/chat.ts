@@ -1,3 +1,5 @@
+import * as ImagePicker from "expo-image-picker";
+
 import { Media } from "./media";
 import { User } from "./user";
 
@@ -31,8 +33,8 @@ export interface MessageOptimistic {
 	app_user: User;
 	chat_room: Message["chat_room"];
 	message?: Message["message"];
-	file?: Media["id"];
-	optimistic: true;
+	file?: ImagePicker.ImagePickerAsset;
 	createdAt: Message["createdAt"];
+	optimistic: true;
 }
 

@@ -19,6 +19,7 @@ export default {
 	ERROR_INPUT_MIN_LENGTH: "Input must be at least 2 characters long",
 	ERROR_PDF: "PDF error",
 	ERROR_PDF_MESSAGE: "Unable to save PDF",
+	FILE_NOT_SUPPORTED: "The file type is not supported.",
 	MESSAGE: "Message",
 	PDF_LOADING: "Loading PDF...",
 	SAVE: "Save",

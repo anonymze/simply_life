@@ -38,21 +38,21 @@ export async function createMessageQuery(params: MessageOptimistic) {
 }
 
 // use fetch for file upload polyfill
-const createMessageWithFileQuery = async (
-	asset: ImagePicker.ImagePickerAsset,
-	appUserId: User["id"],
-	chatRoomId: ChatRoom["id"],
-) => {
+export const createMessageWithFileQuery = async ({
+	file,
+	app_user,
+	chat_room,
+}: MessageOptimistic) => {
 	const formData = new FormData();
 
 	formData.append("file", {
-		uri: asset.uri,
-		name: asset.fileName ?? "file.jpg",
-		type: asset.mimeType ?? "image/jpeg",
+		uri: file?.uri,
+		name: file?.fileName ?? "file.jpg",
+		type: file?.mimeType ?? "image/jpeg",
 	} as any);
 
-	formData.append("app_user", appUserId);
-	formData.append("chat_room", chatRoomId);
+	formData.append("app_user", app_user.id);
+	formData.append("chat_room", chat_room);
 
 	const response = await fetch((process.env.EXPO_PUBLIC_API_URL || "") + "/api/messages/with-file", {
 		method: "POST",
@@ -60,5 +60,5 @@ const createMessageWithFileQuery = async (
 	});
 
 	if (!response.ok) throw new Error(await response.text());
-	return response.json() as Promise<SuccessCreateResponse<Media>>;
+	return response.json();
 };

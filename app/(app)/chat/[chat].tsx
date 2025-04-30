@@ -1,5 +1,5 @@
 import { View, TextInput, Text, Platform, TouchableOpacity, Pressable, Alert, ActivityIndicator } from "react-native";
-import { createMessageQuery, getMessagesQuery } from "@/api/queries/message-queries";
+import { createMessageQuery, createMessageWithFileQuery, getMessagesQuery } from "@/api/queries/message-queries";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { ImageIcon, PaperclipIcon, SendIcon } from "lucide-react-native";
@@ -7,7 +7,6 @@ import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { UIImagePickerPresentationStyle } from "expo-image-picker";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
-import { createMediaQuery } from "@/api/queries/media-queries";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import BackgroundLayout from "@/layouts/background-layout";
 import { Message, MessageOptimistic } from "@/types/chat";
@@ -19,6 +18,7 @@ import { useForm } from "@tanstack/react-form";
 import { Item } from "@/components/item-chat";
 import { queryClient } from "@/api/_queries";
 import config from "@/tailwind.config";
+import { Image } from "expo-image";
 import { cn } from "@/utils/cn";
 import React from "react";
 import { z } from "zod";
@@ -51,10 +51,8 @@ export default function Page() {
 		refetchInterval: 6000,
 	});
 
-	const mutationMessages = useMutation({
-		mutationFn: createMessageQuery,
-		// when mutate is called:
-		onMutate: async (newMessage) => {
+	const mutateMessages = React.useCallback(
+		async (newMessage: MessageOptimistic) => {
 			// cancel any outgoing refetches
 			// (so they don't overwrite our optimistic update)
 			await queryClient.cancelQueries({ queryKey: ["messages", chatId, maxMessages] });
@@ -70,6 +68,13 @@ export default function Page() {
 			// return old messages before optimistic update for the context in onError
 			return previousMessages;
 		},
+		[chatId, maxMessages],
+	);
+
+	const mutationMessages = useMutation({
+		mutationFn: createMessageQuery,
+		// when mutate is called:
+		onMutate: mutateMessages,
 		// if the mutation fails,
 		// use the context returned from onMutate to roll back
 		onError: (err, newMessage, context) => {
@@ -89,23 +94,16 @@ export default function Page() {
 		[],
 	);
 
-	const mutationMedia = useMutation({
-		mutationFn: createMediaQuery,
-		onSuccess: (data) => {
-			for (let media of data) {
-				mutationMessages.mutate({
-					id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-					app_user: appUser.user,
-					chat_room: chatId,
-					file: media.doc.id,
-					createdAt: new Date().toISOString(),
-					optimistic: true,
-				});
-			}
+	const mutationMessageFile = useMutation({
+		mutationFn: createMessageWithFileQuery,
+		// when mutate is called:
+		onMutate: mutateMessages,
+		onError: (err, newMessage, context) => {
+			Alert.alert(i18n[languageCode]("ERROR_GENERIC_PART1"), err.message);
+			queryClient.setQueryData(["messages", chatId, maxMessages], context);
 		},
-		onError: (_) => {
-			Alert.alert(i18n[languageCode]("ERROR_GENERIC_PART1"), i18n[languageCode]("ERROR_GENERIC_PART2"));
-		},
+		// always refetch after error or success:
+		onSettled: () => queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] }),
 	});
 
 	const form = useForm({
@@ -143,7 +141,17 @@ export default function Page() {
 
 		if (result.canceled) return;
 
-		mutationMedia.mutate(result.assets);
+		for await (let file of result.assets) {
+			mutationMessageFile.mutate({
+				id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+				file: file,
+				app_user: appUser.user,
+				chat_room: chatId,
+				createdAt: new Date().toISOString(),
+				// we flag it to show it as a pending message
+				optimistic: true,
+			});
+		}
 	}, []);
 
 	const animatedStyle = useAnimatedStyle(() => {
@@ -252,28 +260,20 @@ export default function Page() {
 								<TouchableOpacity onPress={pickImage} className="px-2 py-2.5">
 									<ImageIcon size={18} color={config.theme.extend.colors.primaryLight} />
 								</TouchableOpacity>
-								<TouchableOpacity onPress={() =>{}} className="pr-2.5 pl-2 py-2.5">
+								<TouchableOpacity onPress={() => {}} className="py-2.5 pl-2 pr-2.5">
 									<PaperclipIcon size={17} color={config.theme.extend.colors.primaryLight} />
 								</TouchableOpacity>
 							</View>
-							{mutationMedia.isPending ? (
-								<ActivityIndicator
-									className="p-1.5 pr-0.5"
-									size="small"
-									color={config.theme.extend.colors.primaryLight}
-								/>
-							) : (
-								<Pressable
-									onPress={handleSubmit}
-									disabled={loadingMessages}
-									style={{
-										opacity: loadingMessages ? 0.5 : 1,
-									}}
-									className={cn("p-1.5 pr-0.5", Platform.OS === "android" && "mb-3")}
-								>
-									<SendIcon size={20} color={config.theme.extend.colors.primaryLight} />
-								</Pressable>
-							)}
+							<Pressable
+								onPress={handleSubmit}
+								disabled={loadingMessages}
+								style={{
+									opacity: loadingMessages ? 0.5 : 1,
+								}}
+								className={cn("p-1.5 pr-0.5", Platform.OS === "android" && "mb-3")}
+							>
+								<SendIcon size={20} color={config.theme.extend.colors.primaryLight} />
+							</Pressable>
 						</View>
 					</View>
 				</Animated.View>
@@ -290,4 +290,3 @@ export default function Page() {
 // };
 
 // const websocketConnected = useWebSocket(chatId, onMessageWebsocket);
-
