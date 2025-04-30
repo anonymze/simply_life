@@ -35,7 +35,7 @@ export default function Page() {
 				email: z.string().email({
 					message: i18n[languageCode]("ERROR_EMAIL_INVALID"),
 				}),
-				password: z.string().min(process.env.NODE_ENV === "development" ? 4 : 8, {
+				password: z.string().min(10, {
 					message: i18n[languageCode]("ERROR_PASSWORD_MIN_LENGTH"),
 				}),
 			}),
@@ -55,7 +55,7 @@ export default function Page() {
 
 	const animatedStyle = useAnimatedStyle(() => {
 		return {
-			transform: [{ translateY: height.value / 2 }],
+			transform: [{ translateY: height.value / 1.4 }],
 		};
 	});
 
