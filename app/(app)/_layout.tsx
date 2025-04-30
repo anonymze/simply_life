@@ -16,8 +16,6 @@ export default function AppLayout() {
 		return <Redirect href="/login" />;
 	}
 
-	console.log(userInfos);
-
 	return (
 		<NotificationProvider>
 			<Stack
@@ -104,12 +102,6 @@ export default function AppLayout() {
 						presentation: Platform.OS === "ios" ? "formSheet" : undefined,
 						sheetAllowedDetents: Platform.OS === "ios" ? "fitToContents" : undefined,
 						header: () => <HeaderLayout title="New room" />,
-					}}
-				/>
-				<Stack.Screen
-					name="performance"
-					options={{
-						header: () => <HeaderLayout title="Performance" />,
 					}}
 				/>
 			</Stack>
