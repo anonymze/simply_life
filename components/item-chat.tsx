@@ -22,7 +22,7 @@ const heightWindow = Dimensions.get("window").height;
 
 type ItemProps = {
 	firstMessage: boolean;
-	item: Message | MessageOptimistic;
+	item: Message;
 	appUser: AppUser | null;
 	stateMessage: {
 		newMessageUser: boolean;
@@ -35,6 +35,8 @@ export const Item = React.memo(({ firstMessage, item, appUser, stateMessage, lan
 	const me = item.app_user.id === appUser?.user.id;
 	const optimistic = "optimistic" in item ? true : false;
 	const [open, setOpen] = React.useState(false);
+
+	// console.log(item);
 
 	return (
 		<View
@@ -70,7 +72,7 @@ export const Item = React.memo(({ firstMessage, item, appUser, stateMessage, lan
 						optimistic ? (
 							<>
 								<Image
-									// @ts-expect-error
+									// @ts-ignore
 									source={item.file.uri}
 									transition={300}
 									contentFit="cover"
@@ -96,10 +98,10 @@ export const Item = React.memo(({ firstMessage, item, appUser, stateMessage, lan
 									<>
 										{item.file.mimeType?.startsWith("image") ? (
 											<Image
-												// @ts-expect-error
+												// @ts-ignore
 												placeholder={item.file.blurhash}
 												placeholderContentFit="cover"
-												// @ts-expect-error
+												// @ts-ignore
 												source={item.file.url}
 												transition={300}
 												contentFit="cover"
@@ -108,10 +110,10 @@ export const Item = React.memo(({ firstMessage, item, appUser, stateMessage, lan
 										) : // TODO: add video
 										item.file.mimeType?.startsWith("image") ? (
 											<Image
-												// @ts-expect-error
+												// @ts-ignore
 												placeholder={item.file.blurhash}
 												placeholderContentFit="cover"
-												// @ts-expect-error
+												// @ts-ignore
 												source={item.file.url}
 												transition={300}
 												contentFit="cover"
@@ -128,7 +130,7 @@ export const Item = React.memo(({ firstMessage, item, appUser, stateMessage, lan
 									<ContextMenu.Preview>
 										{item.file.mimeType?.startsWith("image") && (
 											<Image
-												// @ts-expect-error
+												// @ts-ignore
 												source={item.file.url}
 												contentFit="cover"
 												style={{

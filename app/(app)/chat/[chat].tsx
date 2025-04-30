@@ -1,5 +1,5 @@
-import { View, TextInput, Text, Platform, TouchableOpacity, Pressable, Alert, ActivityIndicator } from "react-native";
-import { createMessageQuery, createMessageWithFileQuery, getMessagesQuery } from "@/api/queries/message-queries";
+import { createMessageQuery, createMessageWithFilesQuery, getMessagesQuery } from "@/api/queries/message-queries";
+import { View, TextInput, Text, Platform, TouchableOpacity, Pressable, Alert } from "react-native";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { ImageIcon, PaperclipIcon, SendIcon } from "lucide-react-native";
@@ -18,7 +18,6 @@ import { useForm } from "@tanstack/react-form";
 import { Item } from "@/components/item-chat";
 import { queryClient } from "@/api/_queries";
 import config from "@/tailwind.config";
-import { Image } from "expo-image";
 import { cn } from "@/utils/cn";
 import React from "react";
 import { z } from "zod";
@@ -44,15 +43,9 @@ export default function Page() {
 	const { height } = useReanimatedKeyboardAnimation();
 	const bottomSafeAreaView = useSafeAreaInsets().bottom;
 
-	const { data: messages, isLoading: loadingMessages } = useQuery({
-		queryKey: ["messages", chatId, maxMessages],
-		queryFn: getMessagesQuery,
-		placeholderData: (prev) => prev,
-		refetchInterval: 6000,
-	});
-
 	const mutateMessages = React.useCallback(
 		async (newMessage: MessageOptimistic) => {
+			console.log("mutateMessages", newMessage);
 			// cancel any outgoing refetches
 			// (so they don't overwrite our optimistic update)
 			await queryClient.cancelQueries({ queryKey: ["messages", chatId, maxMessages] });
@@ -60,10 +53,23 @@ export default function Page() {
 			// snapshot the previous value
 			const previousMessages = queryClient.getQueryData(["messages", chatId, maxMessages]);
 
-			// optimistically update to the new value
-			queryClient.setQueryData(["messages", chatId, maxMessages], (old: Message[]) => {
-				return [newMessage, ...old];
-			});
+			if (newMessage.file) {
+				const newMessages = newMessage.file.map((file) => ({
+					...newMessage,
+					id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+					file: file,
+				}));
+
+				// optimistically update to the new value
+				queryClient.setQueryData(["messages", chatId, maxMessages], (old: Message[]) => {
+					return [...newMessages, ...old];
+				});
+			} else {
+				// optimistically update to the new value
+				queryClient.setQueryData(["messages", chatId, maxMessages], (old: Message[]) => {
+					return [newMessage, ...old];
+				});
+			}
 
 			// return old messages before optimistic update for the context in onError
 			return previousMessages;
@@ -82,7 +88,37 @@ export default function Page() {
 			queryClient.setQueryData(["messages", chatId, maxMessages], context);
 		},
 		// always refetch after error or success:
-		onSettled: () => queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] }),
+		onSettled: () => {
+			if (mutationMessagesFile.isPending) return;
+			queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
+		},
+		onSuccess: () => {
+			console.log("success");
+		},
+	});
+
+	const mutationMessagesFile = useMutation({
+		mutationFn: createMessageWithFilesQuery,
+		onMutate: mutateMessages,
+		onError: (err, newMessage, context) => {
+			Alert.alert(i18n[languageCode]("ERROR_GENERIC_PART1"), err.message);
+			queryClient.setQueryData(["messages", chatId, maxMessages], context);
+		},
+		onSettled: () => {
+			if (mutationMessages.isPending) return;
+			queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
+		},
+	});
+
+	const { data: messages, isLoading: loadingMessages } = useQuery({
+		queryKey: ["messages", chatId, maxMessages],
+		queryFn: getMessagesQuery,
+		placeholderData: (prev) => prev,
+		refetchInterval: () => {
+			// pause refetching while a message is being sent
+			if (mutationMessages.isPending || mutationMessagesFile.isPending) return false;
+			return 6000;
+		},
 	});
 
 	const formSchema = React.useMemo(
@@ -93,18 +129,6 @@ export default function Page() {
 			}),
 		[],
 	);
-
-	const mutationMessageFile = useMutation({
-		mutationFn: createMessageWithFileQuery,
-		// when mutate is called:
-		onMutate: mutateMessages,
-		onError: (err, newMessage, context) => {
-			Alert.alert(i18n[languageCode]("ERROR_GENERIC_PART1"), err.message);
-			queryClient.setQueryData(["messages", chatId, maxMessages], context);
-		},
-		// always refetch after error or success:
-		onSettled: () => queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] }),
-	});
 
 	const form = useForm({
 		defaultValues: {
@@ -134,24 +158,23 @@ export default function Page() {
 			mediaTypes: ["images", "videos"],
 			allowsEditing: false,
 			aspect: [1, 1],
-			quality: 0.5,
+			quality: 0.4,
 			allowsMultipleSelection: true,
 			presentationStyle: UIImagePickerPresentationStyle.POPOVER,
 		});
 
 		if (result.canceled) return;
 
-		for await (let file of result.assets) {
-			mutationMessageFile.mutate({
-				id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-				file: file,
-				app_user: appUser.user,
-				chat_room: chatId,
-				createdAt: new Date().toISOString(),
-				// we flag it to show it as a pending message
-				optimistic: true,
-			});
-		}
+		mutationMessagesFile.mutate({
+			// id is set later (to have differents ids for each file)
+			id: "",
+			app_user: appUser.user,
+			chat_room: chatId,
+			file: result.assets,
+			createdAt: new Date().toISOString(),
+			// we flag it to show it as a pending message
+			optimistic: true,
+		});
 	}, []);
 
 	const animatedStyle = useAnimatedStyle(() => {
@@ -179,7 +202,7 @@ export default function Page() {
 				<Animated.View className="flex-1" style={animatedStyle}>
 					<View className="flex-1">
 						{!!messages?.length ? (
-							<FlatList<Message | MessageOptimistic>
+							<FlatList<Message>
 								contentContainerStyle={
 									{
 										// gap: 5,

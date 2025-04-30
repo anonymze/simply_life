@@ -22,10 +22,10 @@ export interface Message {
 	app_user: User;
 	chat_room: ChatRoom["id"];
 	message?: string;
-	file?: Media;
+	file?: Media | ImagePicker.ImagePickerAsset;
 	createdAt: string;
 	updatedAt: string;
-	optimistic?: never;
+	optimistic?: boolean;
 }
 
 export interface MessageOptimistic {
@@ -33,7 +33,7 @@ export interface MessageOptimistic {
 	app_user: User;
 	chat_room: Message["chat_room"];
 	message?: Message["message"];
-	file?: ImagePicker.ImagePickerAsset;
+	file?: ImagePicker.ImagePickerAsset[];
 	createdAt: Message["createdAt"];
 	optimistic: true;
 }
