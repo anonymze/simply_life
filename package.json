@@ -19,7 +19,6 @@
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
     "@gorhom/bottom-sheet": "^5.1.1",
-    "@legendapp/list": "1.0.0-beta.42",
     "@react-native-cookies/cookies": "^6.2.1",
     "@react-native-menu/menu": "1.2.2",
     "@react-navigation/bottom-tabs": "^7.2.0",
@@ -27,7 +26,6 @@
     "@react-pdf-viewer/core": "3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",
     "@sentry/react-native": "~6.10.0",
-    "@shopify/flash-list": "1.8.0",
     "@shopify/react-native-skia": "1.5.0",
     "@tanstack/react-form": "^1.0.0",
     "@tanstack/react-query": "^5.66.8",
@@ -48,7 +46,6 @@
     "expo-network": "~7.0.5",
     "expo-notifications": "~0.29.13",
     "expo-router": "~4.0.17",
-    "expo-speech-recognition": "^1.1.1",
     "expo-splash-screen": "~0.29.22",
     "expo-status-bar": "~2.0.1",
     "expo-system-ui": "~4.0.8",
