@@ -1,5 +1,5 @@
+import { ActivityIndicator, Alert, Pressable, Text, View, TextInput, Button } from "react-native";
 import Animated, { FadeInDown, FadeOutUp, useAnimatedStyle } from "react-native-reanimated";
-import { ActivityIndicator, Alert, Pressable, Text, View, TextInput } from "react-native";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
 import BackgroundLayout from "@/layouts/background-layout";
@@ -62,13 +62,11 @@ export default function Page() {
 	return (
 		<BackgroundLayout className="p-6">
 			<Animated.View className="flex-1 items-center justify-center gap-3" style={animatedStyle}>
-				<Image
-					source={require("@/assets/images/logo.png")}
-					style={{ height: 80, width: 200 }}
-					contentFit="contain"
-				/>
+				{/* TODO: remove this */}
+				<Button title="BY PASS CONNEXION (doit se connecter au moins 1 fois)" onPress={() => router.push("/")} />
+				<Image source={require("@/assets/images/logo.png")} style={{ height: 80, width: 200 }} contentFit="contain" />
 				<Text className="text-center text-lg font-semibold">{i18n[languageCode]("SUBTITLE_LOGIN")}</Text>
-				
+
 				<View className="mt-8 w-full gap-3">
 					<Text className="text-md self-start text-gray-500">{i18n[languageCode]("INPUT_EMAIL_LOGIN")}</Text>
 					<form.Field name="email">
