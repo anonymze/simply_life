@@ -152,7 +152,7 @@ export default function Page() {
 		},
 		onSubmit: ({ value }) => {
 			translateX.value = withSequence(
-				withTiming(-3, {
+				withTiming(-5, {
 					duration: 150,
 					easing: Easing.bezier(0.25, 0.1, 0.25, 1),
 				}),
@@ -160,7 +160,7 @@ export default function Page() {
 				withTiming(75, { easing: Easing.bezier(0.25, 0.1, 0.25, 1) }),
 			);
 			translateY.value = withSequence(
-				withTiming(3, {
+				withTiming(5, {
 					duration: 150,
 					easing: Easing.bezier(0.25, 0.1, 0.25, 1),
 				}),
