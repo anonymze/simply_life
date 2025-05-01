@@ -89,11 +89,14 @@ export default function Page() {
 		},
 		// always refetch after error or success:
 		onSettled: () => {
-			if (mutationMessagesFile.isPending) return;
+			// if you are on settled the mutation is still in pending status
+			// so we check if we have mroe than 1 mutation then we don't invalidate the query
+			const pendingMutations = queryClient
+				.getMutationCache()
+				.getAll()
+				.filter((mutation) => mutation.state.status === "pending");
+			if (pendingMutations.length > 1) return;
 			queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
-		},
-		onSuccess: () => {
-			console.log("success");
 		},
 	});
 
@@ -105,7 +108,12 @@ export default function Page() {
 			queryClient.setQueryData(["messages", chatId, maxMessages], context);
 		},
 		onSettled: () => {
-			if (mutationMessages.isPending) return;
+			const pendingMutations = queryClient
+				.getMutationCache()
+				.getAll()
+				.filter((mutation) => mutation.state.status === "pending");
+
+			if (pendingMutations.length > 1) return;
 			queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
 		},
 	});

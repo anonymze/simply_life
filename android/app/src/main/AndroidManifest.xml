@@ -29,7 +29,6 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="simply-life-groupe-valorem"/>
-        <data android:scheme="com.anonymze.simplylife"/>
         <data android:scheme="exp+simply-life"/>
       </intent-filter>
       <intent-filter android:autoVerify="true" data-generated="true">
