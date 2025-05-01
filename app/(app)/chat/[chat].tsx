@@ -167,7 +167,7 @@ export default function Page() {
 				// ease
 				withTiming(-75, { easing: Easing.bezier(0.25, 0.1, 0.25, 1) }),
 			);
-			opacity.value = withTiming(0, { easing: Easing.ease, duration: 500 }, (finished) => {
+			opacity.value = withTiming(0, { easing: Easing.bezier(0, 0.1, 0, 0.1), duration: 500 }, (finished) => {
 				if (finished) {
 					translateY.value = 0;
 					translateX.value = 0;
