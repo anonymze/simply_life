@@ -1,9 +1,9 @@
+import Animated, { useAnimatedStyle, useSharedValue, withTiming, withSpring, withSequence, Easing, } from "react-native-reanimated";
 import { createMessageQuery, createMessageWithFilesQuery, getMessagesQuery } from "@/api/queries/message-queries";
 import { View, TextInput, Text, Platform, TouchableOpacity, Pressable, Alert } from "react-native";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { ImageIcon, PaperclipIcon, SendIcon } from "lucide-react-native";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { UIImagePickerPresentationStyle } from "expo-image-picker";
 import { getLanguageCodeLocale, i18n } from "@/i18n/translations";
@@ -25,6 +25,8 @@ import { z } from "zod";
 import { MAX_MESSAGES } from "./index";
 
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 // const messageReceivedSchema = z.object({
 // 	type: z.literal("MESSAGE_RECEIVED"),
 // 	message: z.any(),
@@ -42,10 +44,12 @@ export default function Page() {
 	const languageCode = React.useMemo(() => getLanguageCodeLocale(), []);
 	const { height } = useReanimatedKeyboardAnimation();
 	const bottomSafeAreaView = useSafeAreaInsets().bottom;
+	const translateY = useSharedValue(0);
+	const translateX = useSharedValue(0);
+	const opacity = useSharedValue(1);
 
 	const mutateMessages = React.useCallback(
 		async (newMessage: MessageOptimistic) => {
-			console.log("mutateMessages", newMessage);
 			// cancel any outgoing refetches
 			// (so they don't overwrite our optimistic update)
 			await queryClient.cancelQueries({ queryKey: ["messages", chatId, maxMessages] });
@@ -90,11 +94,12 @@ export default function Page() {
 		// always refetch after error or success:
 		onSettled: () => {
 			// if you are on settled the mutation is still in pending status
-			// so we check if we have mroe than 1 mutation then we don't invalidate the query
+			// so we check if we have more than 1 mutation then we don't invalidate the query
 			const pendingMutations = queryClient
 				.getMutationCache()
 				.getAll()
 				.filter((mutation) => mutation.state.status === "pending");
+
 			if (pendingMutations.length > 1) return;
 			queryClient.invalidateQueries({ queryKey: ["messages", chatId, maxMessages] });
 		},
@@ -146,6 +151,31 @@ export default function Page() {
 			onSubmit: formSchema,
 		},
 		onSubmit: ({ value }) => {
+			translateX.value = withSequence(
+				withTiming(-3, {
+					duration: 150,
+					easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+				}),
+				// cubic
+				withTiming(75, { easing: Easing.bezier(0.25, 0.1, 0.25, 1) }),
+			);
+			translateY.value = withSequence(
+				withTiming(3, {
+					duration: 150,
+					easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+				}),
+				// ease
+				withTiming(-75, { easing: Easing.bezier(0.25, 0.1, 0.25, 1) }),
+			);
+			opacity.value = withTiming(0, { easing: Easing.ease, duration: 500 }, (finished) => {
+				if (finished) {
+					translateY.value = 0;
+					translateX.value = 0;
+					opacity.value = withTiming(1, { duration: 350 });
+				}
+			});
+
+			
 			form.reset();
 
 			// we have to set an id otherwise the list will not have a key extractor, and a date to show
@@ -296,16 +326,17 @@ export default function Page() {
 									<PaperclipIcon size={17} color={config.theme.extend.colors.primaryLight} />
 								</TouchableOpacity>
 							</View>
-							<Pressable
+							<AnimatedPressable
 								onPress={handleSubmit}
 								disabled={loadingMessages}
 								style={{
-									opacity: loadingMessages ? 0.5 : 1,
+									opacity: loadingMessages ? 0.5 : opacity,
+									transform: [{ translateX }, { translateY }],
 								}}
-								className={cn("p-1.5 pr-0.5", Platform.OS === "android" && "mb-3")}
+								className={cn("p-1.5 pr-0", Platform.OS === "android" && "mb-3")}
 							>
 								<SendIcon size={20} color={config.theme.extend.colors.primaryLight} />
-							</Pressable>
+							</AnimatedPressable>
 						</View>
 					</View>
 				</Animated.View>

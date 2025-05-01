@@ -71,13 +71,19 @@ export const Item = React.memo(({ firstMessage, item, appUser, stateMessage, lan
 					{item.file ? (
 						optimistic ? (
 							<>
-								<Image
-									// @ts-ignore
-									source={item.file.uri}
-									transition={300}
-									contentFit="cover"
-									style={styles.image}
-								/>
+								{item.file.mimeType?.startsWith("image") ? (
+									<Image
+										// @ts-ignore
+										source={item.file.uri}
+										transition={300}
+										contentFit="cover"
+										style={styles.image}
+									/>
+								) : (
+									<View style={styles.image} className="items-center justify-center">
+										<Text className="text-center text-white">{i18n[languageCode]("FILE_NOT_SUPPORTED")}</Text>
+									</View>
+								)}
 								<ActivityIndicator
 									size="small"
 									style={{
