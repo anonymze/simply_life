@@ -33,7 +33,7 @@ export default {
 			package: "com.anonymze.simplylife",
 			config: {
 				googleMaps: {
-					// can be public restricted to the app
+					// can be public, restricted to the app
 					apiKey: "AIzaSyDS8h4LEfphnaXei8dCRdFfoYQDNPDZ1wo",
 				},
 			},

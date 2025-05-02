@@ -32,11 +32,12 @@ const services: Service[] = [
 	},
 	{
 		id: 2,
-		name: "Fournisseurs",
+		name: "Visionneuse PDF",
 		description: "Prenez vos rendez-vous médicaux",
 		icon: require("@/assets/images/logo.png"),
 		link: "/signature",
 		theme: "text-blue-500",
+		pastille: true,
 	},
 	{
 		id: 1,
