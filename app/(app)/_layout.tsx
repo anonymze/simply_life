@@ -51,6 +51,13 @@ export default function AppLayout() {
 					}}
 				/>
 				<Stack.Screen
+					name="commision"
+					options={{
+						gestureEnabled: false,
+						header: () => <HeaderLayout title="Commissions" />,
+					}}
+				/>
+				<Stack.Screen
 					name="signature"
 					options={{
 						header: () => <HeaderLayout title="Signature" />,

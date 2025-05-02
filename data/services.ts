@@ -40,8 +40,16 @@ const services: Service[] = [
 		pastille: true,
 	},
 	{
-		id: 1,
+		id: 100,
 		name: "Mes commissions",
+		description: "Gérez votre planning professionnel",
+		icon: require("@/assets/images/logo.png"),
+		link: "/commision",
+		theme: "text-purple-600",
+	},
+	{
+		id: 1,
+		name: "Contacts",
 		description: "Gérez votre planning professionnel",
 		icon: require("@/assets/images/logo.png"),
 		link: "/contact",
